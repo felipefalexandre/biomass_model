@@ -1,4 +1,4 @@
-# 10 — BGB e raízes
+﻿# 10 — BGB e raízes
 
 ## 1. Por que BGB é um problema separado
 
@@ -10,9 +10,19 @@ Isso tem três consequências:
 2. A relação AGB–BGB varia com bioma, fisionomia, solo, fogo e idade.
 3. Reportar BGB como se fosse "medida" é erro metodológico.
 
-## 2. Métodos disponíveis
+## 2. Decisão de arquitetura (ADR-0011)
 
-### 2.1 Razão raiz/parte aérea (R:S)
+BGB é um **modelo próprio**, não uma derivação da AGB. O modelo central usa dados de raiz
+(escavações/monolitos) e preditores de solo (SoilGrids), clima (ERA5-Land), fisionomia
+(classes 3/4 e tipologia) e, opcionalmente, estrutura (altura/AGB como covariável). AGB e BGB
+compartilham grade, máscara e módulo de incerteza, mas são estimados separadamente.
+
+A razão R:S derivada da AGB permanece apenas como linha de base, cenário de sensibilidade ou
+preenchimento rotulado onde não há modelo aplicável.
+
+## 3. Métodos disponíveis
+
+### 3.1 Razão raiz/parte aérea (R:S)
 
 - BGB = R:S × AGB.
 - Vantagem: simples, transparente, aplicável em escala.
@@ -21,18 +31,18 @@ Isso tem três consequências:
   contrário, usar *defaults* de diretrizes IPCC (valores exatos a extrair das tabelas oficiais —
   não presumir).
 
-### 2.2 Equações alométricas de raiz
+### 3.2 Equações alométricas de raiz
 
 - BGB = f(D, H, ρ, ...) ajustada em escavações.
 - Mais realista, mas exige dados destrutivos de raiz, raros.
 - No Cerrado, Ribeiro et al. (2011) mediram BGB por subsampled em 10 parcelas, com SE ~23%.
 
-### 2.3 Modelos de partição (alocação)
+### 3.3 Modelos de partição (alocação)
 
 - Alocação de carbono entre parte aérea e raízes em função de clima, solo e estágio sucessional.
 - Mais complexo; exige parametrização local; não recomendado como primeira opção.
 
-## 3. Evidência disponível para o Brasil
+## 4. Evidência disponível para o Brasil
 
 | Fonte | Achado | Uso |
 |---|---|---|
@@ -43,42 +53,42 @@ Isso tem três consequências:
 Observação: esses valores são de sítios específicos e **não** devem ser extrapolados como média
 do bioma. Servem para ancorar faixas e checar plausibilidade.
 
-## 4. Estratégia proposta
+## 5. Estratégia proposta
 
-1. **BGB como módulo separado**, com entrada AGB e estrato (bioma × fisionomia ×, se possível,
-   classe de solo).
+1. **Modelo de BGB separado** (ADR-0011), com features de solo, clima, fisionomia e estrutura;
+   entrada AGB apenas como covariável opcional.
 2. **Cenários explícitos:**
-   - **C1 (mínimo):** R:S conservador, baseado no limite inferior da literatura.
-   - **C2 (central):** R:S/equação específica do bioma, quando disponível.
-   - **C3 (máximo):** limite superior da literatura.
-3. **Propagação:** a variância de BGB inclui (i) variância de AGB, (ii) variância do parâmetro
-   R:S/equação, (iii) covariância entre eles (tratar como independente é simplificação declarada).
-4. **Transparência:** nunca publicar BGB sem o cenário e a fonte do parâmetro.
+   - **C1 (mínimo):** R:S conservador, baseado no limite inferior da literatura (linha de base).
+   - **C2 (central):** modelo de solo/clima/fisionomia — método principal.
+   - **C3 (máximo):** limite superior da literatura / sensibilidade.
+3. **Propagação:** a variância de BGB inclui (i) erro do modelo de BGB, (ii) erro dos dados de
+   raiz, (iii) covariância com AGB quando a covariável for usada (declarada).
+4. **Transparência:** nunca publicar BGB sem o método, o cenário e a fonte do parâmetro.
 
-## 5. Casos especiais
+## 6. Casos especiais
 
-### 5.1 Cerrado e fogo
+### 6.1 Cerrado e fogo
 
 - Fogo recorrente pode aumentar a fração de raízes (rebrota) e alterar R:S.
 - Sem dados longitudinais, tratar como incerteza adicional, não como ajuste fino.
 
-### 5.2 Várzea/igapó
+### 6.2 Várzea/igapó
 
 - Raízes adaptadas a inundação; R:S pode diferir. Se o estrato for incluído, usar cenário
   próprio ou excluir e declarar.
 
-### 5.3 Florestas secundárias
+### 6.3 Florestas secundárias
 
 - R:S muda com a idade; usar relação dependente de idade se houver fonte; caso contrário,
   declarar que a BGB de secundárias é a menos confiável.
 
-## 6. Raízes finas e necromassa
+## 7. Raízes finas e necromassa
 
 - Raízes finas (<2 mm) são excluídas por convenção; se incluídas, exigem protocolo próprio.
 - Necromassa (madeira morta) e serapilheira **não** fazem parte deste módulo; se o objetivo for
   estoque total do ecossistema, são pools adicionais a planejar separadamente.
 
-## 7. Critérios de aceite
+## 8. Critérios de aceite
 
 - BGB reportada com cenário e fonte do parâmetro.
 - Incerteza de BGB ≥ incerteza de AGB (nunca menor, por construção).

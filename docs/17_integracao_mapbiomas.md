@@ -6,29 +6,49 @@
 - Permite estratificar, mascarar e definir o domínio de vegetação.
 - Permite relatar biomassa por classe, bioma, município, UC, TI e imóvel.
 
-## 2. Classes e agrupamentos
+## 2. Classes e domínio (Coleção 11)
 
-| Grupo de trabalho | Classes MapBiomas (exemplos) | Uso |
+| Grupo | Classes brutas | Uso |
 |---|---|---|
-| Floresta | 3 (formação florestal), 4 (formação savânica?) — **verificar legenda da coleção** | modelo Amazônia |
-| Savana | 4 (formação savânica), 5 (mangue), 6 (floresta alagável) — verificar | modelo Cerrado |
-| Campestre | 2 (formação campestre) | baixa biomassa |
-| Antrópico | 9, 15, 18, 19, 20, 21, 24, 25, 30, 33... | exclusão/máscara |
-| Água | 26 | exclusão |
-| Não vegetação | 22, 23, 27, 29, 31, 32... | exclusão |
+| Floresta | **3 — Formação Florestal** | modelo Amazônia; estrato florestal do Cerrado |
+| Savana | **4 — Formação Savânica** | modelo Cerrado |
+| Fora da v1 | 5 (mangue), 6 (floresta alagável), 11/12 (campestres) | exclusão declarada |
+| Antrópico | 9, 15, 18, 19, 20, 21, 24, 25, 30, 33... | máscara |
+| Água | 26 | máscara |
+| Não vegetação | 22, 23, 27, 29, 31, 32... | máscara |
 
-**Atenção:** os códigos exatos dependem da legenda da coleção. O mapa de classes usado no
-pipeline de desmatamento está em `rules.py` (`ClassCode`: 1 antrópico, 2 vegetação primária,
-3 secundária, 4 supressão de primária, 5 recuperação, 6 supressão de secundária, 7 outro,
-0 nodata). **Não presumir** que a legenda bruta do MapBiomas coincide com esses códigos; a
-conversão precisa ser explícita e testada.
+**Regra de domínio (ADR-0010):**
+
+```
+dominio(t) = (classe_mapbiomas(t) == 3) | (classe_mapbiomas(t) == 4)
+```
+
+O domínio é recalculado **a cada ano**; a máscara de vegetação estável 2007–2016 da etapa anterior
+não é o domínio, e sim um **estrato opcional** para comparação. Ver `docs/22` (RE01).
+
+**Atenção:** os códigos 3/4 são os **códigos brutos** da legenda. O `ClassCode` do pipeline de
+desmatamento (`rules.py`: 1 antrópico, 2 vegetação primária, 3 secundária, 4 supressão de
+primária, 5 recuperação, 6 supressão de secundária, 7 outro) é uma camada **derivada** e não deve
+ser confundido com a legenda bruta. A conversão precisa ser explícita e testada.
+
+### 2.1 Pilotos selecionados
+
+Seleção por cobertura do IFN (Painel de Biomassa e Carbono) e fração de classes 3/4:
+
+| Bioma | Nome | lon | lat | janela | f3 | f4 | f3+4 | UAs IFN |
+|---|---|---|---|---|---|---|---|---|
+| Amazônia | piloto_amazonas_sul | −60,45 | −6,90 | 512 px | 0,933 | 0,000 | 0,933 | 511 |
+| Cerrado | piloto_chapada_veadeiros | −47,70 | −13,95 | 512 px | 0,256 | 0,536 | 0,791 | 605 |
+
+Arquivo: `data/reference/pilotos_selecionados.csv`; ferramenta:
+`tools/suggest_pilots_from_ifn.py`.
 
 ## 3. Máscaras
 
 | Máscara | Definição | Efeito |
 |---|---|---|
-| Domínio de vegetação | classes naturais | define o que é estimado |
-| Elegibilidade (etapa anterior) | classe 3/4 em 2007–2016 | vegetação nativa estável |
+| Domínio de vegetação | classes 3/4 no ano | define o que é estimado |
+| Estrato estável (etapa anterior) | classe 3/4 em 2007–2016 | comparação com produtos anteriores; não é o domínio |
 | Água/urbano/rocha | exclusão | evita AGBD espúria |
 | Transição no ano | exclui pixel que mudou | evita mistura temporal |
 | AOA | dissimilaridade de features | evita extrapolação |
@@ -77,7 +97,8 @@ Sempre incluir `% AOA`; uma estimativa com 40% fora da AOA não é comparável a
 
 ## 6. Integração com os produtos de desmatamento
 
-- Usar a máscara de elegibilidade como denominador consistente.
+- A máscara de elegibilidade é um **estrato**, não o denominador universal; usá-la apenas quando
+  a comparação com a etapa anterior for explícita.
 - Para emissões, usar AGBD do ano anterior ao desmatamento.
 - Não usar o mapa de biomassa para "corrigir" a área desmatada; são produtos independentes.
 

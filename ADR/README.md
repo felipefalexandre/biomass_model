@@ -18,8 +18,10 @@ canônico. Qualquer mudança de decisão deve:
 | [0002](0002-modelos-por-bioma.md) | Dois modelos por bioma e escada de complexidade | aceito |
 | [0003](0003-gedi-referencia.md) | GEDI L4A como referência principal | aceito com ressalva |
 | [0004](0004-inferencia-hibrida.md) | Inferência híbrida | aceito |
-| [0005](0005-bgb-cenarios.md) | BGB derivada com cenários | aceito |
+| [0005](0005-bgb-cenarios.md) | BGB derivada com cenários | substituído por ADR-0011 |
 | [0006](0006-validacao-espacial.md) | Validação por blocos espaciais e AOA | aceito |
 | [0007](0007-carbono-modulo.md) | Carbono e CO₂e em módulo separado | aceito |
 | [0008](0008-janelas-cog.md) | Janelas e COG | aceito |
-| [0009](0009-mascara-dominio.md) | Máscara de elegibilidade como domínio | aceito |
+| [0009](0009-mascara-dominio.md) | Máscara de elegibilidade como domínio | substituído por ADR-0010 |
+| [0010](0010-dominio-classes-3-4.md) | Domínio = classes brutas 3 e 4 do MapBiomas | aceito |
+| [0011](0011-bgb-modelo-independente.md) | BGB como modelo separado, não derivado da AGB | aceito |

@@ -2,7 +2,7 @@ id,nome,tipo,resolucao,periodo,papel,acesso,licenca,status,observacoes
 D01,GEDI L4A,LiDAR espacial (produto de modelo),~25 m footprint,2019-2023,referencia principal de treino,NASA LP DAAC,aberto (verificar termos),verificado,A-grade e produto de modelo; erro proprio
 D02,GEDI L4B,LiDAR (agregado de modelo),1 km,2019-2023,benchmark/estratificacao,NASA LP DAAC,aberto (verificar termos),a_verificar,confirmar versao
 D03,ICESat-2 ATL08,LiDAR fotoncontagem,~100 m segmentos,2018-,altura/referencia auxiliar,NSIDC,aberto,a_verificar,nao fornece AGB direta
-D04,IFN - Inventario Florestal Nacional,inventario de campo,parcelas,2012-,validacao/calibracao,SFB/SNIF,restrito,a_verificar,microdados e coordenadas podem ser restritos
+D04,IFN - Inventario Florestal Nacional,inventario de campo,parcelas,2012-,validacao/calibracao,SFB/SNIF,CC BY (painel aberto),verificado,painel de biomassa aberto; microdados botanicos a confirmar
 D05,Parcelas de literatura/teses,campo,ponto,variado,validacao independente,publicacoes,conforme publicacao,a_verificar,compilacao a construir
 D06,Global Wood Density Database (GWDD v1),trait,taxon,-,allometria,Dryad,aberto,verificado,DOI 10.5061/dryad.234; v2 no Zenodo
 D10,Sentinel-2 MSI L2A,optico,10-20 m,2015-,features espectrais/fenologicas,Copernicus,aberto (atribuicao),verificado,programa
@@ -15,7 +15,7 @@ D16,ERA5-Land,clima (reanalise),~9 km,1950-,clima/temporada,Copernicus C3S,abert
 D17,CHIRPS,precipitacao,0.05 deg,1981-,clima,UCSB,a_verificar,a_verificar,licenca a confirmar
 D18,WorldClim/CHELSA,clima (normais),1 km / 30 arc-sec,1970-2000 / 1981-2010,clima estatico,aberto,a_verificar,a_verificar,versao a confirmar
 D19,SoilGrids,solo,250 m,estatico,preditor de BGB/estrutura,ISRIC,CC BY (verificar),a_verificar,versao a confirmar
-D20,MapBiomas Colecao 11,classificacao,30 m,1985-2024/2025,estratificacao e mascara,MapBiomas,CC BY-SA (verificar),verificado,dados locais em uso
+D20,MapBiomas Colecao 11,classificacao,30 m,2004-2025 (arquivos locais),estratificacao e dominio,MapBiomas,CC BY-SA 4.0 (confirmar),verificado,legenda baixada; classes 3/4 confirmadas
 D21,Desmatamento 2014-2025 (derivado),serie anual,30 m,2014-2025,mudanca/emissoes,gerado localmente,definir,verificado,warm-up 2014-2015
 D22,PRODES (INPE),desmatamento,30 m/regional,1988-,validacao de mudanca,TerraBrasilis,aberto,a_verificar,confirmar URL/versao
 D23,Limites de biomas IBGE (lm_bioma_250),vetor,1:250.000,-,dominio,IBGE,aberto,verificado,shapefile local
@@ -25,3 +25,12 @@ D30,CCI Biomass 2010,AGB global,100 m,2010,benchmark,ESA CCI,aberto,verificado,D
 D31,Mapas harmonizados AGB/BGB 2010,AGB/BGB,1 km,2010,benchmark,Dryad/PNAS,aberto,verificado,DOI 10.1038/s41597-020-0444-4
 D32,Mapa pan-tropical Avitabile 2016,AGB,1 km,~2000s,benchmark,aberto,a_verificar,a_verificar,
 D33,Global Forest Watch/alertas,mudanca,10-30 m,2001-,contexto de mudanca,WRI,aberto,a_verificar,termos a confirmar
+D34,Legenda MapBiomas Colecao 11,metadado oficial,-,2026,classes e codigos IBGE,MapBiomas,aberto,verificado,PDF em data/reference/mapbiomas
+D35,Painel de Biomassa e Carbono (IFN),AGB por unidade amostral,ponto/UA,IFN,calibracao/validacao regional,SFB,CC BY,verificado,"439970 registros; coordenadas ~0,1 grau; equacoes multiplas"
+D36,Roitman et al. 2018 PLOS ONE,Cerrado s.s. (parcelas/arvores),77 sitios / 893 parcelas,variado,calibracao/validacao,PLOS,CC BY,verificado,DOI 10.1371/journal.pone.0196742
+D37,Sustainable Landscapes Brazil,inventario arvore-a-arvore,sitios,2009-2018,validacao,ORNL DAAC,aberto (login Earthdata),a_verificar,ds_id=1641
+D38,Manaus plots AGB 2014,AGB por parcela,22 parcelas,2014,validacao,CEDA,OGL,a_verificar,download nao testado
+D39,RAINFOR census 2017-2019,DAP por arvore,29 parcelas,2017-2019,validacao,EIDC,OGL,verificado,DOI 10.5285/63d4b774-4e03-4db2-95ad-dcca18f0d681
+D40,Vourlitis Cerrado MT,dados por arvore,parcelas,2011-2018,validacao,Mendeley,aberto,verificado,DOI 10.17632/2989vngvys.2
+D41,Maraca ecotone forests,AGB/C por parcela,129 parcelas,censo 4,validacao,Mendeley,aberto,verificado,DOI 10.17632/2j354jtddx.2
+D42,EBA mapa AGB Amazonia,mapa de AGB,30 m,~2018,benchmark,Zenodo,aberto,verificado,DOI 10.5281/zenodo.7647491

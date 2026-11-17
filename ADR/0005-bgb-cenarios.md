@@ -1,6 +1,6 @@
 # ADR-0005 — BGB derivada com cenários
 
-**Status:** aceito
+**Status:** substituído por ADR-0011
 **Data:** 2026-11-17
 
 ## Contexto

@@ -1,4 +1,4 @@
-# 28 — Referências: status de verificação
+﻿# 28 — Referências: status de verificação
 
 Registro do que foi confirmado nesta fase e do que permanece pendente. **Nenhuma referência é
 citada como definitiva sem verificação de DOI/PII ou de fonte oficial.**
@@ -32,9 +32,9 @@ citada como definitiva sem verificação de DOI/PII ou de fonte oficial.**
 
 | Referência | Situação | Pendência |
 |---|---|---|
-| PLOS ONE 2018 (Cerrado) | DOI 10.1371/journal.pone.0196742 verificado na etapa anterior | confirmar título/autores/volume |
+| PLOS ONE 2018 (Cerrado) | DOI 10.1371/journal.pone.0196742 verificado; título e autores conferidos | OK (v13(8) e0196742) |
 | STOTEN 2023 ("inverted forest") | PII S0048969722084248 localizado | confirmar DOI/título/autores |
-| Roitman et al. 2018 (PLOS ONE, savanna woodland) | artigo localizado (PMC6070178) | confirmar DOI e dados suplementares |
+| Roitman et al. 2018 (PLOS ONE, savanna woodland) | DOI e suplementos S3–S5 baixados | OK |
 | IPCC 2006 / 2019 Refinement | documento oficial existe | extrair valores exatos (f_C, R:S) das tabelas |
 
 ## 3. Pendentes (não citar como definitivas)

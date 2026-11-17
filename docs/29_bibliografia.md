@@ -34,74 +34,79 @@ verificação; caso contrário, constam apenas periódico e DOI.
    open Brazilian Savannah developed on sandy soils. *Carbon Balance and Management*.
    https://doi.org/10.1186/s13021-019-0121-0
 
+8. Roitman, I., Bustamante, M.M.C., Haidar, R.F., Shimbo, J.Z., Abdala, G.C., Eiten, G., et al.
+   (2018). Optimizing biomass estimates of savanna woodland at different spatial scales in the
+   Brazilian Cerrado: Re-evaluating allometric equations and environmental influences. *PLOS ONE*,
+   13(8), e0196742. https://doi.org/10.1371/journal.pone.0196742
+
 ## Mapas e produtos de biomassa
 
-8. Saatchi, S.S., et al. (2011). Benchmark map of forest carbon stocks in tropical regions across
+9. Saatchi, S.S., et al. (2011). Benchmark map of forest carbon stocks in tropical regions across
    three continents. *PNAS*. https://doi.org/10.1073/pnas.1019576108
 
-9. Baccini, A., et al. (2012). Estimated carbon dioxide emissions from tropical deforestation
+10. Baccini, A., et al. (2012). Estimated carbon dioxide emissions from tropical deforestation
    improved by carbon-density maps. *Nature Climate Change*.
    https://doi.org/10.1038/nclimate1354
 
-10. Avitabile, V., et al. (2016). An integrated pan-tropical biomass map using multiple reference
+11. Avitabile, V., et al. (2016). An integrated pan-tropical biomass map using multiple reference
     datasets. *Global Change Biology*, 22(4), 1406–1420.
 
-11. Santoro, M., et al. (2021). The global forest above-ground biomass pool for 2010 estimated
+12. Santoro, M., et al. (2021). The global forest above-ground biomass pool for 2010 estimated
     from high-resolution satellite observations. *Earth System Science Data*, 13, 3927–3950.
     https://doi.org/10.5194/essd-13-3927-2021
 
-12. Spawn, S.A., et al. (2020). Harmonized global maps of above and belowground biomass carbon
+13. Spawn, S.A., et al. (2020). Harmonized global maps of above and belowground biomass carbon
     density in the year 2010. *Scientific Data*. https://doi.org/10.1038/s41597-020-0444-4
 
 ## LiDAR espacial
 
-13. Dubayah, R., et al. (2020). The Global Ecosystem Dynamics Investigation: High-resolution laser
+14. Dubayah, R., et al. (2020). The Global Ecosystem Dynamics Investigation: High-resolution laser
     ranging of the Earth's forests and topography. *Science of Remote Sensing*.
     https://doi.org/10.1016/j.srs.2020.100002
 
-14. Duncanson, L., et al. (2022). Aboveground biomass density models for NASA's Global Ecosystem
+15. Duncanson, L., et al. (2022). Aboveground biomass density models for NASA's Global Ecosystem
     Dynamics Investigation (GEDI) lidar mission. *Remote Sensing of Environment*, 270, 112845.
     https://doi.org/10.1016/j.rse.2021.112845
 
 ## Inferência, validação e incerteza
 
-15. Ståhl, G., et al. (2016). Use of models in large-area forest surveys: comparing model-
+16. Ståhl, G., et al. (2016). Use of models in large-area forest surveys: comparing model-
     assisted, model-based and hybrid estimation. *Forest Ecosystems*.
     https://doi.org/10.1186/s40663-016-0064-9
 
-16. Roberts, D.R., et al. (2017). Cross-validation strategies for data with temporal, spatial,
+17. Roberts, D.R., et al. (2017). Cross-validation strategies for data with temporal, spatial,
     hierarchical, or phylogenetic structure. *Ecography*. https://doi.org/10.1111/ecog.02881
 
-17. Ploton, P., et al. (2020). Spatial validation reveals poor predictive performance of
+18. Ploton, P., et al. (2020). Spatial validation reveals poor predictive performance of
     large-scale ecological mapping models. *Nature Communications*.
     https://doi.org/10.1038/s41467-020-18321-y
 
-18. Meyer, H., Pebesma, E. (2021). Predicting into unknown space? Estimating the area of
+19. Meyer, H., Pebesma, E. (2021). Predicting into unknown space? Estimating the area of
     applicability of spatial prediction models. *Methods in Ecology and Evolution*.
     https://doi.org/10.1111/2041-210X.13650
 
-19. Milà, C., Mateu, J., Pebesma, E., Meyer, H. (2022). Nearest neighbour distance matching
+20. Milà, C., Mateu, J., Pebesma, E., Meyer, H. (2022). Nearest neighbour distance matching
     Leave-One-Out Cross-Validation for map validation. *Methods in Ecology and Evolution*,
     13(6), 1304–1316. https://doi.org/10.1111/2041-210X.13851
 
 ## Dados climáticos
 
-20. Muñoz-Sabater, J., et al. (2021). ERA5-Land: a state-of-the-art global reanalysis dataset for
+21. Muñoz-Sabater, J., et al. (2021). ERA5-Land: a state-of-the-art global reanalysis dataset for
     land applications. *Earth System Science Data*, 13, 4349–4383.
     https://doi.org/10.5194/essd-13-4349-2021
 
 ## Documentos institucionais (sem DOI)
 
-21. IPCC (2006). *2006 IPCC Guidelines for National Greenhouse Gas Inventories*, Vol. 4
+22. IPCC (2006). *2006 IPCC Guidelines for National Greenhouse Gas Inventories*, Vol. 4
     (Agriculture, Forestry and Other Land Use). Consultar tabelas de fração de carbono e razões
     raiz/parte aérea.
 
-22. IPCC (2019). *2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas
+23. IPCC (2019). *2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas
     Inventories*. Consultar tabelas atualizadas.
 
-23. IBGE. *Biomas do Brasil* (limites 1:250.000). Base vetorial `lm_bioma_250`.
+24. IBGE. *Biomas do Brasil* (limites 1:250.000). Base vetorial `lm_bioma_250`.
 
-24. MapBiomas. *Coleção 11* do mapeamento anual de uso e cobertura da terra. Verificar versão e
+25. MapBiomas. *Coleção 11* do mapeamento anual de uso e cobertura da terra. Verificar versão e
     data de acesso.
 
 ## Observações

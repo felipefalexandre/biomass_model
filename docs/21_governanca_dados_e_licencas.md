@@ -18,10 +18,10 @@ citação e, às vezes, restrição de redistribuição. O sistema deve ser **le
 | CHIRPS | aberto (a confirmar) | obrigatória | verificar |
 | WorldClim/CHELSA | aberto (a confirmar) | obrigatória | verificar |
 | SoilGrids | CC BY (a confirmar) | obrigatória | permitida com atribuição |
-| MapBiomas | CC BY-SA (a confirmar) | obrigatória | **share-alike** pode afetar derivados |
+| MapBiomas | CC BY-SA 4.0 (a confirmar no site) | obrigatória | **share-alike só para obras derivadas** do dado; usar para mascarar/estratificar e distribuir um produto novo não torna automaticamente o produto share-alike — mas redistribuir a camada MapBiomas adaptada, sim |
 | PRODES/TerraBrasilis | aberto (a confirmar) | obrigatória | verificar |
 | IBGE (biomas, municipal) | aberto | recomendada | permitida |
-| IFN/SFB | restrito (a confirmar) | conforme termo | provavelmente não |
+| IFN/SFB — Painel de Biomassa e Carbono | **CC BY** (verificado no portal de dados) | obrigatória | permitida com atribuição; microdados botânicos têm termos próprios |
 | GWDD (Dryad/Zenodo) | aberto (CC0/CC BY — confirmar) | obrigatória | verificar |
 | Google Earth Engine | termos de serviço | conforme | não redistribuir dados do GEE |
 
@@ -45,7 +45,16 @@ Produtos derivados (mapas de AGB, tabelas) podem ser distribuídos sob:
 - se houver fonte restrita (IFN), não redistribuir os dados-fonte; redistribuir apenas agregados
   quando permitido.
 
-**Pergunta aberta:** qual licença o usuário quer para os produtos? (`docs/30`, Q8).
+**Decisão atual (2026-11-17):**
+
+- **Código:** MIT (já no repositório).
+- **Documentação:** CC BY 4.0.
+- **Produtos de dados (mapas, tabelas, pesos):** a definir; candidato CC BY 4.0, com NOTICE de
+  atribuição. Enquanto houver dependência do MapBiomas, avaliar caso a caso se o produto é obra
+  derivada; a alternativa segura é distribuir apenas os produtos próprios (AGB/BGB) e não as
+  camadas MapBiomas reprojetadas/reclassificadas.
+- **Share-alike não é contagioso por uso:** usar o MapBiomas como insumo não obriga a licenciar
+  o mapa de biomassa sob CC BY-SA; a obrigação recai sobre cópias/adaptações do dado MapBiomas.
 
 ## 5. Dados sensíveis
 

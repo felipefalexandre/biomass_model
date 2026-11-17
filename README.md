@@ -1,7 +1,8 @@
 # Sistema de Estimativa de Biomassa Vegetal — Amazônia e Cerrado
 
-**Status:** planejamento científico/técnico (fase de investigação). Nenhum código de produção foi escrito.
-**Escopo:** AGB, BGB, biomassa total, carbono e CO₂e, a partir de dados abertos e ferramentas gratuitas, em Python.
+**Status:** planejamento concluído; implementação iniciada (contrato de grade, testes e seleção de pilotos). Nenhum modelo treinado.
+**Escopo:** AGB (v1) e BGB (modelo separado), carbono e CO₂e, a partir de dados abertos e ferramentas gratuitas, em Python.
+**Domínio:** classes 3 (Formação Florestal) e 4 (Formação Savânica) do MapBiomas Coleção 11, Amazônia e Cerrado.
 **Data de referência desta versão:** 2026-11-17
 **Autor:** Felipe Alexandre (registro de trabalho)
 
@@ -14,9 +15,15 @@ vegetal acima e abaixo do solo nos biomas Amazônia e Cerrado, com rastreabilida
 catálogo de dados, matriz de evidências, análise de incerteza, plano de validação e registro
 explícito de restrições (redflags) e perguntas abertas.
 
-Ele **não** contém código de produção, modelos treinados nem resultados numéricos de biomassa.
-Qualquer número aqui presente é: (a) proveniente de fontes publicadas e citadas, ou (b) resultado
-já produzido e documentado na etapa anterior de desmatamento (quando indicado).
+Ele contém o **planejamento completo** de um sistema modular para estimar biomassa vegetal acima
+e abaixo do solo nos biomas Amazônia e Cerrado, com rastreabilidade de decisões, catálogo de
+dados, matriz de evidências, análise de incerteza, plano de validação e registro explícito de
+restrições (redflags) e perguntas abertas.
+
+O código começa pelo contrato de grade e pelas ferramentas de seleção de pilotos. Ainda **não há
+modelo treinado nem mapa de biomassa**. Qualquer número aqui presente é: (a) proveniente de fontes
+publicadas e citadas, ou (b) resultado de contagem simples sobre dados abertos baixados, sempre
+identificado como tal.
 
 ## 2. Regras que governam este planejamento
 
@@ -29,7 +36,8 @@ já produzido e documentado na etapa anterior de desmatamento (quando indicado).
    As conversões estão isoladas em `docs/11`.
 5. **Autocorrelação espacial** não é ignorada: validação, inferência e incerteza tratam
    dependência espacial explicitamente (`docs/12`, `docs/13`).
-6. **BGB no Cerrado** não é tratado como subproduto automático da AGB (`docs/10`).
+6. **BGB no Cerrado** não é tratado como subproduto automático da AGB: BGB é um modelo separado,
+   com preditores de solo e clima (`docs/10`, ADR-0011).
 7. **Somente dados abertos e ferramentas gratuitas** na trilha principal. Se algo só existir em
    versão paga, isso é registrado como **redflag** (`docs/22`), sem interromper o trabalho.
 8. **Perguntas que dependem do usuário** são registradas, não respondidas por suposição
@@ -70,14 +78,42 @@ já produzido e documentado na etapa anterior de desmatamento (quando indicado).
 | 28 | [Referências: status](docs/28_referencias_status.md) | O que foi verificado |
 | 29 | [Bibliografia](docs/29_bibliografia.md) | Lista final citável |
 | 30 | [Perguntas abertas](docs/30_perguntas_abertas.md) | Pendências para o usuário |
+| 31 | [Diário de pesquisa](docs/31_diario_de_pesquisa.md) | Registro cronológico de decisões e achados |
 
-## 4. Artefatos estruturados
+## 4. Estrutura do repositório
+
+```
+biomass_model/
+├── src/biomass_model/     # pacote Python (grid, futuros módulos)
+├── tests/                 # testes (pytest)
+├── tools/                 # scripts de apoio (seleção de pilotos)
+├── docs/                  # planejamento 00–31
+├── ADR/                   # decisões arquiteturais
+├── data/
+│   ├── catalogo_dados.csv
+│   ├── matriz_evidencias.csv
+│   ├── reference/         # legenda, inventários catalogados, pilotos
+│   └── raw/               # downloads volumosos (ignorado pelo git)
+└── pyproject.toml
+```
+
+Comandos:
+
+```powershell
+C:\Python315\python.exe -m pytest
+C:\Python315\python.exe tools\select_pilots.py
+C:\Python315\python.exe tools\suggest_pilots_from_ifn.py --bioma Amazonia --raster E:\Mapbiomas\mapbiomas_col11_2025.tif
+```
+
+## 5. Artefatos estruturados
 
 - `data/catalogo_dados.csv` — catálogo legível por máquina das fontes de dados.
 - `data/matriz_evidencias.csv` — evidência científica → decisão de projeto.
+- `data/reference/inventarios_abertos.csv` — fontes de campo/inventário e status de acesso.
+- `data/reference/pilotos_selecionados.csv` — tiles piloto escolhidos.
 - `ADR/` — decisões arquiteturais em formato curto (contexto, decisão, consequências).
 
-## 5. Contexto herdado da etapa anterior
+## 6. Contexto herdado da etapa anterior
 
 A etapa anterior (concluída) produziu, em `E:\Mapbiomas\outputs_eligibilidade`:
 
@@ -87,11 +123,12 @@ A etapa anterior (concluída) produziu, em `E:\Mapbiomas\outputs_eligibilidade`:
 - Amazônia: 423.361.243,8 ha totais / 297.014.653,96 ha elegíveis;
 - Cerrado: 199.171.323,0 ha totais / 89.700.224,66 ha elegíveis.
 
-Esses produtos são reutilizados aqui como **estratificação** e **máscara de domínio**, não como
-estimativa de biomassa.
+Esses produtos são reutilizados aqui apenas como **estrato opcional** e referência de comparação.
+O domínio deste projeto é a classe 3/4 do MapBiomas **no ano-alvo** (ADR-0010), não a máscara
+estável de 2007–2016.
 
-## 6. Como ler este material
+## 7. Como ler este material
 
 Comece por `00` (decisões), depois `01` (o que se quer estimar), `05`–`07` (dados e desenho),
-`12`–`13` (incerteza e validação) e, por fim, `22`, `25` e `30` (restrições, critérios de aceite
-e pendências).
+`12`–`13` (incerteza e validação) e, por fim, `22`, `25`, `30` e `31` (restrições, critérios de
+aceite, pendências e diário).

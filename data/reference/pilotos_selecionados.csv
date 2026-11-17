@@ -1,0 +1,3 @@
+bioma,nome,lon,lat,size_px,frac_3,frac_4,frac_3_4,n_ifn_celula,justificativa
+Amazonia,piloto_amazonas_sul,-60.45,-6.9,512,0.933,0.0,0.933,511,"93,3% de Formacao Florestal; 511 unidades amostrais do IFN na celula de ~16 km"
+Cerrado,piloto_chapada_veadeiros,-47.7,-13.95,512,0.256,0.536,0.791,605,"79,1% de classes 3+4 (25,6% floresta + 53,6% savana); 605 unidades amostrais do IFN"

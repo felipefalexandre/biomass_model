@@ -1,6 +1,6 @@
 # ADR-0009 — Máscara de elegibilidade como domínio
 
-**Status:** aceito
+**Status:** substituído por ADR-0010
 **Data:** 2026-11-17
 
 ## Contexto

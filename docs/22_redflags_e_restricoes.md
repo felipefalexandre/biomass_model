@@ -10,7 +10,7 @@ Redflag não interrompe o trabalho; é documentada e contornada ou aceita com ju
 | RF01 | Imagens comerciais de alta resolução (Planet, Maxar, ICEYE, Capella) | pagas | não usadas na trilha principal | usar S2/Landsat/S1; registrar se o usuário tiver acesso |
 | RF02 | LiDAR aerotransportado dedicado (voos próprios) | custo alto | não disponível | GEDI/ICESat-2; campo |
 | RF03 | RAINFOR / ForestPlots.net | acesso por solicitação/afiliação | possível falta de parcelas | compilação de artigos/teses; parceria |
-| RF04 | Microdados do IFN (SFB) | acesso restrito (a confirmar) | validação independente limitada | solicitar acesso; usar agregados públicos |
+| RF04 | Microdados do IFN (SFB) | parcialmente aberto: o Painel de Biomassa e Carbono publica AGB por UA (coordenadas ~0,1°), mas não o inventário árvore-a-árvore completo | pareamento fino limitado | usar o painel para validação regional; dados botânicos via SNIF, se disponíveis |
 | RF05 | Google Earth Engine | gratuito para pesquisa, termos comerciais podem restringir uso/redistribuição | dependência de plataforma | trilha local; se usar, documentar e não redistribuir dados do GEE |
 | RF06 | Produtos GEDI L4A/L4B | são **produtos de modelo**, não observação direta de biomassa | erro próprio e circularidade | tratar como referência imperfeita; validar com campo |
 | RF07 | NISAR / BIOMASS (ESA) | status, disponibilidade e política de acesso a confirmar | incerteza sobre radar L/P-band futuro | não depender; monitorar |
@@ -37,10 +37,11 @@ Redflag não interrompe o trabalho; é documentada e contornada ou aceita com ju
 
 | ID | Restrição | Efeito |
 |---|---|---|
-| RE01 | Máscara de elegibilidade 2007–2016 exclui regeneração e vegetação que mudou de classe | o total é de vegetação nativa estável, não de toda a cobertura lenhosa |
+| RE01 | O domínio é a classe 3/4 do MapBiomas **no ano-alvo** (ADR-0010); a máscara estável 2007–2016 é apenas estrato opcional | totais anuais mudam com o denominador; comparabilidade com a etapa anterior exige o estrato estável explícito |
 | RE02 | Série de desmatamento só é recomendada a partir de 2016 (warm-up 2014–2015) | análises de emissão começam em 2016 |
 | RE03 | Somente Amazônia e Cerrado | não cobre outros biomas |
 | RE04 | Sem necromassa, serapilheira, solo | estoque não é "total do ecossistema" |
+| RE05 | Dados de raiz (escavações) são escassos | modelo independente de BGB (ADR-0011) pode ser rebaixado a cenário onde faltar dado |
 
 ## 4. Sinais de alerta em propostas/fornecedores
 

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "biomass-model"
+version = "0.1.0"
+description = "Estimativa de biomassa vegetal (AGB/BGB) para Amazonia e Cerrado com dados abertos"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "numpy>=1.26",
+    "rasterio>=1.4",
+    "geopandas>=1.0",
+    "shapely>=2.0",
+    "pandas>=2.2",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+ml = ["scikit-learn>=1.5", "xgboost>=2.0"]
+dev = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["src"]

@@ -14,7 +14,7 @@ condicionado (cadastro, solicitação ou termo).
 | D01 | GEDI L4A (AGBD por footprint) | LiDAR espacial (produto de modelo) | ~25 m footprint | 2019–2023 | referência principal de treino | NASA LP DAAC, aberto | verificado (missão/documentação) |
 | D02 | GEDI L4B (AGBD agregado) | LiDAR (produto de modelo) | 1 km | 2019–2023 | benchmark/estratificação | NASA LP DAAC, aberto | a_verificar (versão) |
 | D03 | ICESat-2 ATL08 | LiDAR fotoncontagem | ~100 m segmentos | 2018– | referência auxiliar de altura | NSIDC, aberto | a_verificar |
-| D04 | IFN — Inventário Florestal Nacional (SFB) | inventário de campo | parcelas | 2012– | validação/calibração | SFB/SNIF | restrito/a_verificar |
+| D04 | IFN — Inventário Florestal Nacional (SFB) | inventário de campo | parcelas | 2012– | validação/calibração | SFB/SNIF | verificado (painel aberto) |
 | D05 | Parcelas de literatura/teses (Cerrado/Amazônia) | campo | ponto | variado | validação independente | publicações | a_verificar (compilação) |
 | D06 | Base global de densidade da madeira (GWDD v1/v2) | trait | táxon | — | allometria | Dryad/Zenodo, aberto | verificado (v1 DOI) |
 
@@ -52,6 +52,32 @@ condicionado (cadastro, solicitação ou termo).
 | D31 | Mapas harmonizados AGB/BGB (Spawn et al. 2020) | AGB/BGB | 1 km | 2010 | benchmark | Dryad/PNAS, aberto | verificado (DOI) |
 | D32 | Mapa pan-tropical Avitabile et al. 2016 | AGB | 1 km | ~2000s | benchmark | aberto | a_verificar |
 | D33 | Global Forest Watch / alertas | mudança | 10–30 m | 2001– | contexto de mudança | WRI, aberto | a_verificar (termos) |
+
+## 4.1 Legenda, inventários e dados de campo (adicionados em 2026-11-17)
+
+| ID | Fonte | Tipo | Resolução | Período | Papel | Acesso | Status |
+|---|---|---|---|---|---|---|---|
+| D34 | Legenda MapBiomas Coleção 11 | metadado oficial | — | 2026 | classes, códigos e códigos IBGE | MapBiomas, aberto | verificado (PDF baixado) |
+| D35 | Painel de Biomassa e Carbono (IFN/SFB) | AGB por unidade amostral | ponto/UA | IFN | calibração/validação regional | SFB, CC BY | verificado (CSV baixado) |
+| D36 | Roitman et al. 2018 (PLOS ONE) | Cerrado s.s., parcelas e árvores | 77 sítios / 893 parcelas | variado | calibração/validação | PLOS, CC BY | verificado (DOI + XLSX) |
+| D37 | ORNL DAAC — Sustainable Landscapes Brazil | inventário árvore-a-árvore | sítios | 2009–2018 | validação | NASA, login Earthdata | a_verificar (download) |
+| D38 | CEDA — Manaus plots AGB 2014 | AGB por parcela | 22 parcelas | 2014 | validação | CEDA, OGL | a_verificar (download) |
+| D39 | NERC EIDC — RAINFOR census | DAP por árvore | 29 parcelas | 2017–2019 | validação | EIDC, OGL | verificado (DOI) |
+| D40 | Mendeley — Vourlitis (Cerrado MT) | DAP/altura/AGB por árvore | parcelas | 2011–2018 | validação | Mendeley, aberto | verificado (DOI) |
+| D41 | Mendeley — Maracá (RR) | AGB/C por parcela | 129 parcelas | censo 4 | validação | Mendeley, aberto | verificado (DOI) |
+| D42 | Zenodo — EBA (mapa de AGB da Amazônia) | AGB + incerteza | 30 m | ~2018 | benchmark | Zenodo, aberto | verificado (DOI) |
+
+Detalhes, colunas e regras de harmonização: `data/reference/inventarios_abertos.md`.
+
+### 4.2 Pilotos
+
+| Bioma | Nome | lon | lat | Janela | f3 | f4 | f3+4 | UAs IFN |
+|---|---|---|---|---|---|---|---|---|
+| Amazônia | piloto_amazonas_sul | −60,45 | −6,90 | 512 px | 0,933 | 0,000 | 0,933 | 511 |
+| Cerrado | piloto_chapada_veadeiros | −47,70 | −13,95 | 512 px | 0,256 | 0,536 | 0,791 | 605 |
+
+Critério: fração de classes 3/4 no MapBiomas 2025 × densidade de unidades amostrais do IFN.
+Arquivo: `data/reference/pilotos_selecionados.csv`.
 
 ## 5. Critérios de aceitação de uma fonte
 

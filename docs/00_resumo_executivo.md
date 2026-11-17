@@ -41,9 +41,11 @@ Essa separação evita o erro mais comum em trabalhos de biomassa: confundir a a
 | D2 | Dois modelos separados por bioma (Amazônia, Cerrado) | Estruturas e faixas de biomassa distintas; modelos globais degradam o Cerrado | ADR-0002 |
 | D3 | GEDI L4A como referência principal, explicitamente tratado como **produto de modelo** | Cobertura espacial e amostral superior a parcelas; mas é dado derivado, com erro próprio | ADR-0003 |
 | D4 | Inferência híbrida com variância de dois componentes | Reconhece que a referência é modelo e que a amostra é probabilística | ADR-0004 |
-| D5 | BGB por equações alométricas e razões raiz/parte aérea, com estrato e alerta de incerteza no Cerrado | BGB não é observável por sensoriamento remoto direto | ADR-0005 |
+| D5 | BGB como modelo separado (solo, clima, estrutura); R:S apenas como linha de base | BGB não é observável por satélite e não deve ser derivada da AGB | ADR-0011 |
 | D6 | Validação por blocos espaciais e leave-one-region-out | Evita otimismo por autocorrelação | ADR-0006 |
 | D7 | Carbono e CO₂e em módulo separado, com fatores explícitos e versionados | Evita confusão de unidades | ADR-0007 |
+| D8 | Domínio = classes brutas 3 e 4 do MapBiomas no ano-alvo | Escopo definido pelo usuário; máscara 2007–2016 é apenas estrato | ADR-0010 |
+| D9 | Pilotos: sul do Amazonas e Chapada dos Veadeiros, escolhidos por cobertura do IFN | Garante biomassa de campo próxima para validação | `docs/17`, `docs/31` |
 
 ## 4. O que este planejamento **não** faz
 
@@ -54,9 +56,12 @@ Essa separação evita o erro mais comum em trabalhos de biomassa: confundir a a
 
 ## 5. Estado atual
 
-- Planejamento documental: **concluído nesta versão** (docs 00–30, catálogo, matriz, ADRs).
-- Código: **não iniciado** (por decisão explícita de escopo).
-- Dados: **não baixados**; catálogo preparado com status de verificação.
+- Planejamento documental: **concluído** (docs 00–31, catálogo, matriz, ADRs).
+- Código: **iniciado** — contrato de grade (`RasterGrid`), testes e ferramentas de seleção de
+  pilotos; sem modelo treinado.
+- Dados: legenda MapBiomas, painel de biomassa do SFB e suplementos do Cerrado **baixados**;
+  features de satélite ainda não.
+- Pilotos: definidos para Amazônia e Cerrado (`docs/17`, `docs/31`).
 - Pendências que bloqueiam a fase de execução: ver `docs/30`.
 
 ## 6. Critérios de sucesso (resumo)
