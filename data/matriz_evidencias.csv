@@ -1,0 +1,21 @@
+id,afirmacao,evidencia,doi,forca,aplicabilidade_br,limitacoes,decisao
+E01,Equacoes pantropicais com densidade DAP e altura sao o padrao para AGB de arvores tropicais,Chave et al. 2005 Oecologia,10.1007/s00442-005-0100-x,A,alta,erro maior fora da faixa de DAP,referencia de campo e BGB
+E02,Modelos de 4-5 parametros com termo ambiental melhoram a estimativa pantropical,Chave et al. 2014 GCB,10.1111/gcb.12629,A,alta,exige dados ambientais e de campo,calibracao de campo
+E03,Densidade da madeira e preditor necessario e ha base global utilizavel,Chave et al. 2009 Ecol Lett; Zanne et al. 2009 Dryad,10.1111/j.1461-0248.2009.01285.x,A,alta,media por taxon mascara variacao intraespecifica,allometria e BGB
+E04,No Cerrado AGB e BGB medidas indicam razao raiz/parte aerea relevante e erro padrao alto,Ribeiro et al. 2011 For Ecol Manage,10.1016/j.foreco.2011.04.017,B,alta (cerrado s.s. SE),um sitio; SE de BGB ~23%,BGB no Cerrado
+E05,Biomassa varia fortemente entre fisionomias do Cerrado e equacoes locais diferem,Miranda et al. 2014 Biotropica,10.1111/btp.12095,B,alta,revisao com dados heterogeneos,estratificacao
+E06,AGB de cerrado varia de ~12 a >100 Mg/ha conforme fisionomia,Miranda et al. 2014; Ribeiro et al. 2011; Oliveira et al. 2019,10.1186/s13021-019-0121-0,B,alta,protocolos nao padronizados,estratificacao e benchmark
+E07,Mapas pantropicais de AGB existem e divergem entre si,Saatchi et al. 2011; Baccini et al. 2012; Avitabile et al. 2016,10.1073/pnas.1019576108,A,alta,resolucao e erros variaveis,benchmark
+E08,Produto global de AGB por satelite em 100 m esta disponivel,Santoro et al. 2021 ESSD,10.5194/essd-13-3927-2021,B,alta,100 m e erros regionais,benchmark
+E09,Mapas harmonizados de AGB e BGB de 2010 permitem comparacao,Spawn et al. 2020 Sci Data,10.1038/s41597-020-0444-4,B,alta,1 km e ano unico,benchmark
+E10,GEDI fornece AGBD por footprint e agregados,Dubayah et al. 2020; Duncanson et al. 2022,10.1016/j.rse.2021.112845,A,alta (amostral),L4A e produto de modelo; cobertura amostral,referencia principal
+E11,Desempenho de GEDI varia por PFT/regiao e piora com poucos dados,Duncanson et al. 2022 RSE,10.1016/j.rse.2021.112845,A,alta,nao cobre todo o Cerrado,AOA e estratificacao
+E12,Estimadores design-based e hibridos permitem IC validos combinando amostra e modelo,Stahl et al. 2016 Forest Ecosystems,10.1186/s40663-016-0064-9,A,alta,exige desenho de amostragem declarado,inferencia
+E13,CV aleatorio superestima desempenho de mapas espaciais,Roberts et al. 2017; Ploton et al. 2020,10.1038/s41467-020-18321-y,A,alta,exige blocos/estrategia adequada,validacao
+E14,E possivel estimar a area de aplicabilidade de um modelo espacial,Meyer e Pebesma 2021 MEE,10.1111/2041-210X.13650,A,alta,limiar depende de escolhas,AOA
+E15,CV com correspondencia de distancias vizinhas reduz otimismo,Mila et al. 2022 MEE,10.1111/2041-210X.13851,B,alta,requer implementacao cuidadosa,validacao
+E16,Reanalise climatica de alta resolucao e insumo viavel para features,Munoz-Sabater et al. 2021 ESSD,10.5194/essd-13-4349-2021,A,alta,9 km e nao observacao local,features
+E17,Dados de inventario florestal nacional existem mas acesso e granularidade sao restritos,IFN/SFB,-,C,media,acesso e formato nao confirmados,amostragem e campo
+E18,BGB nao pode ser medida diretamente por sensoriamento remoto,Ribeiro et al. 2011; Miranda et al. 2014,10.1016/j.foreco.2011.04.017,A,alta,depende de equacoes e razoes,BGB
+E19,A fracao de carbono da materia seca e usualmente tratada como ~0.47,IPCC 2006/2019,-,B,alta,varia por componente e especie,carbono
+E20,Produtos de sensoriamento nao substituem validacao independente,Ploton et al. 2020; Meyer e Pebesma 2021,10.1038/s41467-020-18321-y,A,alta,-,validacao
