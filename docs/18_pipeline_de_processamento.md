@@ -40,6 +40,22 @@ QA por produto).
 | 8. Estimativa | mapa + amostra | tabelas + IC | unidades declaradas |
 | 9. QA | todos | relatório + manifesto | checagens automáticas |
 
+## 2.1 Etapa 0 — aquisição de dados
+
+A aquisição é código do pacote, não script solto: `python -m biomass_model.cli <dataset>`. Cada
+execução grava um manifesto em `data/manifests/` (parâmetros, URLs, SHA-256, licença, conta) e o
+mesmo dataset pode ser rebaixado/refeito por terceiros. Contas e comandos em `docs/32`.
+
+| Dataset | Módulo | Conta | Manifesto |
+|---|---|---|---|
+| Sentinel-2 L2A | `datasets.s2` | nenhuma | sim |
+| Copernicus DEM | `datasets.dem` | nenhuma | sim |
+| ERA5-Land | `datasets.era5` | CDS | sim |
+| GEDI L4A | `datasets.gedi` | Earthdata | sim |
+
+Os artefatos brutos ficam fora do git (`data/raw`, `E:\Mapbiomas\biomass`); manifestos e tabelas
+derivadas pequenas entram no git.
+
 ## 3. Padrão de processamento por janelas
 
 Reaproveitar o padrão do repositório de desmatamento:

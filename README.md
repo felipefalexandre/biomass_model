@@ -1,6 +1,6 @@
 # Sistema de Estimativa de Biomassa Vegetal — Amazônia e Cerrado
 
-**Status:** planejamento concluído; implementação iniciada (contrato de grade, testes e seleção de pilotos). Nenhum modelo treinado.
+**Status:** planejamento concluído; aquisição de dados implementada no pacote (iomass_model.datasets), pilotos definidos e GEDI L4A validado. Nenhum modelo treinado.
 **Escopo:** AGB (v1) e BGB (modelo separado), carbono e CO₂e, a partir de dados abertos e ferramentas gratuitas, em Python.
 **Domínio:** classes 3 (Formação Florestal) e 4 (Formação Savânica) do MapBiomas Coleção 11, Amazônia e Cerrado.
 **Data de referência desta versão:** 2026-11-17
@@ -79,19 +79,21 @@ identificado como tal.
 | 29 | [Bibliografia](docs/29_bibliografia.md) | Lista final citável |
 | 30 | [Perguntas abertas](docs/30_perguntas_abertas.md) | Pendências para o usuário |
 | 31 | [Diário de pesquisa](docs/31_diario_de_pesquisa.md) | Registro cronológico de decisões e achados |
+| 32 | [Aquisição de dados](docs/32_aquisicao_de_dados.md) | Contas, comandos, saídas e manifestos |
 
 ## 4. Estrutura do repositório
 
 ```
 biomass_model/
-├── src/biomass_model/     # pacote Python (grid, futuros módulos)
+├── src/biomass_model/     # pacote Python (grid, datasets, cli)
 ├── tests/                 # testes (pytest)
-├── tools/                 # scripts de apoio (seleção de pilotos)
-├── docs/                  # planejamento 00–31
+├── tools/                 # scripts de análise (seleção de pilotos)
+├── docs/                  # planejamento 00–32
 ├── ADR/                   # decisões arquiteturais
 ├── data/
 │   ├── catalogo_dados.csv
 │   ├── matriz_evidencias.csv
+│   ├── manifests/         # proveniência dos downloads (hash, licença, conta)
 │   ├── reference/         # legenda, inventários catalogados, pilotos
 │   └── raw/               # downloads volumosos (ignorado pelo git)
 └── pyproject.toml
@@ -100,13 +102,16 @@ biomass_model/
 Comandos:
 
 ```powershell
-C:\Python315\python.exe -m pytest
-C:\Python315\python.exe tools\select_pilots.py
-C:\Python315\python.exe tools\suggest_pilots_from_ifn.py --bioma Amazonia --raster E:\Mapbiomas\mapbiomas_col11_2025.tif
-C:\Python315\python.exe tools\fetch_s2_pilot.py --lon -60.45 --lat -6.9 --start 2024-07-01 --end 2024-09-30 --out E:\Mapbiomas\biomass\pilots\amazonia_s2_2024.tif
-C:\Python315\python.exe tools\fetch_dem_pilot.py --lon -60.45 --lat -6.9 --out E:\Mapbiomas\biomass\pilots\amazonia_dem30.tif
-C:\Python315\python.exe tools\fetch_era5_land.py --lon -60.45 --lat -6.9 --start-year 2018 --end-year 2025 --out E:\Mapbiomas\biomass\pilots\amazonia_era5land_2018_2025.nc
+python -m pip install -e ".[dev,data]"
+python -m pytest
+python -m biomass_model.cli list
+python -m biomass_model.cli s2 --lon -60.45 --lat -6.9 --start 2024-07-01 --end 2024-09-30 --out E:\Mapbiomas\biomass\pilots\amazonia_s2_2024.tif
+python -m biomass_model.cli dem --lon -60.45 --lat -6.9 --out E:\Mapbiomas\biomass\pilots\amazonia_dem30.tif
+python -m biomass_model.cli era5 --lon -60.45 --lat -6.9 --start-year 2018 --end-year 2025 --out E:\Mapbiomas\biomass\pilots\amazonia_era5land_2018_2025.nc
+python -m biomass_model.cli gedi --west -60.53 --south -6.98 --east -60.37 --north -6.82 --start 2019-01-01 --end 2024-12-31 --out E:\Mapbiomas\biomass\gedi\piloto_amazonia.csv --work-dir E:\Mapbiomas\biomass\gedi\h5
 ```
+
+Detalhes de contas, comandos e manifestos em [`docs/32`](docs/32_aquisicao_de_dados.md).
 
 ## 5. Artefatos estruturados
 

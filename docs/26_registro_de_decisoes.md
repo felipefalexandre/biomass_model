@@ -15,6 +15,9 @@
 | ADR-0009 | Máscara de elegibilidade como domínio declarado | substituído por ADR-0010 |
 | ADR-0010 | Domínio = classes brutas 3 e 4 do MapBiomas (Coleção 11) | aceito |
 | ADR-0011 | BGB como modelo separado, não derivado da AGB | aceito |
+| ADR-0012 | Filtro de qualidade do GEDI L4A | aceito |
+| ADR-0013 | Grade de modelagem e amostragem nos footprints | aceito |
+| ADR-0014 | Escala do piloto (~17 km por bioma) | aceito |
 
 ## ADR-0001 — Python local em vez de GEE
 
@@ -142,6 +145,39 @@ estimados separadamente.
 **Consequências:** incerteza maior e mais honesta; necessidade de inventariar dados de raiz;
 produto distingue AGB, BGB e total; se faltarem dados de raiz, o modelo é rebaixado a cenário e a
 limitação é declarada.
+
+## ADR-0012 — Filtro de qualidade do GEDI L4A
+
+**Status:** aceito. Ver `ADR/0012-filtro-qualidade-gedi.md`.
+
+**Contexto:** `degrade_flag` é bitfield (0/30/70/80); exigir 0 elimina granulos diurnos válidos, e
+granulos noturnos de 2021/2022 no piloto não têm predição L4A.
+
+**Decisão:** filtro `l2==1 & l4==1 & agbd>=0 & 0.9<=sensitivity<=1.01`; `degrade_flag` vira
+covariável e sensibilidade restrita a `degrade_zero`.
+
+**Consequências:** amostra maior, viés de degradação testado explicitamente.
+
+## ADR-0013 — Grade de modelagem e amostragem nos footprints
+
+**Status:** aceito. Ver `ADR/0013-grade-e-amostragem.md`.
+
+**Contexto:** camadas em CRS/resoluções distintas; pareamento exige grade única.
+
+**Decisão:** grade do MapBiomas (~30 m, EPSG:4326); features reamostradas (bilinear/vizinho);
+cada footprint no pixel que o contém; CV por bloco espacial; agregação de relato em 1 km.
+
+**Consequências:** um só grid, detalhe de 10 m perdido (aceitável), sem inflar CV.
+
+## ADR-0014 — Escala do piloto
+
+**Status:** aceito. Ver `ADR/0014-escala-piloto.md`.
+
+**Contexto:** inconsistência entre seleção (512 px) e aquisição (1600 px).
+
+**Decisão:** caixa de ±0,08° (~17,8 km) por piloto para S2, DEM, ERA5 e GEDI.
+
+**Consequências:** ~289 km² por piloto; restrição real passa a ser a densidade GEDI.
 
 ## Modelo de novo ADR
 

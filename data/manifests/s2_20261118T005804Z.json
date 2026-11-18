@@ -1,0 +1,46 @@
+{
+  "dataset": "s2",
+  "created_at": "2026-11-18T00:58:04+00:00",
+  "git_commit": "8593924fe9fb41fa5feeb7673a5ebed4d96d6b2c",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "s2",
+    "--lon",
+    "-60.45",
+    "--lat",
+    "-6.9",
+    "--start",
+    "2024-06-01",
+    "--end",
+    "2024-09-30",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\pilots\\amazonia_s2_2024.tif"
+  ],
+  "params": {
+    "lon": -60.45,
+    "lat": -6.9,
+    "start": "2024-06-01",
+    "end": "2024-09-30",
+    "size": 1600,
+    "max_cloud": 20.0,
+    "item_id": "S2B_20MQT_20240720_0_L2A"
+  },
+  "license": "Copernicus Sentinel data policy (atribuicao)",
+  "account": "nenhuma",
+  "source": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/20/M/QT/2024/7/S2B_20MQT_20240720_0_L2A/B04.tif",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\amazonia_s2_2024.tif",
+      "bytes": 50863360,
+      "sha256": "d709515490fbb9dfa06f7d03542bbdc336579444d942bbcc35160255b5d0f33b"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\amazonia_s2_2024.json",
+      "bytes": 1380,
+      "sha256": "b4569fee724cebf84ece32c23799e9b796dc4d3c7700d4fe4e57bbef8bcf48dc"
+    }
+  ]
+}

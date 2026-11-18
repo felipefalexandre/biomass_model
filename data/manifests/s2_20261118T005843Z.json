@@ -1,0 +1,46 @@
+{
+  "dataset": "s2",
+  "created_at": "2026-11-18T00:58:43+00:00",
+  "git_commit": "8593924fe9fb41fa5feeb7673a5ebed4d96d6b2c",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "s2",
+    "--lon",
+    "-47.70",
+    "--lat",
+    "-13.95",
+    "--start",
+    "2024-05-01",
+    "--end",
+    "2024-09-30",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\pilots\\cerrado_s2_2024.tif"
+  ],
+  "params": {
+    "lon": -47.7,
+    "lat": -13.95,
+    "start": "2024-05-01",
+    "end": "2024-09-30",
+    "size": 1600,
+    "max_cloud": 20.0,
+    "item_id": "S2A_23LKE_20240819_1_L2A"
+  },
+  "license": "Copernicus Sentinel data policy (atribuicao)",
+  "account": "nenhuma",
+  "source": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/23/L/KE/2024/8/S2A_23LKE_20240819_1_L2A/B04.tif",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\cerrado_s2_2024.tif",
+      "bytes": 54412298,
+      "sha256": "b6242f0b3d51cd0d0b566c728536bd6ec2371418be469051d106b92e17e997ce"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\cerrado_s2_2024.json",
+      "bytes": 1388,
+      "sha256": "93e315cfa8df8e35a266989a74c1f9539a95c0ecbf1eb5c6aa874ab1d2b252eb"
+    }
+  ]
+}

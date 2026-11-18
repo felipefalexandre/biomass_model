@@ -94,3 +94,28 @@ com validação espacial por blocos desde o início.
 
 Obter token Earthdata, validar acesso a GEDI L4A e Sentinel-1 RTC; em paralelo, implementar
 composição sazonal S2 e o alinhamento à grade comum de 30 m.
+## 2026-11-17 — Sessão 3
+
+### Refatoração para o pacote
+
+- A aquisição deixou de ser script solto: src/biomass_model/datasets/{s2,dem,era5,gedi}.py, com
+  credentials.py, manifest.py, catalog.py e cli.py; comandos python -m biomass_model.cli.
+- 	ools/fetch_s2_pilot.py, 	ools/fetch_dem_pilot.py e 	ools/fetch_era5_land.py removidos.
+- Todo download grava manifesto com parâmetros, URLs, hashes, licença e conta em
+  data/manifests/; documentação em docs/32.
+- ADRs novos: 0012 (filtro GEDI), 0013 (grade e amostragem), 0014 (escala do piloto, ±0,08°).
+
+### GEDI L4A: extração validada
+
+- Busca por CMR e leitura HDF5 via driver GDAL (asterio), sem h5py (não compila no Python
+  3.15).
+- Extração nos 6 grânulos de teste do piloto amazônico: 3.361 footprints válidos; AGB mediana
+  192,6 Mg ha⁻¹; 69% com degrade_flag == 0. Grânulos noturnos de 2021 e 2022 não têm predição
+  válida no bbox (0 footprints), como já indicado na sondagem.
+- Filtro adotado: l2==1 & l4==1 & agbd>=0 & 0,9<=sensitivity<=1,01; degrade_flag é mantido
+  como covariável e há sensibilidade restrita (ADR-0012).
+
+### Próximo passo
+
+- Rodar a extração GEDI em lote nos dois pilotos, montar o stack de features na grade de 30 m e a
+  tabela de treino; baseline com CV por blocos espaciais.
