@@ -1,6 +1,6 @@
 # Sistema de Estimativa de Biomassa Vegetal — Amazônia e Cerrado
 
-**Status:** planejamento concluído; aquisição de dados implementada no pacote (iomass_model.datasets), pilotos definidos e GEDI L4A validado. Nenhum modelo treinado.
+**Status:** planejamento concluído; aquisição no pacote, pilotos definidos, GEDI L4A extraído e baseline inicial executado (R² 0,097 na Amazônia). Nenhum produto final.
 **Escopo:** AGB (v1) e BGB (modelo separado), carbono e CO₂e, a partir de dados abertos e ferramentas gratuitas, em Python.
 **Domínio:** classes 3 (Formação Florestal) e 4 (Formação Savânica) do MapBiomas Coleção 11, Amazônia e Cerrado.
 **Data de referência desta versão:** 2026-11-17

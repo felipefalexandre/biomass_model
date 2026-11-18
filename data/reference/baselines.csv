@@ -1,0 +1,2 @@
+modelo,bioma,n_pontos,n_features,r2,rmse_mg_ha,mae_mg_ha,bias_mg_ha,referencia,notas
+rf_baseline_v1,amazonia,19869,25,0.097,92.36,70.17,1.55,GEDI L4A V2.1 2019-2024,"CV por blocos de ~5 km; 25 blocos; S2 de uma data (2024); sem S1/textura"

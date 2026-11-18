@@ -34,7 +34,7 @@ QA por produto).
 | 2. Domínio | biomas, MapBiomas, máscaras | raster de domínio + tabela de áreas | grade idêntica à de saída |
 | 3. Features | cenas brutas | cubo de features por tile/ano | CRS/resolução/nodata iguais |
 | 4. Referência | GEDI/parcelas | tabela pareada | posição, data, qualidade |
-| 5. Dataset | features + referência | Parquet/feather + esquema | sem nulos silenciosos |
+| 5. Dataset | features + referência | CSV/Parquet + esquema | sem nulos silenciosos |
 | 6. Modelo | dataset | modelo + métricas + AOA | reprodutível por seed |
 | 7. Predição | modelo + features | COG por ano | dtype/ nodata/ compressão |
 | 8. Estimativa | mapa + amostra | tabelas + IC | unidades declaradas |
@@ -55,6 +55,15 @@ mesmo dataset pode ser rebaixado/refeito por terceiros. Contas e comandos em `do
 
 Os artefatos brutos ficam fora do git (`data/raw`, `E:\Mapbiomas\biomass`); manifestos e tabelas
 derivadas pequenas entram no git.
+
+### 2.2 Etapas 4–6 implementadas (piloto)
+
+- Etapa 4 (referência): datasets.gedi.fetch_gedi → CSV por footprint com qualidade.
+- Etapa 5 (dataset): eatures.build_training_table → encaixa o footprint no pixel MapBiomas,
+  amostra S2/DEM/ERA5 e filtra o domínio 3/4; resumo em .summary.json.
+- Etapa 6 (modelo): modeling.run_baseline → RandomForest com GroupKFold em blocos de ~5 km,
+  métricas OOF, por classe e em degrade_zero; artefatos .metrics.json, .joblib,
+  .predictions.csv.
 
 ## 3. Padrão de processamento por janelas
 

@@ -56,12 +56,15 @@ Essa separação evita o erro mais comum em trabalhos de biomassa: confundir a a
 
 ## 5. Estado atual
 
-- Planejamento documental: **concluído** (docs 00–31, catálogo, matriz, ADRs).
-- Código: **iniciado** — contrato de grade (`RasterGrid`), testes e ferramentas de seleção de
-  pilotos; sem modelo treinado.
-- Dados: legenda MapBiomas, painel de biomassa do SFB e suplementos do Cerrado **baixados**;
-  features de satélite ainda não.
-- Pilotos: definidos para Amazônia e Cerrado (`docs/17`, `docs/31`).
+- Planejamento documental: **concluído** (docs 00–32, catálogo, matriz, ADRs).
+- Código: **em execução** — grade, aquisição no pacote (`datasets` + CLI + manifestos),
+  tabela de treino e baseline; nenhum produto final.
+- Dados: legenda MapBiomas, painel do SFB, suplementos do Cerrado, S2/DEM/ERA5 dos dois pilotos e
+  GEDI L4A 2019–2024 **baixados e documentados** (`docs/32`).
+- Pilotos: definidos para Amazônia e Cerrado (`docs/17`, `docs/31`), caixa de ~17 km (ADR-0014).
+- Baseline Amazônia: R² 0,097 / RMSE 92,4 Mg ha⁻¹ com uma data S2 e CV espacial — piso honesto,
+  não resultado final (`data/reference/baselines.csv`).
+- Cerrado: L4A subestima savana aberta; campo passa a ser referência primária (ADR-0015).
 - Pendências que bloqueiam a fase de execução: ver `docs/30`.
 
 ## 6. Critérios de sucesso (resumo)

@@ -134,3 +134,18 @@ composição sazonal S2 e o alinhamento à grade comum de 30 m.
 - Valores extremos (até ~2.600 Mg ha⁻¹) existem e serão vistos no controle de qualidade do treino.
 - Saídas: E:\Mapbiomas\biomass\gedi\{amazonia,cerrado}_l4a_v21_2019_2024.csv; resumo versionado em
   data/reference/gedi_pilotos_resumo.csv; manifestos em data/manifests/.
+### Features e baseline inicial (Amazônia)
+
+- Tabela de treino construída em E:\Mapbiomas\biomass\derived\amazonia_training.csv: 19.879
+  footprints dentro do domínio (todos classe 3), 25 features (9 bandas/índices S2, 13 de clima,
+  elevação/declividade/aspecto), sem NA após filtro.
+- Cerrado: 14.420 footprints no domínio (7.821 classe 4, 6.599 classe 3), 762 com NA de feature
+  (borda da cena S2). Usado só para diagnóstico — não é alvo de treino (ADR-0015).
+- Baseline RandomForest (400 árvores, CV por 25 blocos de ~5 km): **R² 0,097; RMSE 92,4;
+  MAE 70,2; viés +1,6 Mg ha⁻¹** (n = 19.869). Métricas em data/reference/baselines.csv.
+- Interpretação: dentro de um piloto de floresta densa e uniforme, uma data S2 satura e quase não
+  explica a variação do L4A (correlações |r| < 0,05); elevação/declividade dominam a importância,
+  provavelmente como proxy de estrutura/artefato, não de biomassa. É um piso honesto, não um
+  resultado final.
+- Próximos ganhos esperados: composições sazonais multi-ano, S1 (estrutura), textura e GLCM,
+  harmonização temporal com o ano do footprint, e filtro de borda/sombra.

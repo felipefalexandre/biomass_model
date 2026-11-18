@@ -97,3 +97,22 @@ Empate técnico ⇒ escolher o mais interpretável/menos custoso (ADR-0002).
 - Tabelas de resultados geradas por script, não digitadas.
 - Figuras geradas por script.
 - Comparações sempre com a mesma versão de dados.
+## 10. Resultado do baseline inicial (2026-11-17)
+
+Primeiro experimento registrado, para calibrar expectativas — **não** é o modelo do produto:
+
+| Item | Valor |
+|---|---|
+| Bioma / referência | Amazônia / GEDI L4A V2.1 (2019–2024) |
+| n (blocos) | 19.869 (25 blocos de ~5 km) |
+| Features | 9 S2 (uma data) + 13 ERA5 + elevação/declividade/aspecto |
+| R² (OOF) | 0,097 |
+| RMSE / MAE | 92,4 / 70,2 Mg ha⁻¹ |
+| Viés | +1,6 Mg ha⁻¹ |
+| Subconjunto degrade_zero | R² 0,098; RMSE 91,9 (n = 16.314) |
+
+Leitura: dentro de um piloto uniforme de floresta densa, uma única data óptica satura e explica
+quase nada da variação do L4A. O resultado serve de piso e de diagnóstico: os próximos ganhos
+devem vir de composições multi-ano, S1/textura e melhor harmonização temporal, não de mais
+complexidade no modelo. Artefatos: data/reference/baselines.csv,
+iomass_model.modeling.run_baseline.

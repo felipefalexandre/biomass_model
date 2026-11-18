@@ -58,6 +58,26 @@ def _cmd_gedi(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_train_table(args: argparse.Namespace) -> int:
+    from .features import build_training_table
+
+    summary = build_training_table(
+        args.gedi, args.s2, args.dem, args.era5, args.mapbiomas_dir, args.out,
+        bioma=args.bioma,
+    )
+    print(json.dumps(summary, indent=2))
+    return 0
+
+
+def _cmd_baseline(args: argparse.Namespace) -> int:
+    from .modeling import run_baseline
+
+    result = run_baseline(args.csv, args.out_dir, n_splits=args.folds,
+                          block_px=args.block_px, n_estimators=args.trees)
+    print(json.dumps({k: v for k, v in result.items() if k != "importance"}, indent=2))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="biomass", description="Aquisicao de dados abertos")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -103,6 +123,24 @@ def build_parser() -> argparse.ArgumentParser:
     gedi.add_argument("--max-granules", type=int, default=None)
     gedi.add_argument("--min-sensitivity", type=float, default=0.9)
     gedi.set_defaults(func=_cmd_gedi)
+
+    table = sub.add_parser("train-table", help="tabela de treino (GEDI x features)")
+    table.add_argument("--gedi", required=True)
+    table.add_argument("--s2", required=True)
+    table.add_argument("--dem", required=True)
+    table.add_argument("--era5", required=True)
+    table.add_argument("--mapbiomas-dir", required=True)
+    table.add_argument("--out", required=True)
+    table.add_argument("--bioma", choices=["amazonia", "cerrado"], required=True)
+    table.set_defaults(func=_cmd_train_table)
+
+    baseline = sub.add_parser("baseline", help="RandomForest com CV por blocos espaciais")
+    baseline.add_argument("--csv", required=True)
+    baseline.add_argument("--out-dir", required=True)
+    baseline.add_argument("--folds", type=int, default=5)
+    baseline.add_argument("--block-px", type=int, default=167)
+    baseline.add_argument("--trees", type=int, default=400)
+    baseline.set_defaults(func=_cmd_baseline)
 
     return parser
 
