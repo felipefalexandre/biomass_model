@@ -119,3 +119,18 @@ composição sazonal S2 e o alinhamento à grade comum de 30 m.
 
 - Rodar a extração GEDI em lote nos dois pilotos, montar o stack de features na grade de 30 m e a
   tabela de treino; baseline com CV por blocos espaciais.
+### Extração GEDI em lote (2019–2024, V2.1)
+
+| Piloto | Footprints | Mediana AGB | % < 10 Mg ha⁻¹ | % degrade 0 |
+|---|---|---|---|---|
+| Amazônia | 22.244 | 186,7 Mg ha⁻¹ | 0,9% | 80,7% |
+| Cerrado | 16.851 | 6,2 Mg ha⁻¹ | 59,6% | 80,1% |
+
+- Amazônia: distribuição plausível (p05 45,6; p95 360,1); 2022 tem mediana baixa (110,1), a
+  investigar (composição de órbitas/estação); 2019 tem só 41,8% de degrade_zero.
+- Cerrado: **achado importante** — L4A subestima fortemente a savana aberta. Contra a mediana de
+  19,4 Mg ha⁻¹ do IFN, o viés é grande e não é de filtro. Decisão: campo como referência primária
+  no Cerrado (ADR-0015); L4A apenas auxiliar.
+- Valores extremos (até ~2.600 Mg ha⁻¹) existem e serão vistos no controle de qualidade do treino.
+- Saídas: E:\Mapbiomas\biomass\gedi\{amazonia,cerrado}_l4a_v21_2019_2024.csv; resumo versionado em
+  data/reference/gedi_pilotos_resumo.csv; manifestos em data/manifests/.

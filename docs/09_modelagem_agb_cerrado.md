@@ -65,6 +65,14 @@ em cerrado *sensu stricto*, indicando que **ignorar BGB subestima o estoque tota
 material**. O mesmo estudo alerta que a razão é menor que a de outras estimativas para cerrado
 s.s., ou seja, há incerteza real.
 
+### 2.1 Evidência do piloto: L4A não serve como alvo no Cerrado
+
+A extração GEDI L4A no piloto (`-47,70, -13,95`; 2019–2024) deu 16.851 footprints com mediana de
+**6,2 Mg ha⁻¹** e 59,6% abaixo de 10 Mg ha⁻¹; o painel do IFN tem mediana de 19,4 Mg ha⁻¹. O viés
+de savana aberta não é corrigível por filtro de qualidade. Por isso o modelo do Cerrado é treinado
+em **parcelas de campo com coordenadas**, e o L4A entra apenas como covariável, benchmark externo e
+diagnóstico de cobertura (ADR-0015). Nenhuma métrica contra L4A será apresentada como validação.
+
 ## 4. Erros esperados e como tratá-los
 
 | Erro | Origem | Tratamento |

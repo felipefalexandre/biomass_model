@@ -18,6 +18,7 @@
 | ADR-0012 | Filtro de qualidade do GEDI L4A | aceito |
 | ADR-0013 | Grade de modelagem e amostragem nos footprints | aceito |
 | ADR-0014 | Escala do piloto (~17 km por bioma) | aceito |
+| ADR-0015 | Referência do Cerrado: campo primeiro, GEDI auxiliar | aceito |
 
 ## ADR-0001 — Python local em vez de GEE
 
@@ -178,6 +179,18 @@ cada footprint no pixel que o contém; CV por bloco espacial; agregação de rel
 **Decisão:** caixa de ±0,08° (~17,8 km) por piloto para S2, DEM, ERA5 e GEDI.
 
 **Consequências:** ~289 km² por piloto; restrição real passa a ser a densidade GEDI.
+
+## ADR-0015 — Referência do Cerrado: campo primeiro, GEDI auxiliar
+
+**Status:** aceito. Ver `ADR/0015-referencia-cerrado.md`.
+
+**Contexto:** L4A no piloto do Cerrado tem mediana 6,2 Mg ha⁻¹ (59,6% < 10), contra 19,4 do IFN;
+viés de savana aberta não corrigível por filtro.
+
+**Decisão:** treinar o Cerrado em parcelas de campo com coordenadas; L4A vira covariável, benchmark e
+diagnóstico de cobertura, não alvo.
+
+**Consequências:** menos n, métricas mais fracas e honestas; prioridade para INV03–INV10.
 
 ## Modelo de novo ADR
 
