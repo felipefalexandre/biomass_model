@@ -112,6 +112,7 @@ Primeiro experimento registrado, para calibrar expectativas — **não** é o mo
 | Subconjunto degrade_zero | R² 0,098; RMSE 91,9 (n = 16.314) |
 | S2 mediana de 10 datas (footprint) | R² 0,094; RMSE 92,5 — sem ganho |
 | Agregado em 1 km (327 células) | R² 0,285; RMSE 34,3; MAE 26,3; folds 0,10–0,31 |
+| Cerrado, campo PLOS 2018 (45 sítios, 1 km) | R² 0,328; RMSE 8,34; MAE 6,53; 2 folds negativos |
 
 Leitura: dentro de um piloto uniforme de floresta densa, uma única data óptica satura e explica
 quase nada da variação do L4A. Compor 10 datas não muda isso; o gargalo é o ruído do L4A e a

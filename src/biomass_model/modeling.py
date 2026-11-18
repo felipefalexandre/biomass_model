@@ -58,6 +58,72 @@ def _metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, float]:
     }
 
 
+def run_field_baseline(
+    csv_path: str | Path,
+    out_dir: str | Path,
+    *,
+    block_deg: float = 1.0,
+    n_splits: int = 5,
+    n_estimators: int = 400,
+    seed: int = 42,
+) -> dict[str, Any]:
+    """Baseline em sitios de campo; blocos espaciais de ~1 grau."""
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.model_selection import GroupKFold, KFold
+
+    df = pd.read_csv(csv_path)
+    df = df[~df["feature_na"].astype(bool)] if "feature_na" in df else df
+    df = df[np.isfinite(df["agb_mg_ha"])].reset_index(drop=True)
+    df["block_id"] = (np.floor(df["lon"] / block_deg).astype(int).astype(str) + "_"
+                      + np.floor(df["lat"] / block_deg).astype(int).astype(str))
+
+    feats = feature_columns(df)
+    X = df[feats].to_numpy(dtype="float64")
+    y = df["agb_mg_ha"].to_numpy(dtype="float64")
+    groups = df["block_id"].to_numpy()
+    n_groups = len(np.unique(groups))
+    splitter = GroupKFold(n_splits=n_splits) if n_groups >= n_splits else KFold(
+        n_splits=n_splits, shuffle=True, random_state=seed)
+
+    oof = np.full(len(y), np.nan)
+    per_fold = []
+    for i, (train_idx, test_idx) in enumerate(splitter.split(X, y, groups)):
+        model = RandomForestRegressor(n_estimators=n_estimators, min_samples_leaf=2,
+                                      n_jobs=-1, random_state=seed)
+        model.fit(X[train_idx], y[train_idx])
+        pred = model.predict(X[test_idx])
+        oof[test_idx] = pred
+        fold = _metrics(y[test_idx], pred)
+        fold["fold"] = i
+        per_fold.append(fold)
+
+    model = RandomForestRegressor(n_estimators=n_estimators, min_samples_leaf=2,
+                                  n_jobs=-1, random_state=seed)
+    model.fit(X, y)
+
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    df_out = df[["site", "lon", "lat", "block_id"]].copy()
+    df_out["agb_mg_ha"] = y
+    df_out["pred"] = oof
+    df_out.to_csv(out.with_suffix(".predictions.csv"), index=False)
+
+    result = {
+        "csv": str(csv_path),
+        "n": int(len(df)),
+        "groups": int(n_groups),
+        "features": feats,
+        "cv": {"overall": _metrics(y, oof), "per_fold": per_fold},
+        "importance": sorted(zip(feats, (float(v) for v in model.feature_importances_)),
+                             key=lambda kv: kv[1], reverse=True),
+    }
+    (out.with_suffix(".metrics.json")).write_text(
+        json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+    import joblib
+    joblib.dump(model, out.with_suffix(".joblib"))
+    return result
+
+
 def run_baseline(
     csv_path: str | Path,
     out_dir: str | Path,

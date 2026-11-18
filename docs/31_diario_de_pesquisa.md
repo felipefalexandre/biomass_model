@@ -163,3 +163,17 @@ composição sazonal S2 e o alinhamento à grade comum de 30 m.
   promessa de acurácia.
 - Artefatos: data/reference/baselines.csv (3 linhas), .metrics.json/.joblib em
   E:\Mapbiomas\biomass\derived\.
+### Cerrado: referência de campo (PLOS 2018)
+
+- S3 do artigo (DOI 10.1371/journal.pone.0196742) tem 77 sítios com coordenadas de 6 casas e AGB
+  (4,8–50,2; mediana 20,8 Mg ha⁻¹); 75 caem no bioma Cerrado (2 fora: Amazônia e Caatinga).
+- Coleta de janelas S2 2024 (4 km, cena menos nublada de mai–out) e DEM para os 75 sítios; ERA5-Land
+  regional (2019–2024) em um único arquivo de 32 MB.
+- **Achado de escopo:** só 45 dos 75 sítios caem em classes 3/4 do MapBiomas 2024; 30 estão em
+  formações campestres/uso antrópico excluídas pelo domínio (ADR-0010). O filtro de domínio custa
+  40% dos sítios de campo do Cerrado — registrar como limitação (RC12), não como erro.
+- Baseline de campo (45 sítios, features de 1 km, blocos de 1°): **R² 0,328; RMSE 8,34; MAE 6,53
+  Mg ha⁻¹**; 2 dos 5 folds negativos. Temperatura média domina a importância (gradiente
+  climático), seguida de elevação. Com n=45, o resultado é indicativo, não conclusivo.
+- Próximos passos: ampliar sítios de campo (INV03–INV10, RAINFOR), harmonizar data do inventário
+  com a cena, e avaliar exclusão/estrato separado para formações campestres.

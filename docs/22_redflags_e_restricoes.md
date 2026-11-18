@@ -33,6 +33,7 @@ Redflag não interrompe o trabalho; é documentada e contornada ou aceita com ju
 | RC09 | Escala do footprint vs pixel | erro de representação | análise de sensibilidade |
 | RC10 | Viés de acessibilidade das parcelas | subrepresentação de áreas remotas | ponderação; AOA |
 | RC11 | L4A subestima savana aberta | viés grave no Cerrado (piloto: mediana 6,2 contra 19,4 Mg ha⁻¹ do IFN; 59,6% < 10) | campo como referência primária; L4A só auxiliar (ADR-0015) |
+| RC12 | Domínio 3/4 exclui formações campestres | perda de 30 dos 75 sítios de campo do Cerrado (PLOS 2018); viés contra fisionomias abertas | declarar; avaliar estrato separado para campo/11-12 em versão futura |
 
 ## 3. Restrições de escopo herdadas
 

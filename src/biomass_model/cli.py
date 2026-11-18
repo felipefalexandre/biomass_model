@@ -41,6 +41,43 @@ def _cmd_s2_composite(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_era5_bbox(args: argparse.Namespace) -> int:
+    from .datasets.era5 import fetch_era5_bbox
+
+    print(json.dumps(fetch_era5_bbox(args.west, args.south, args.east, args.north,
+                                     args.start_year, args.end_year, args.out), indent=2))
+    return 0
+
+
+def _cmd_sites_fetch(args: argparse.Namespace) -> int:
+    from .datasets.sites import fetch_site_windows
+
+    result = fetch_site_windows(
+        args.csv, args.out_dir, args.start, args.end,
+        bioma=args.bioma, size=args.size, max_cloud=args.max_cloud,
+    )
+    print(json.dumps(result, indent=2))
+    return 0
+
+
+def _cmd_field_table(args: argparse.Namespace) -> int:
+    from .features import build_field_table
+
+    print(json.dumps(build_field_table(
+        args.sites, args.work_root, args.era5, args.mapbiomas_dir, args.out,
+        bioma=args.bioma, half_m=args.half_m), indent=2))
+    return 0
+
+
+def _cmd_field_baseline(args: argparse.Namespace) -> int:
+    from .modeling import run_field_baseline
+
+    result = run_field_baseline(args.csv, args.out_dir, block_deg=args.block_deg,
+                                n_estimators=args.trees)
+    print(json.dumps({k: v for k, v in result.items() if k != "importance"}, indent=2))
+    return 0
+
+
 def _cmd_dem(args: argparse.Namespace) -> int:
     from .datasets.dem import fetch_dem
 
@@ -133,6 +170,26 @@ def build_parser() -> argparse.ArgumentParser:
     era5.add_argument("--pad", type=float, default=0.1)
     era5.set_defaults(func=_cmd_era5)
 
+    era5b = sub.add_parser("era5-bbox", help="ERA5-Land mensal para um retangulo")
+    era5b.add_argument("--west", type=float, required=True)
+    era5b.add_argument("--south", type=float, required=True)
+    era5b.add_argument("--east", type=float, required=True)
+    era5b.add_argument("--north", type=float, required=True)
+    era5b.add_argument("--start-year", type=int, required=True)
+    era5b.add_argument("--end-year", type=int, required=True)
+    era5b.add_argument("--out", required=True)
+    era5b.set_defaults(func=_cmd_era5_bbox)
+
+    sites = sub.add_parser("sites-fetch", help="janelas S2/DEM em sitios de campo")
+    sites.add_argument("--csv", required=True)
+    sites.add_argument("--out-dir", required=True)
+    sites.add_argument("--start", required=True)
+    sites.add_argument("--end", required=True)
+    sites.add_argument("--bioma", default="Cerrado")
+    sites.add_argument("--size", type=int, default=400)
+    sites.add_argument("--max-cloud", type=float, default=25.0)
+    sites.set_defaults(func=_cmd_sites_fetch)
+
     gedi = sub.add_parser("gedi", help="GEDI L4A: footprints validos no bbox")
     gedi.add_argument("--west", type=float, required=True)
     gedi.add_argument("--south", type=float, required=True)
@@ -167,6 +224,23 @@ def build_parser() -> argparse.ArgumentParser:
                           help="agrega footprints em celulas (33 px ~ 1 km)")
     baseline.add_argument("--min-shots", type=int, default=3)
     baseline.set_defaults(func=_cmd_baseline)
+
+    ftable = sub.add_parser("field-table", help="tabela de features em sitios de campo")
+    ftable.add_argument("--sites", required=True)
+    ftable.add_argument("--work-root", required=True)
+    ftable.add_argument("--era5", required=True)
+    ftable.add_argument("--mapbiomas-dir", required=True)
+    ftable.add_argument("--out", required=True)
+    ftable.add_argument("--bioma", default="Cerrado")
+    ftable.add_argument("--half-m", type=float, default=500.0)
+    ftable.set_defaults(func=_cmd_field_table)
+
+    fbase = sub.add_parser("field-baseline", help="RandomForest em sitios de campo")
+    fbase.add_argument("--csv", required=True)
+    fbase.add_argument("--out-dir", required=True)
+    fbase.add_argument("--block-deg", type=float, default=1.0)
+    fbase.add_argument("--trees", type=int, default=400)
+    fbase.set_defaults(func=_cmd_field_baseline)
 
     return parser
 

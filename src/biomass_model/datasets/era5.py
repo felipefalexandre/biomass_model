@@ -22,6 +22,47 @@ LICENSE = "Copernicus C3S"
 ACCOUNT = "conta CDS + chave em ~/.cdsapirc"
 
 
+def fetch_era5_bbox(
+    west: float,
+    south: float,
+    east: float,
+    north: float,
+    start_year: int,
+    end_year: int,
+    out: str | Path,
+    manifest: bool = True,
+) -> dict[str, Any]:
+    """ERA5-Land mensal para um retangulo (ex.: todos os sitios de campo)."""
+    import cdsapi
+
+    if not CDSAPIRC.exists():
+        raise RuntimeError(f"CDS nao configurado: crie {CDSAPIRC} (ver docs/32)")
+
+    out_path = Path(out)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    request = {
+        "product_type": ["monthly_averaged_reanalysis"],
+        "variable": VARIABLES,
+        "year": [str(y) for y in range(start_year, end_year + 1)],
+        "month": [f"{m:02d}" for m in range(1, 13)],
+        "time": "00:00",
+        "area": [north, west, south, east],
+        "data_format": "netcdf",
+        "download_format": "unarchived",
+    }
+    cdsapi.Client().retrieve("reanalysis-era5-land-monthly-means", request, str(out_path))
+
+    if manifest:
+        write_manifest(build_manifest(
+            "era5_bbox",
+            {"bbox": [west, south, east, north], "start_year": start_year,
+             "end_year": end_year, "variables": VARIABLES},
+            [out_path], license=LICENSE, account=ACCOUNT,
+            source="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land-monthly-means",
+        ))
+    return {"path": str(out_path), "bytes": out_path.stat().st_size}
+
+
 def fetch_era5(
     lon: float,
     lat: float,

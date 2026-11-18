@@ -110,6 +110,27 @@ python -m biomass_model.cli gedi --west -60.53 --south -6.98 --east -60.37 --nor
 - Saída: CSV por footprint com `agbd`, incerteza (`agbd_se`, PI), qualidade, `sensitivity`,
   coordenadas, `degrade_zero`, `granule` e `granule_time`.
 
+### Sítios de campo (Cerrado)
+
+```powershell
+python -m biomass_model.cli sites-fetch --csv data\reference\plos2018_sites.csv `
+  --out-dir E:\Mapbiomas\biomass\fields\plos2018 --start 2024-05-01 --end 2024-10-31
+```
+
+Baixa uma janela S2 de 4 km e um DEM de ~4 km por sítio (75 sítios do PLOS 2018), com um manifesto
+agregado. Depois:
+
+```powershell
+python -m biomass_model.cli era5-bbox --west -57 --south -20 --east -41 --north -3 `
+  --start-year 2019 --end-year 2024 --out E:\Mapbiomas\biomass\era5\cerrado_era5land_2019_2024_bbox.nc
+python -m biomass_model.cli field-table --sites data\reference\plos2018_sites.csv `
+  --work-root E:\Mapbiomas\biomass\fields\plos2018 `
+  --era5 E:\Mapbiomas\biomass\era5\cerrado_era5land_2019_2024_bbox.nc `
+  --mapbiomas-dir E:\Mapbiomas --out E:\Mapbiomas\biomass\derived\cerrado_field_plos2018.csv
+python -m biomass_model.cli field-baseline --csv E:\Mapbiomas\biomass\derived\cerrado_field_plos2018.csv `
+  --out-dir E:\Mapbiomas\biomass\derived\cerrado_field_baseline
+```
+
 ### Sentinel-1 e MapBiomas
 
 Ainda são passos manuais documentados (S1 exige app ASF autorizada; MapBiomas já está local em

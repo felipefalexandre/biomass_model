@@ -1,0 +1,636 @@
+{
+  "dataset": "sites_s2_dem",
+  "created_at": "2026-11-18T02:32:36+00:00",
+  "git_commit": "62f4c71ea34a3fbad64ada47d3b6aa8be5f91043",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "sites-fetch",
+    "--csv",
+    "data\\reference\\plos2018_sites.csv",
+    "--out-dir",
+    "E:\\Mapbiomas\\biomass\\fields\\plos2018",
+    "--start",
+    "2024-05-01",
+    "--end",
+    "2024-10-31"
+  ],
+  "params": {
+    "sites_csv": "data\\reference\\plos2018_sites.csv",
+    "bioma": "Cerrado",
+    "start": "2024-05-01",
+    "end": "2024-10-31",
+    "size": 400,
+    "max_cloud": 25.0,
+    "sites": 75,
+    "failures": [],
+    "out_dir": "E:\\Mapbiomas\\biomass\\fields\\plos2018"
+  },
+  "license": "Copernicus (S2 e DEM)",
+  "account": "nenhuma",
+  "source": null,
+  "notes": "um manifesto agregado para todas as janelas",
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_001\\s2.tif",
+      "bytes": 3406012
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_002\\s2.tif",
+      "bytes": 3393098
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_003\\s2.tif",
+      "bytes": 3457174
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_004\\s2.tif",
+      "bytes": 3363314
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_005\\s2.tif",
+      "bytes": 3509504
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_006\\s2.tif",
+      "bytes": 3420996
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_007\\s2.tif",
+      "bytes": 2947766
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_008\\s2.tif",
+      "bytes": 3379138
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_009\\s2.tif",
+      "bytes": 3407816
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_010\\s2.tif",
+      "bytes": 3492370
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_011\\s2.tif",
+      "bytes": 3217804
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_012\\s2.tif",
+      "bytes": 3219664
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_013\\s2.tif",
+      "bytes": 3483858
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_014\\s2.tif",
+      "bytes": 3472552
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_015\\s2.tif",
+      "bytes": 3410248
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_016\\s2.tif",
+      "bytes": 3349636
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_017\\s2.tif",
+      "bytes": 3533250
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_018\\s2.tif",
+      "bytes": 3325082
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_019\\s2.tif",
+      "bytes": 3380782
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_020\\s2.tif",
+      "bytes": 3422802
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_021\\s2.tif",
+      "bytes": 3537034
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_022\\s2.tif",
+      "bytes": 3547472
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_023\\s2.tif",
+      "bytes": 3233646
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_024\\s2.tif",
+      "bytes": 3327032
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_025\\s2.tif",
+      "bytes": 3367836
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_026\\s2.tif",
+      "bytes": 3472158
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_027\\s2.tif",
+      "bytes": 3359128
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_028\\s2.tif",
+      "bytes": 3459466
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_029\\s2.tif",
+      "bytes": 3603400
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_030\\s2.tif",
+      "bytes": 3466138
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_031\\s2.tif",
+      "bytes": 3283692
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_032\\s2.tif",
+      "bytes": 3492778
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_033\\s2.tif",
+      "bytes": 3519810
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_034\\s2.tif",
+      "bytes": 3405664
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_035\\s2.tif",
+      "bytes": 3371704
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_036\\s2.tif",
+      "bytes": 3438122
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_037\\s2.tif",
+      "bytes": 3475572
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_038\\s2.tif",
+      "bytes": 3529708
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_039\\s2.tif",
+      "bytes": 3450122
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_040\\s2.tif",
+      "bytes": 3441012
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_041\\s2.tif",
+      "bytes": 3526294
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_042\\s2.tif",
+      "bytes": 3191362
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_043\\s2.tif",
+      "bytes": 3429794
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_044\\s2.tif",
+      "bytes": 3473504
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_045\\s2.tif",
+      "bytes": 3416028
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_046\\s2.tif",
+      "bytes": 3445474
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_047\\s2.tif",
+      "bytes": 3401654
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_048\\s2.tif",
+      "bytes": 3502214
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_049\\s2.tif",
+      "bytes": 3381470
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_050\\s2.tif",
+      "bytes": 3467306
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_051\\s2.tif",
+      "bytes": 3505980
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_052\\s2.tif",
+      "bytes": 3259812
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_053\\s2.tif",
+      "bytes": 3543714
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_054\\s2.tif",
+      "bytes": 3428072
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_055\\s2.tif",
+      "bytes": 3408738
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_056\\s2.tif",
+      "bytes": 3433000
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_057\\s2.tif",
+      "bytes": 3411710
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_058\\s2.tif",
+      "bytes": 3358760
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_059\\s2.tif",
+      "bytes": 3492244
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_060\\s2.tif",
+      "bytes": 3451366
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_061\\s2.tif",
+      "bytes": 3395560
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_062\\s2.tif",
+      "bytes": 3466996
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_063\\s2.tif",
+      "bytes": 2761078
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_064\\s2.tif",
+      "bytes": 3415958
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_065\\s2.tif",
+      "bytes": 3460094
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_068\\s2.tif",
+      "bytes": 3512052
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_069\\s2.tif",
+      "bytes": 3414612
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_070\\s2.tif",
+      "bytes": 3389488
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_071\\s2.tif",
+      "bytes": 3460694
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_072\\s2.tif",
+      "bytes": 3299744
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_073\\s2.tif",
+      "bytes": 3398282
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_074\\s2.tif",
+      "bytes": 3416028
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_075\\s2.tif",
+      "bytes": 3487192
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_076\\s2.tif",
+      "bytes": 3515810
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_077\\s2.tif",
+      "bytes": 3494308
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_001\\dem.tif",
+      "bytes": 68721
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_002\\dem.tif",
+      "bytes": 69394
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_003\\dem.tif",
+      "bytes": 68245
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_004\\dem.tif",
+      "bytes": 69834
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_005\\dem.tif",
+      "bytes": 70617
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_006\\dem.tif",
+      "bytes": 69537
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_007\\dem.tif",
+      "bytes": 5043
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_008\\dem.tif",
+      "bytes": 67192
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_009\\dem.tif",
+      "bytes": 65832
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_010\\dem.tif",
+      "bytes": 69681
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_011\\dem.tif",
+      "bytes": 60458
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_012\\dem.tif",
+      "bytes": 68596
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_013\\dem.tif",
+      "bytes": 69260
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_014\\dem.tif",
+      "bytes": 67332
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_015\\dem.tif",
+      "bytes": 69852
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_016\\dem.tif",
+      "bytes": 67659
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_017\\dem.tif",
+      "bytes": 67105
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_018\\dem.tif",
+      "bytes": 66378
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_019\\dem.tif",
+      "bytes": 66912
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_020\\dem.tif",
+      "bytes": 65973
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_021\\dem.tif",
+      "bytes": 70526
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_022\\dem.tif",
+      "bytes": 68047
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_023\\dem.tif",
+      "bytes": 63189
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_024\\dem.tif",
+      "bytes": 66088
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_025\\dem.tif",
+      "bytes": 66699
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_026\\dem.tif",
+      "bytes": 66528
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_027\\dem.tif",
+      "bytes": 65832
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_028\\dem.tif",
+      "bytes": 68145
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_029\\dem.tif",
+      "bytes": 69222
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_030\\dem.tif",
+      "bytes": 71836
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_031\\dem.tif",
+      "bytes": 68614
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_032\\dem.tif",
+      "bytes": 67151
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_033\\dem.tif",
+      "bytes": 68516
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_034\\dem.tif",
+      "bytes": 67295
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_035\\dem.tif",
+      "bytes": 65268
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_036\\dem.tif",
+      "bytes": 68965
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_037\\dem.tif",
+      "bytes": 70693
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_038\\dem.tif",
+      "bytes": 71566
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_039\\dem.tif",
+      "bytes": 67053
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_040\\dem.tif",
+      "bytes": 70890
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_041\\dem.tif",
+      "bytes": 70952
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_042\\dem.tif",
+      "bytes": 25130
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_043\\dem.tif",
+      "bytes": 67966
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_044\\dem.tif",
+      "bytes": 66915
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_045\\dem.tif",
+      "bytes": 66835
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_046\\dem.tif",
+      "bytes": 70363
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_047\\dem.tif",
+      "bytes": 67472
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_048\\dem.tif",
+      "bytes": 69986
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_049\\dem.tif",
+      "bytes": 71090
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_050\\dem.tif",
+      "bytes": 69700
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_051\\dem.tif",
+      "bytes": 70897
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_052\\dem.tif",
+      "bytes": 68817
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_053\\dem.tif",
+      "bytes": 68982
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_054\\dem.tif",
+      "bytes": 67398
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_055\\dem.tif",
+      "bytes": 61350
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_056\\dem.tif",
+      "bytes": 68592
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_057\\dem.tif",
+      "bytes": 68802
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_058\\dem.tif",
+      "bytes": 70260
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_059\\dem.tif",
+      "bytes": 68489
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_060\\dem.tif",
+      "bytes": 69273
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_061\\dem.tif",
+      "bytes": 68949
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_062\\dem.tif",
+      "bytes": 69633
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_063\\dem.tif",
+      "bytes": 70212
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_064\\dem.tif",
+      "bytes": 69252
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_065\\dem.tif",
+      "bytes": 68073
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_068\\dem.tif",
+      "bytes": 69646
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_069\\dem.tif",
+      "bytes": 68001
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_070\\dem.tif",
+      "bytes": 68634
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_071\\dem.tif",
+      "bytes": 70773
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_072\\dem.tif",
+      "bytes": 64546
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_073\\dem.tif",
+      "bytes": 68958
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_074\\dem.tif",
+      "bytes": 66835
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_075\\dem.tif",
+      "bytes": 71271
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_076\\dem.tif",
+      "bytes": 69355
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_077\\dem.tif",
+      "bytes": 70401
+    }
+  ]
+}

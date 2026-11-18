@@ -73,6 +73,15 @@ de savana aberta não é corrigível por filtro de qualidade. Por isso o modelo 
 em **parcelas de campo com coordenadas**, e o L4A entra apenas como covariável, benchmark externo e
 diagnóstico de cobertura (ADR-0015). Nenhuma métrica contra L4A será apresentada como validação.
 
+### 2.2 Primeiro modelo de campo: PLOS 2018
+
+O S3 do artigo de Roitman et al. (2018) tem 77 sítios com coordenadas e AGB; 75 são Cerrado. Só 45
+caem nas classes 3/4 do MapBiomas 2024 — os outros 30 são formações campestres ou uso antrópico,
+excluídas pelo domínio (ADR-0010). Com features de 1 km e CV por blocos de 1°, o baseline de 45
+sítios deu R² 0,328, RMSE 8,34 e MAE 6,53 Mg ha⁻¹ (2 folds negativos). Temperatura média domina a
+importância, seguida de elevação. n=45 é indicativo, não conclusivo; a perda de 40% dos sítios por
+causa do domínio é uma limitação registrada (RC12), e não um erro a esconder.
+
 ## 4. Erros esperados e como tratá-los
 
 | Erro | Origem | Tratamento |

@@ -16,6 +16,7 @@ import pandas as pd
 import rasterio
 from pyproj import Transformer
 from rasterio.enums import Resampling
+from rasterio.windows import Window
 
 S2_BANDS = ["blue", "green", "red", "nir", "swir16", "swir22", "ndvi", "ndmi", "nirv", "scl"]
 ERA5_VARS = {
@@ -174,6 +175,147 @@ def mapbiomas_class(raster_dir: str | Path, year: int, lon: np.ndarray, lat: np.
     path = Path(raster_dir) / f"mapbiomas_col11_{year}.tif"
     values = sample_raster(path, lon, lat, indexes=[1], resampling=Resampling.nearest)
     return values[:, 0].astype("int16")
+
+
+def window_mean(
+    path: str | Path,
+    lon: float,
+    lat: float,
+    half_m: float = 500.0,
+    indexes: Sequence[int] | None = None,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Media de bandas numa janela de ~1 km em torno do ponto.
+
+    Retorna (medias, contagem de pixels validos por banda).
+    """
+    with rasterio.open(path) as ds:
+        x, y = _coords_in_crs(np.array([lon]), np.array([lat]), ds.crs)[0]
+        px_x, px_y = abs(ds.transform.a), abs(ds.transform.e)
+        if ds.crs.is_geographic:
+            mx = px_x * 111_320.0 * np.cos(np.deg2rad(lat))
+            my = px_y * 110_574.0
+        else:
+            mx, my = px_x, px_y
+        hx = max(1, int(round(half_m / mx)))
+        hy = max(1, int(round(half_m / my)))
+        col, row = (~ds.transform) @ (x, y)
+        win = Window(int(col) - hx, int(row) - hy, 2 * hx + 1, 2 * hy + 1)
+        arr = ds.read(indexes or list(range(1, ds.count + 1)),
+                      window=win, boundless=True, masked=True).astype("float64")
+        flat = arr.reshape(arr.shape[0], -1)
+        means = np.ma.mean(flat, axis=1).filled(np.nan)
+        counts = (~np.ma.getmaskarray(flat)).sum(axis=1)
+    return means, counts
+
+
+def window_slope_mean(dem_path: str | Path, lon: float, lat: float,
+                      half_m: float = 500.0) -> float:
+    with rasterio.open(dem_path) as ds:
+        x, y = _coords_in_crs(np.array([lon]), np.array([lat]), ds.crs)[0]
+        res_deg = abs(ds.transform.a)
+        hx = max(2, int(round(half_m / (res_deg * 111_320.0))))
+        col, row = (~ds.transform) @ (x, y)
+        win = Window(int(col) - hx, int(row) - hx, 2 * hx + 1, 2 * hx + 1)
+        dem = ds.read(1, window=win, boundless=True, masked=True).astype("float64")
+    dem = np.ma.filled(dem, np.nan)
+    dy = res_deg * 111_320.0
+    dx = res_deg * 111_320.0 * np.cos(np.deg2rad(lat))
+    gy, gx = np.gradient(dem, dy, dx)
+    return float(np.nanmean(np.degrees(np.arctan(np.hypot(gx, gy)))))
+
+
+SCL_BAD = {0, 1, 3, 8, 9, 10, 11}
+
+
+def window_valid_fraction(
+    path: str | Path,
+    lon: float,
+    lat: float,
+    index: int,
+    bad_values: Iterable[int],
+    half_m: float = 500.0,
+) -> float:
+    with rasterio.open(path) as ds:
+        x, y = _coords_in_crs(np.array([lon]), np.array([lat]), ds.crs)[0]
+        px_x, px_y = abs(ds.transform.a), abs(ds.transform.e)
+        if ds.crs.is_geographic:
+            mx = px_x * 111_320.0 * np.cos(np.deg2rad(lat))
+            my = px_y * 110_574.0
+        else:
+            mx, my = px_x, px_y
+        hx = max(1, int(round(half_m / mx)))
+        hy = max(1, int(round(half_m / my)))
+        col, row = (~ds.transform) @ (x, y)
+        win = Window(int(col) - hx, int(row) - hy, 2 * hx + 1, 2 * hy + 1)
+        values = ds.read(index, window=win, boundless=True, masked=True)
+    values = np.ma.filled(values, -1).astype("int64")
+    return float(np.mean(~np.isin(values, list(bad_values))))
+
+
+def build_field_table(
+    sites_csv: str | Path,
+    work_root: str | Path,
+    era5_path: str | Path,
+    mapbiomas_dir: str | Path,
+    out_csv: str | Path,
+    *,
+    bioma: str = "Cerrado",
+    half_m: float = 500.0,
+    domain_classes: Iterable[int] = (3, 4),
+) -> dict:
+    sites = pd.read_csv(sites_csv)
+    sites = sites[(sites["bioma"] == bioma)].dropna(subset=["lon", "lat", "agb_mg_ha"])
+    era5 = load_era5(era5_path)
+    root = Path(work_root)
+
+    rows = []
+    for _, site in sites.iterrows():
+        folder = root / f"site_{int(site['site']):03d}"
+        s2_path, dem_path = folder / "s2.tif", folder / "dem.tif"
+        if not s2_path.exists() or not dem_path.exists():
+            continue
+        with rasterio.open(s2_path) as ds:
+            names = ds.descriptions or tuple(S2_BANDS[: ds.count])
+        means, counts = window_mean(s2_path, site["lon"], site["lat"], half_m=half_m)
+        scl_idx = names.index("scl") + 1
+        valid_fraction = window_valid_fraction(
+            s2_path, site["lon"], site["lat"], scl_idx, SCL_BAD, half_m=half_m)
+        elev_mean, _ = window_mean(dem_path, site["lon"], site["lat"],
+                                    half_m=half_m, indexes=[1])
+        slope_mean = window_slope_mean(dem_path, site["lon"], site["lat"], half_m=half_m)
+        klass = int(mapbiomas_class(mapbiomas_dir, 2024,
+                                    np.array([site["lon"]]), np.array([site["lat"]]))[0])
+
+        row = {"site": int(site["site"]), "nome": site.get("nome"), "uf": site.get("uf"),
+               "lon": site["lon"], "lat": site["lat"],
+               "agb_mg_ha": float(site["agb_mg_ha"]),
+               "agb_lo95": site.get("agb_lo95"), "agb_hi95": site.get("agb_hi95"),
+               "mapbiomas_class": klass, "elev": float(elev_mean[0]),
+               "slope": slope_mean}
+        for i, name in enumerate(names):
+            if name == "scl":
+                continue
+            row[f"s2_{name}"] = float(means[i])
+        row["s2_valid_fraction"] = valid_fraction
+        clim = era5_features(era5, np.array([site["lon"]]), np.array([site["lat"]]),
+                             pd.Series(["2022-07-01"]))
+        for col in ("era5_t2m_clim", "era5_precip_annual_mm", "era5_ssrd_clim", "era5_swvl1_clim"):
+            row[col] = float(clim[col].iloc[0])
+        rows.append(row)
+
+    table = pd.DataFrame(rows)
+    table = table[table["mapbiomas_class"].isin(list(domain_classes))].reset_index(drop=True)
+    table["feature_na"] = table[[c for c in table if c.startswith(("s2_", "era5_"))]
+                                + ["elev", "slope"]].isna().any(axis=1)
+    out_path = Path(out_csv)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    table.to_csv(out_path, index=False)
+    summary = {"sites_in": int(len(sites)), "rows": int(len(table)),
+               "in_domain": int(len(table)), "classes": table["mapbiomas_class"].value_counts().to_dict(),
+               "path": str(out_path)}
+    out_path.with_suffix(".summary.json").write_text(
+        json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
+    return summary
 
 
 def build_training_table(

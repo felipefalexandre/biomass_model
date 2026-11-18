@@ -2,7 +2,10 @@ import numpy as np
 import pandas as pd
 from rasterio.transform import from_origin
 
-from biomass_model.features import snap_to_grid
+import rasterio
+from rasterio.transform import from_origin
+
+from biomass_model.features import snap_to_grid, window_mean, window_valid_fraction
 from biomass_model.modeling import add_blocks, aggregate_cells, feature_columns
 
 TRANSFORM = from_origin(-74.02073025380652, 5.405791885246045,
@@ -43,4 +46,16 @@ def test_aggregate_cells_averages_and_filters():
     assert out.loc[0, "n_shots"] == 3
     assert abs(out.loc[0, "agbd"] - 20.0) < 1e-9
     assert out.loc[0, "mapbiomas_class"] == 3
-
+def test_window_mean_and_valid_fraction(tmp_path):
+    path = tmp_path / "a.tif"
+    profile = dict(driver="GTiff", width=100, height=100, count=2, dtype="float32",
+                   crs="EPSG:4326", transform=from_origin(-50.0, -9.9, 0.001, 0.001))
+    with rasterio.open(path, "w", **profile) as dst:
+        dst.write(np.full((2, 100, 100), 5.0, dtype="float32"))
+        dst.write(np.full((100, 100), 4.0, dtype="float32"), 2)
+        dst.set_band_description(1, "x")
+        dst.set_band_description(2, "scl")
+    means, counts = window_mean(path, -49.95, -9.95, half_m=500)
+    assert np.allclose(means[0], 5.0)
+    assert counts[0] > 0
+    assert window_valid_fraction(path, -49.95, -9.95, 2, {0, 1, 3}) == 1.0
