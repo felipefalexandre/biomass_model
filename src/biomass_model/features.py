@@ -210,10 +210,15 @@ def build_training_table(
     table["mapbiomas_class"] = classes[keep]
 
     s2 = sample_raster(s2_path, lon_c, lat_c)
-    for i, name in enumerate(S2_BANDS):
+    with rasterio.open(s2_path) as ds:
+        names = ds.descriptions or tuple(S2_BANDS[: ds.count])
+    for i, name in enumerate(names):
         table[f"s2_{name}"] = s2[:, i]
-    table["s2_valid"] = ~np.isin(table["s2_scl"].to_numpy(), [0, 1, 3, 8, 9, 10, 11])
-    table = table.drop(columns=["s2_scl"])
+    if "scl" in names:
+        table["s2_valid"] = ~np.isin(table["s2_scl"].to_numpy(), [0, 1, 3, 8, 9, 10, 11])
+        table = table.drop(columns=["s2_scl"])
+    elif "nobs" in names:
+        table["s2_valid"] = table["s2_nobs"] >= 3
 
     table = pd.concat([table, terrain_features(dem_path, lon_c, lat_c)], axis=1)
     table = pd.concat([table, era5_features(load_era5(era5_path), lon_c, lat_c,

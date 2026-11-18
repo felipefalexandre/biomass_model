@@ -110,9 +110,12 @@ Primeiro experimento registrado, para calibrar expectativas — **não** é o mo
 | RMSE / MAE | 92,4 / 70,2 Mg ha⁻¹ |
 | Viés | +1,6 Mg ha⁻¹ |
 | Subconjunto degrade_zero | R² 0,098; RMSE 91,9 (n = 16.314) |
+| S2 mediana de 10 datas (footprint) | R² 0,094; RMSE 92,5 — sem ganho |
+| Agregado em 1 km (327 células) | R² 0,285; RMSE 34,3; MAE 26,3; folds 0,10–0,31 |
 
 Leitura: dentro de um piloto uniforme de floresta densa, uma única data óptica satura e explica
-quase nada da variação do L4A. O resultado serve de piso e de diagnóstico: os próximos ganhos
-devem vir de composições multi-ano, S1/textura e melhor harmonização temporal, não de mais
-complexidade no modelo. Artefatos: data/reference/baselines.csv,
-iomass_model.modeling.run_baseline.
+quase nada da variação do L4A. Compor 10 datas não muda isso; o gargalo é o ruído do L4A e a
+homogeneidade local. Ao agregar em 1 km, o RMSE cai para 34,3 Mg ha⁻¹ (R² 0,285), mas parte disso
+é redução da variância do alvo — o produto em 30 m deve ser tratado como camada diagnóstica, não
+como promessa de acurácia. Artefatos: `data/reference/baselines.csv`,
+`biomass_model.modeling.run_baseline`.

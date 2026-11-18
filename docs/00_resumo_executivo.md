@@ -62,8 +62,9 @@ Essa separação evita o erro mais comum em trabalhos de biomassa: confundir a a
 - Dados: legenda MapBiomas, painel do SFB, suplementos do Cerrado, S2/DEM/ERA5 dos dois pilotos e
   GEDI L4A 2019–2024 **baixados e documentados** (`docs/32`).
 - Pilotos: definidos para Amazônia e Cerrado (`docs/17`, `docs/31`), caixa de ~17 km (ADR-0014).
-- Baseline Amazônia: R² 0,097 / RMSE 92,4 Mg ha⁻¹ com uma data S2 e CV espacial — piso honesto,
-  não resultado final (`data/reference/baselines.csv`).
+- Baseline Amazônia: R² 0,097 / RMSE 92,4 Mg ha⁻¹ no footprint (uma data S2, CV espacial); com
+  S2 composto (10 datas) não há ganho (R² 0,094); agregando em 1 km, R² 0,285 / RMSE 34,3. Piso
+  honesto, não resultado final (`data/reference/baselines.csv`).
 - Cerrado: L4A subestima savana aberta; campo passa a ser referência primária (ADR-0015).
 - Pendências que bloqueiam a fase de execução: ver `docs/30`.
 

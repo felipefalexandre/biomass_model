@@ -157,3 +157,104 @@ def fetch_window(
             )
         )
     return {"path": str(out_path), "meta": str(meta_path), **meta}
+
+
+def _window_for_items(items, lon: float, lat: float, size: int):
+    with rasterio.open(items[0].assets["red"].href) as ref:
+        to_crs = Transformer.from_crs("EPSG:4326", ref.crs, always_xy=True)
+        x, y = to_crs.transform(lon, lat)
+        half = size // 2
+        col = min(max(int((x - ref.transform.c) / ref.transform.a), half), ref.width - half - 1)
+        row = min(max(int((y - ref.transform.f) / ref.transform.e), half), ref.height - half - 1)
+        win = Window(col - half, row - half, size, size)
+        return win, ref.window_bounds(win), ref.crs, ref.window_transform(win)
+
+
+def fetch_composite(
+    lon: float,
+    lat: float,
+    start: str,
+    end: str,
+    out: str | Path,
+    size: int = 1600,
+    max_items: int = 10,
+    max_cloud: float = 30.0,
+    manifest: bool = True,
+) -> dict[str, Any]:
+    """Mediana multi-data de S2 (bandas e indices) na janela do piloto."""
+    items = search_items(lon, lat, start, end, size=size, max_cloud=max_cloud)
+    if not items:
+        raise RuntimeError("nenhuma cena Sentinel-2 encontrada")
+    tile = items[0].id.split("_")[1]
+    items = [it for it in items if it.id.split("_")[1] == tile][:max_items]
+    _, bounds, crs, transform = _window_for_items(items, lon, lat, size)
+
+    def stack(name, resampling=Resampling.bilinear):
+        layers = []
+        for item in items:
+            with rasterio.open(item.assets[name].href) as ds:
+                layers.append(_read_band(ds, bounds, size, resampling))
+        return np.stack(layers)
+
+    scl = stack("scl", Resampling.nearest)
+    valid = ~np.isin(scl.astype("uint8"), list(SCL_BAD))
+
+    def masked_median(arr):
+        arr = arr.astype("float32").copy()
+        arr[~valid] = np.nan
+        return np.nanmedian(arr, axis=0)
+
+    nir = stack("nir")
+    red = stack("red")
+    swir16 = stack("swir16")
+    med_nir, med_red = masked_median(nir), masked_median(red)
+    med_green = masked_median(stack("green"))
+    med_blue = masked_median(stack("blue"))
+    med_swir16 = masked_median(swir16)
+    med_swir22 = masked_median(stack("swir22"))
+
+    def scene_index(stack_a, stack_b):
+        with np.errstate(divide="ignore", invalid="ignore"):
+            idx = np.where(stack_a + stack_b > 0, (stack_a - stack_b) / (stack_a + stack_b), np.nan)
+        idx[~valid] = np.nan
+        return np.nanmedian(idx, axis=0)
+
+    ndvi = scene_index(nir, red)
+    ndmi = scene_index(nir, swir16)
+    nirv = ndvi * med_nir
+    nobs = valid.sum(axis=0).astype("float32")
+
+    layers = [med_blue, med_green, med_red, med_nir, med_swir16, med_swir22,
+              ndvi, ndmi, nirv, nobs]
+    names = ["blue", "green", "red", "nir", "swir16", "swir22", "ndvi", "ndmi", "nirv", "nobs"]
+
+    out_path = Path(out)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    profile = {
+        "driver": "GTiff", "width": size, "height": size, "count": len(layers),
+        "dtype": "float32", "crs": crs, "transform": transform,
+        "compress": "deflate", "predictor": 3, "tiled": True,
+        "blockxsize": 512, "blockysize": 512, "nodata": np.nan,
+    }
+    with rasterio.open(out_path, "w", **profile) as dst:
+        dst.write(np.stack(layers).astype("float32"))
+        for i, name in enumerate(names, start=1):
+            dst.set_band_description(i, name)
+
+    meta = {
+        "lon": lon, "lat": lat, "start": start, "end": end, "size_px": size,
+        "tile": tile, "crs": str(crs), "items": [it.id for it in items],
+        "n_items": len(items), "bands": names, "source": items[0].assets["red"].href,
+        "median_nobs": float(np.nanmedian(nobs)),
+    }
+    meta_path = out_path.with_suffix(".json")
+    meta_path.write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
+    if manifest:
+        write_manifest(build_manifest(
+            "s2_composite",
+            {"lon": lon, "lat": lat, "start": start, "end": end, "size": size,
+             "max_items": max_items, "max_cloud": max_cloud, "items": meta["items"]},
+            [out_path, meta_path], license=LICENSE, account=ACCOUNT,
+            source=items[0].assets["red"].href,
+        ))
+    return {"path": str(out_path), "meta": str(meta_path), **meta}

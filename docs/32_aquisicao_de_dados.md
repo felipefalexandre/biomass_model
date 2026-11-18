@@ -62,6 +62,19 @@ python -m biomass_model.cli s2 --lon -60.45 --lat -6.90 `
 - Bandas: `blue, green, red, nir, swir16, swir22` + `ndvi, ndmi, nirv` + `scl`.
 - Sem conta; COGs públicos na AWS. Sidecar `.json` documenta a cena escolhida e os candidatos.
 
+### Sentinel-2 composto (mediana multi-data)
+
+```powershell
+python -m biomass_model.cli s2-composite --lon -60.45 --lat -6.9 `
+  --start 2019-01-01 --end 2024-12-31 --max-items 10 `
+  --out E:\Mapbiomas\biomass\pilots\amazonia_s2comp_2019_2024.tif
+```
+
+Mediana das N cenas menos nubladas (mesmo tile), com máscara SCL por cena; bandas e índices
+medianos + `nobs` (número de observações válidas). No piloto amazônico não superou uma data única
+em R² no footprint (`docs/25`, `docs/31`), mas serve para composições sazonais futuras e para
+reduzir buracos de nuvem no mapa. Manifesto `s2_composite`.
+
 ### Copernicus DEM GLO-30
 
 ```powershell

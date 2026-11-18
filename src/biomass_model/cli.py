@@ -30,6 +30,17 @@ def _cmd_s2(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_s2_composite(args: argparse.Namespace) -> int:
+    from .datasets.s2 import fetch_composite
+
+    result = fetch_composite(
+        args.lon, args.lat, args.start, args.end, args.out,
+        size=args.size, max_items=args.max_items, max_cloud=args.max_cloud,
+    )
+    print(json.dumps({k: v for k, v in result.items() if k != "items"}, indent=2))
+    return 0
+
+
 def _cmd_dem(args: argparse.Namespace) -> int:
     from .datasets.dem import fetch_dem
 
@@ -73,7 +84,8 @@ def _cmd_baseline(args: argparse.Namespace) -> int:
     from .modeling import run_baseline
 
     result = run_baseline(args.csv, args.out_dir, n_splits=args.folds,
-                          block_px=args.block_px, n_estimators=args.trees)
+                          block_px=args.block_px, n_estimators=args.trees,
+                          cell_px=args.cell_px, min_shots=args.min_shots)
     print(json.dumps({k: v for k, v in result.items() if k != "importance"}, indent=2))
     return 0
 
@@ -93,6 +105,17 @@ def build_parser() -> argparse.ArgumentParser:
     s2.add_argument("--size", type=int, default=1600)
     s2.add_argument("--max-cloud", type=float, default=20.0)
     s2.set_defaults(func=_cmd_s2)
+
+    s2c = sub.add_parser("s2-composite", help="mediana multi-data de S2")
+    s2c.add_argument("--lon", type=float, required=True)
+    s2c.add_argument("--lat", type=float, required=True)
+    s2c.add_argument("--start", required=True)
+    s2c.add_argument("--end", required=True)
+    s2c.add_argument("--out", required=True)
+    s2c.add_argument("--size", type=int, default=1600)
+    s2c.add_argument("--max-items", type=int, default=10)
+    s2c.add_argument("--max-cloud", type=float, default=30.0)
+    s2c.set_defaults(func=_cmd_s2_composite)
 
     dem = sub.add_parser("dem", help="DEM Copernicus GLO-30")
     dem.add_argument("--lon", type=float, required=True)
@@ -140,6 +163,9 @@ def build_parser() -> argparse.ArgumentParser:
     baseline.add_argument("--folds", type=int, default=5)
     baseline.add_argument("--block-px", type=int, default=167)
     baseline.add_argument("--trees", type=int, default=400)
+    baseline.add_argument("--cell-px", type=int, default=None,
+                          help="agrega footprints em celulas (33 px ~ 1 km)")
+    baseline.add_argument("--min-shots", type=int, default=3)
     baseline.set_defaults(func=_cmd_baseline)
 
     return parser

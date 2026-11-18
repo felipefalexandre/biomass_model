@@ -149,3 +149,17 @@ composição sazonal S2 e o alinhamento à grade comum de 30 m.
   resultado final.
 - Próximos ganhos esperados: composições sazonais multi-ano, S1 (estrutura), textura e GLCM,
   harmonização temporal com o ano do footprint, e filtro de borda/sombra.
+### Composição S2 e efeito de escala
+
+- Adicionado s2-composite (mediana de 10 datas 2019–2024, máscara SCL). Resultado no footprint:
+  R² 0,094 / RMSE 92,5 — **sem ganho** sobre uma data (R² 0,097). Conclusão: nuvem não era o
+  gargalo; ruído do L4A e homogeneidade do piloto dominam.
+- Agregação em células de 1 km (≥3 footprints; 327 células): **R² 0,285 / RMSE 34,3 / MAE 26,3**
+  com viés +1,6; folds entre 0,10 e 0,31. O erro absoluto cai ~60% ao agregar, como esperado por
+  reduzir ruído de referência e variância local — mas a variância do alvo também diminui; não é
+  ganho "de graça".
+- Implicação prática: o produto é mais defensável em 1 km (ou agregado por bloco) do que em 30 m,
+  coerente com ADR-0013. A meta de 30 m deve ser apresentada como camada diagnóstica, não como
+  promessa de acurácia.
+- Artefatos: data/reference/baselines.csv (3 linhas), .metrics.json/.joblib em
+  E:\Mapbiomas\biomass\derived\.

@@ -1,2 +1,4 @@
-modelo,bioma,n_pontos,n_features,r2,rmse_mg_ha,mae_mg_ha,bias_mg_ha,referencia,notas
-rf_baseline_v1,amazonia,19869,25,0.097,92.36,70.17,1.55,GEDI L4A V2.1 2019-2024,"CV por blocos de ~5 km; 25 blocos; S2 de uma data (2024); sem S1/textura"
+modelo,bioma,escala,n_obs,n_features,r2,rmse_mg_ha,mae_mg_ha,bias_mg_ha,referencia,notas
+rf_baseline_v1,amazonia,footprint_30m,19869,25,0.097,92.36,70.17,1.55,GEDI L4A V2.1 2019-2024,"CV por 25 blocos de ~5 km; S2 de uma data (2024)"
+rf_baseline_v1_comp,amazonia,footprint_30m,19869,26,0.094,92.51,70.21,1.42,GEDI L4A V2.1 2019-2024,"S2 mediana de 10 datas 2019-2024; sem ganho sobre uma data"
+rf_baseline_v1_comp_1km,amazonia,celula_1km,327,26,0.285,34.33,26.30,1.55,GEDI L4A V2.1 2019-2024,"327 celulas com >=3 footprints; folds variam 0,10-0,31"
