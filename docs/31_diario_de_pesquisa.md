@@ -177,3 +177,18 @@ composição sazonal S2 e o alinhamento à grade comum de 30 m.
   climático), seguida de elevação. Com n=45, o resultado é indicativo, não conclusivo.
 - Próximos passos: ampliar sítios de campo (INV03–INV10, RAINFOR), harmonizar data do inventário
   com a cena, e avaliar exclusão/estrato separado para formações campestres.
+
+### Sentinel-1 RTC: acesso e ganho
+- Descoberta de rota sem conta: colecao sentinel-1-rtc no STAC do Microsoft Planetary Computer
+  (COGs assinados por planetary-computer). O plano original de ASF exigia Earthdata + app
+  autorizada e nao era necessario.
+- datasets/s1.py + comando s1: 8 datas (mai-out/2024), orbita descendente, mediana em potencia
+  linear; bandas v_db, h_db, h_vv_db, 
+vi, 
+obs em 10 m.
+- Efeito no baseline amazonico: footprint R2 0,094 -> **0,098** (RMSE 92,5 -> 92,3); 1 km
+  R2 0,286 -> **0,289** (RMSE 34,3 -> 34,2). Ganho marginal, coerente com piloto homogeneo e com
+  o ruido do L4A; S1 fica como feature opcional. Estatisticas temporais e coerencia ficam para
+  quando houver serie maior.
+- Decisao Q6 registrada: adotar limites da literatura (vies <=10%; RMSE <=30% Amazonia /
+  <=40% Cerrado; IC90 80-95%), citando Avitabile 2016, Santoro 2021 e Duncanson 2022.

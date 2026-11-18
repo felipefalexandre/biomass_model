@@ -58,9 +58,10 @@ derivadas pequenas entram no git.
 
 ### 2.2 Etapas 4–6 implementadas (piloto)
 
-- Etapa 4 (referência): datasets.gedi.fetch_gedi → CSV por footprint com qualidade.
-- Etapa 5 (dataset): eatures.build_training_table → encaixa o footprint no pixel MapBiomas,
-  amostra S2/DEM/ERA5 e filtra o domínio 3/4; resumo em .summary.json.
+- Etapa 4 (referência): datasets.gedi.fetch_gedi → CSV por footprint com qualidade; S1 RTC via
+  datasets.s1.fetch_s1 (MPC, sem conta) entra como composição de features.
+- Etapa 5 (dataset): features.build_training_table → encaixa o footprint no pixel MapBiomas,
+  amostra S2/DEM/ERA5 (e S1 opcional via `--s1`) e filtra o domínio 3/4; resumo em .summary.json.
 - Etapa 6 (modelo): modeling.run_baseline → RandomForest com GroupKFold em blocos de ~5 km,
   métricas OOF, por classe e em degrade_zero; artefatos .metrics.json, .joblib,
   .predictions.csv.

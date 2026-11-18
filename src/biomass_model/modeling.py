@@ -13,7 +13,7 @@ METRICS = ("r2", "rmse", "mae", "bias")
 
 
 def feature_columns(df: pd.DataFrame) -> list[str]:
-    cols = [c for c in df.columns if c.startswith(("s2_", "era5_"))]
+    cols = [c for c in df.columns if c.startswith(("s2_", "s1_", "era5_")) and not c.endswith("_valid")]
     cols += [c for c in ("elev", "slope", "aspect") if c in df.columns]
     return cols
 

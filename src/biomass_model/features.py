@@ -327,6 +327,7 @@ def build_training_table(
     out_csv: str | Path,
     bioma: str,
     domain_classes: Iterable[int] = (3, 4),
+    s1_path: str | Path | None = None,
 ) -> dict:
     gedi = pd.read_csv(gedi_csv)
     with rasterio.open(Path(mapbiomas_dir) / "mapbiomas_col11_2024.tif") as ds:
@@ -362,12 +363,20 @@ def build_training_table(
     elif "nobs" in names:
         table["s2_valid"] = table["s2_nobs"] >= 3
 
+    if s1_path is not None:
+        s1 = sample_raster(s1_path, lon_c, lat_c)
+        with rasterio.open(s1_path) as ds:
+            s1_names = ds.descriptions or tuple(f"band{i}" for i in range(1, ds.count + 1))
+        for i, name in enumerate(s1_names):
+            table[f"s1_{name}"] = s1[:, i]
+        table["s1_valid"] = table["s1_nobs"] >= 2
+
     table = pd.concat([table, terrain_features(dem_path, lon_c, lat_c)], axis=1)
     table = pd.concat([table, era5_features(load_era5(era5_path), lon_c, lat_c,
                                             pd.to_datetime(table["granule_time"]))], axis=1)
     table["bioma"] = bioma
 
-    feature_cols = [c for c in table.columns if c.startswith(("s2_", "era5_"))] + ["elev", "slope", "aspect"]
+    feature_cols = [c for c in table.columns if c.startswith(("s2_", "s1_", "era5_"))] + ["elev", "slope", "aspect"]
     table["feature_na"] = table[feature_cols].isna().any(axis=1)
 
     out_path = Path(out_csv)

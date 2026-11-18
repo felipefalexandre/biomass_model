@@ -25,13 +25,13 @@ HDF5 (GEDI) usa o driver HDF5 do GDAL via `rasterio`; **não** é necessário `h
 | Copernicus DEM GLO-30 (AWS) | nenhuma | — |
 | ERA5-Land (CDS) | conta gratuita no CDS | `~/.cdsapirc` |
 | GEDI L4A (LP DAAC/ORNL) | Earthdata Login | `EARTHDATA_TOKEN` ou `~/.config/biomass_model/earthdata_token` |
-| Sentinel-1 RTC (ASF) | Earthdata Login + app ASF autorizada | idem |
+| Sentinel-1 RTC (Microsoft Planetary Computer) | nenhuma | — (MPC assina o SAS) |
 
 ### Earthdata
 
 1. Criar conta em <https://urs.earthdata.nasa.gov>.
 2. Autorizar as aplicações **LP DAAC Data Pool** e **NASA GESDISC DATA ARCHIVE** em
-   *Applications → Authorized Apps* (ASF também, se for usar S1).
+   *Applications → Authorized Apps*.
 3. Gerar token em *Applications → Generate Token*.
 4. Salvar em `%USERPROFILE%\.config\biomass_model\earthdata_token` (uma linha, sem espaços) ou
    definir `EARTHDATA_TOKEN`. O arquivo está no `.gitignore` e tem ACL restrita.
@@ -131,10 +131,26 @@ python -m biomass_model.cli field-baseline --csv E:\Mapbiomas\biomass\derived\ce
   --out-dir E:\Mapbiomas\biomass\derived\cerrado_field_baseline
 ```
 
-### Sentinel-1 e MapBiomas
+### Sentinel-1 RTC (Microsoft Planetary Computer)
 
-Ainda são passos manuais documentados (S1 exige app ASF autorizada; MapBiomas já está local em
-`E:\Mapbiomas`). Entrarão no pacote quando a composição sazonal S1 for implementada.
+Coleção `sentinel-1-rtc` do STAC do MPC; COGs assinados pelo pacote
+`planetary-computer`, **sem conta**. Composição por mediana em potência linear e conversão para
+dB; 5 bandas: `vv_db`, `vh_db`, `vh_vv_db` (razão), `rvi` e `nobs`.
+
+```powershell
+python -m biomass_model.cli s1 --lon -60.45 --lat -6.90 `
+  --start 2024-05-01 --end 2024-10-31 --max-items 8 `
+  --out E:\Mapbiomas\biomass\pilots\amazonia_s1_2024.tif
+```
+
+Saída tem ~1600 px de 10 m (16 km). O treino aceita `--s1 <tif>` para anexar as bandas como
+features `s1_*`.
+
+### MapBiomas
+
+MapBiomas Coleção 11 já está local em `E:\Mapbiomas` (`mapbiomas_col11_*.tif` e
+`Biomas_250mil\lm_bioma_250.shp`); a aquisição/reprodutibilidade desses arquivos ainda não está
+automatizada no pacote.
 
 ## Manifestos
 

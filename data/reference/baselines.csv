@@ -3,3 +3,5 @@ rf_baseline_v1,amazonia,footprint_30m,19869,25,0.097,92.36,70.17,1.55,GEDI L4A V
 rf_baseline_v1_comp,amazonia,footprint_30m,19869,26,0.094,92.51,70.21,1.42,GEDI L4A V2.1 2019-2024,"S2 mediana de 10 datas 2019-2024; sem ganho sobre uma data"
 rf_baseline_v1_comp_1km,amazonia,celula_1km,327,26,0.285,34.33,26.30,1.55,GEDI L4A V2.1 2019-2024,"327 celulas com >=3 footprints; folds variam 0,10-0,31"
 rf_field_v1_cerrado,cerrado,celula_1km,45,15,0.328,8.34,6.53,0.02,PLOS 2018 S3 (campo),"45 de 75 sitios no dominio 3/4; blocos de 1 grau; 2 folds negativos"
+rf_baseline_v1_s1,amazonia,footprint_30m,19869,30,0.098,92.31,70.09,1.38,GEDI L4A V2.1 2019-2024,"S2 composto + S1 mediana (8 datas 2024, descendente); ganho marginal"
+rf_baseline_v1_s1_1km,amazonia,celula_1km,327,30,0.289,34.24,26.29,1.22,GEDI L4A V2.1 2019-2024,"327 celulas com >=3 footprints; S1 nao melhora o 1 km"

@@ -12,6 +12,7 @@ suposição. Cada item indica por que importa e qual é o padrão provisório ad
 | Q3 (anos) | Intervalo de anos, preferencialmente recentes | piloto 2018–2025 |
 | Q4 (BGB) | AGB primeiro; BGB como modelo separado focado em solo, acoplado | ADR-0011 |
 | Q5 (GEDI) | Aceito como referência principal, com ressalvas | ADR-0003 |
+| Q6 (acurácia) | Adotar limites da literatura: viés ≤10%; RMSE ≤30% (Amazônia) / ≤40% (Cerrado); IC90 80–95% | `docs/25` |
 | Q7 (GEE) | Não na trilha principal | ADR-0001 |
 | Q8 (licença) | Código MIT; documentação CC BY 4.0; produtos a definir | `docs/21` |
 | Q10 (unidade de relato) | Bioma e classe 3/4; estratificação por vegetação | ADR-0010 |
@@ -19,7 +20,7 @@ suposição. Cada item indica por que importa e qual é o padrão provisório ad
 | Q16 (IFN) | Painel de Biomassa e Carbono é aberto (CSV) | `docs/05` |
 | Q20 (referências parciais) | PLOS ONE 2018 = 10.1371/journal.pone.0196742 | `docs/29` |
 
-Perguntas ainda abertas: Q6, Q9, Q11–Q14, Q17–Q19 e o desenho temporal fino do piloto.
+Perguntas ainda abertas: Q9, Q11–Q14, Q17–Q19 e o desenho temporal fino do piloto.
 
 ## 1. Escopo e produto
 
@@ -51,9 +52,14 @@ separado.**
 - Padrão provisório: sim, com filtros, AOA e validação independente; declaração explícita.
 - Impacto: alto.
 
-**Q6. Quais limites de acurácia são aceitáveis?**
+**Q6. Quais limites de acurácia são aceitáveis?** — **Respondida: limites da literatura.**
 - Importa: define aprovação/reprovação (`docs/25`).
-- Padrão provisório: viés ≤10%; RMSE ≤30% (Amazônia) / ≤40% (Cerrado); cobertura IC90 80–95%.
+- Decisão: adotar viés ≤ 10%; RMSE ≤ 30% (Amazônia) / ≤ 40% (Cerrado) da média observada;
+  cobertura do IC90 entre 80% e 95%; nenhum estrato com viés sistemático > 15%.
+- Justificativa: são as faixas usuais em validação de AGB tropical — erro relativo da ordem de
+  30% em produtos de AGB (Avitabile et al. 2016; Santoro et al. 2021) e 30–40% no GEDI L4A
+  (Duncanson et al. 2022, DOI 10.1016/j.rse.2021.112845). O Cerrado recebe limite mais frouxo
+  por maior heterogeneidade e referência de campo mais escassa.
 - Impacto: alto.
 
 ## 2. Ambiente e governança

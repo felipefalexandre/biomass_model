@@ -60,10 +60,10 @@ DATASETS: tuple[DatasetSpec, ...] = (
     DatasetSpec(
         id="s1",
         name="Sentinel-1 RTC (radar)",
-        provider="ASF / Copernicus",
-        license="ASF / Copernicus (aberto)",
-        account="Earthdata Login + app ASF autorizada",
-        module=None,
+        provider="Microsoft Planetary Computer / Copernicus",
+        license="Copernicus Sentinel-1 (aberto, atribuicao)",
+        account="nenhuma (MPC assina o acesso)",
+        module="biomass_model.datasets.s1",
         doc="docs/32_aquisicao_de_dados.md#sentinel-1",
     ),
     DatasetSpec(

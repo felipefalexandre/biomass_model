@@ -41,8 +41,10 @@ alternativas. Sem isso, a escolha vira preferência pessoal.
 | Fração na AOA | ≥ 90% | domínio de interesse |
 | Erro por faixa | sem viés sistemático > 15% | diagnóstico |
 
-**Importante:** limites são propostas. Precisam de aprovação (`docs/30`, Q6) e podem ser
-revisados com base em evidência, mas a revisão deve ser registrada.
+**Importante:** limites **aceitos** (Q6 respondida em `docs/30`), calibrados pela literatura:
+erro relativo ~30% é a ordem de grandeza em produtos de AGB tropical (Avitabile et al. 2016;
+Santoro et al. 2021) e 30–40% no GEDI L4A (Duncanson et al. 2022). O limite do Cerrado é mais
+frouxo por heterogeneidade e escassez de campo. Revisões exigem evidência e registro.
 
 ## 5. Benchmarks
 

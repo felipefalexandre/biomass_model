@@ -60,6 +60,12 @@
 - Cuidado: geometria ascendente/descendente e ângulo de incidência; tratar separadamente ou
   normalizar.
 
+**Implementado:** RTC via Microsoft Planetary Computer (`datasets/s1.py`, sem conta), mediana
+sazonal em potência linear → `vv_db`, `vh_db`, `vh_vv_db`, `rvi`, `nobs`; todos descendentes no
+piloto. No piloto amazônico (8 datas de 2024) o ganho foi desprezível: R² 0,094 → 0,098 no
+footprint e 0,286 → 0,289 em 1 km. Mantido como feature opcional; estatísticas temporais
+(desvio/percentis) e coerência ainda não implementadas.
+
 ## 5. Topografia e clima
 
 Rotas de acesso verificadas: Copernicus DEM GLO-30 público na AWS (`copernicus-dem-30m`, sem

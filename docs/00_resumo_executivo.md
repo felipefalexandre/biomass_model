@@ -63,7 +63,8 @@ Essa separação evita o erro mais comum em trabalhos de biomassa: confundir a a
   GEDI L4A 2019–2024 **baixados e documentados** (`docs/32`).
 - Pilotos: definidos para Amazônia e Cerrado (`docs/17`, `docs/31`), caixa de ~17 km (ADR-0014).
 - Baseline Amazônia: R² 0,097 / RMSE 92,4 Mg ha⁻¹ no footprint (uma data S2, CV espacial); com
-  S2 composto (10 datas) não há ganho (R² 0,094); agregando em 1 km, R² 0,285 / RMSE 34,3. Piso
+  S2 composto (10 datas) não há ganho (R² 0,094); agregando em 1 km, R² 0,285 / RMSE 34,3.
+  Sentinel-1 RTC (8 datas) acrescenta pouco: R² 0,098 no footprint e 0,289 em 1 km. Piso
   honesto, não resultado final (`data/reference/baselines.csv`).
 - Cerrado: L4A subestima savana aberta; campo passa a ser referência primária (ADR-0015).
 - Pendências que bloqueiam a fase de execução: ver `docs/30`.

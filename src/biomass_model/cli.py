@@ -78,6 +78,15 @@ def _cmd_field_baseline(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_s1(args: argparse.Namespace) -> int:
+    from .datasets.s1 import fetch_s1
+
+    result = fetch_s1(args.lon, args.lat, args.start, args.end, args.out,
+                      size=args.size, max_items=args.max_items)
+    print(json.dumps({k: v for k, v in result.items() if k != "items"}, indent=2))
+    return 0
+
+
 def _cmd_dem(args: argparse.Namespace) -> int:
     from .datasets.dem import fetch_dem
 
@@ -111,7 +120,7 @@ def _cmd_train_table(args: argparse.Namespace) -> int:
 
     summary = build_training_table(
         args.gedi, args.s2, args.dem, args.era5, args.mapbiomas_dir, args.out,
-        bioma=args.bioma,
+        bioma=args.bioma, s1_path=args.s1,
     )
     print(json.dumps(summary, indent=2))
     return 0
@@ -153,6 +162,16 @@ def build_parser() -> argparse.ArgumentParser:
     s2c.add_argument("--max-items", type=int, default=10)
     s2c.add_argument("--max-cloud", type=float, default=30.0)
     s2c.set_defaults(func=_cmd_s2_composite)
+
+    s1 = sub.add_parser("s1", help="Sentinel-1 RTC (mediana, sem conta)")
+    s1.add_argument("--lon", type=float, required=True)
+    s1.add_argument("--lat", type=float, required=True)
+    s1.add_argument("--start", required=True)
+    s1.add_argument("--end", required=True)
+    s1.add_argument("--out", required=True)
+    s1.add_argument("--size", type=int, default=1600)
+    s1.add_argument("--max-items", type=int, default=8)
+    s1.set_defaults(func=_cmd_s1)
 
     dem = sub.add_parser("dem", help="DEM Copernicus GLO-30")
     dem.add_argument("--lon", type=float, required=True)
@@ -212,6 +231,7 @@ def build_parser() -> argparse.ArgumentParser:
     table.add_argument("--mapbiomas-dir", required=True)
     table.add_argument("--out", required=True)
     table.add_argument("--bioma", choices=["amazonia", "cerrado"], required=True)
+    table.add_argument("--s1", default=None, help="opcional: composite Sentinel-1 RTC")
     table.set_defaults(func=_cmd_train_table)
 
     baseline = sub.add_parser("baseline", help="RandomForest com CV por blocos espaciais")

@@ -7,4 +7,4 @@ e o ponto de entrada recomendado.
 
 from __future__ import annotations
 
-__all__ = ["s2", "dem", "era5", "gedi"]
+__all__ = ["s1", "s2", "dem", "era5", "gedi", "sites"]
