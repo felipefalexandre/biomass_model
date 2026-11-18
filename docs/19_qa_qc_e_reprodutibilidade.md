@@ -84,6 +84,16 @@ Cada execução grava `run_manifest.json`:
 - Container (Docker) opcional, recomendado para o produto final.
 - Teste de reprodução: rodar em ambiente limpo e comparar hashes de saída.
 
+### 6.1 Credenciais
+
+- Nunca versionar chaves. Arquivos fora do repositório:
+  - CDS: `C:\Users\<usuario>\.cdsapirc`
+  - Earthdata: `_netrc` ou variável `EARTHDATA_TOKEN`
+  - Copernicus Data Space (se usado): arquivo local ignorado pelo git
+- O `.gitignore` bloqueia `.cdsapirc`, `_netrc`, `.netrc`, `earthdata_token` e `*.token`.
+- Chaves expostas em conversa/issue devem ser **rotacionadas**.
+- Scripts devem falhar com mensagem clara se a credencial não existir, sem imprimir o valor.
+
 ## 7. QA científico
 
 1. Plausibilidade: AGBD média dentro de faixas da literatura por estrato.

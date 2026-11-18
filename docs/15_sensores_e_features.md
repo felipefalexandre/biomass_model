@@ -1,4 +1,4 @@
-# 15 — Sensores e engenharia de features
+﻿# 15 — Sensores e engenharia de features
 
 ## 1. Princípios de feature engineering
 
@@ -16,7 +16,15 @@
 - Mascaramento de nuvem/sombra com `SCL` (Scene Classification Layer) do L2A e/ou máscara própria.
 - Registrar o número de observações válidas por pixel (feature de qualidade).
 
-### 2.2 Bandas e índices
+### 2.2 Rota de acesso (verificada em 2026-11-17)
+
+- Catálogo STAC público `https://earth-search.aws.element84.com/v1`, coleção `sentinel-2-l2a`.
+- COGs públicos em `s3://sentinel-cogs` (us-west-2), leitura por HTTP range (`/vsicurl/`).
+- **Não exige conta Copernicus**; testado nos dois pilotos com 0% de nuvem e leitura de janela
+  1600×1600 (16 km a 10 m).
+- Ferramenta: `tools/fetch_s2_pilot.py`.
+
+### 2.3 Bandas e índices
 
 | Feature | Fórmula/definição | Racional |
 |---|---|---|
@@ -30,7 +38,7 @@
 | MSAVI2 | forma autoajustável | solo |
 | Índices de clorofila/red-edge | B05–B07 | estresse/composição |
 
-### 2.3 Textura
+### 2.4 Textura
 
 - GLCM (contraste, homogeneidade, entropia, correlação) em janelas 3×3 a 11×11.
 - Variograma local ou desvio-padrão local.
@@ -53,6 +61,10 @@
   normalizar.
 
 ## 5. Topografia e clima
+
+Rotas de acesso verificadas: Copernicus DEM GLO-30 público na AWS (`copernicus-dem-30m`, sem
+conta) e ERA5-Land via CDS API com chave em `~/.cdsapirc`. Ferramentas:
+`tools/fetch_dem_pilot.py` e `tools/fetch_era5_land.py`.
 
 - DEM: elevação, declividade, aspecto, posição topográfica (TPI), rugosidade.
 - Clima: precipitação anual, sazonalidade, déficit hídrico, temperatura; ERA5-Land para variação

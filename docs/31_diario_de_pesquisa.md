@@ -57,3 +57,40 @@ Registro cronológico do que foi feito, decidido e descoberto. Complementa os AD
 
 Fase 1: montar o cubo de features (S2, S1, DEM, clima) e extrair GEDI L4A nos dois tiles,
 com validação espacial por blocos desde o início.
+
+## 2026-11-17 — Sessão 2
+
+### Credenciais e acessos
+
+- CDS API configurada em `~/.cdsapirc`; teste de ERA5-Land mensal (2018–2025) **bem-sucedido**.
+- Descoberta importante: Sentinel-2 L2A é acessível **sem conta** via `earth-search` STAC +
+  COGs públicos na AWS. Testado nos dois pilotos.
+- Copernicus DEM GLO-30 também é público na AWS (`copernicus-dem-30m`), sem conta.
+- Pendente: token Earthdata (GEDI via LP DAAC; Sentinel-1 RTC via ASF) e autorização das
+  aplicações no perfil Earthdata.
+
+### Ferramentas novas
+
+- `tools/fetch_s2_pilot.py` — janela de 1600 px (16 km a 10 m), 6 bandas + NDVI/NDMI/NIRv + SCL.
+- `tools/fetch_dem_pilot.py` — mosaico GLO-30 recortado.
+- `tools/fetch_era5_land.py` — médias mensais de 8 variáveis.
+
+### Artefatos gerados (fora do git, em `E:\Mapbiomas\biomass\pilots\`)
+
+- `amazonia_s2_2024.tif` (50,9 MB; cena 20240720, 0% nuvem; NDVI mediano 0,86).
+- `cerrado_s2_2024.tif` (54,4 MB; cena 20240819, 0% nuvem; 97,9% válido).
+- `amazonia_dem30.tif` e `cerrado_dem30.tif` (576×576; ~26–175 m e 0–1525 m).
+- `amazonia_era5land_2018_2025.nc` (105 kB; 8 variáveis mensais).
+
+### Observações técnicas
+
+- A janela S2 precisa ser calculada em coordenadas UTM (o tile é EPSG:32720/32723), não em
+  lat/lon; o erro inicial foi corrigido com `pyproj`.
+- A cena de 2024 é um instantâneo; o produto final deve usar composições sazonais (mediana e
+  percentis), não uma única data.
+- O DEM do Cerrado tem 0,17% de zeros na costura entre tiles (tratados como nodata).
+
+### Próximo passo
+
+Obter token Earthdata, validar acesso a GEDI L4A e Sentinel-1 RTC; em paralelo, implementar
+composição sazonal S2 e o alinhamento à grade comum de 30 m.

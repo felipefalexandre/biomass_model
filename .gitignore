@@ -30,6 +30,11 @@ outputs/
 .env.*
 *.local
 secrets/
+.cdsapirc
+_netrc
+.netrc
+earthdata_token
+*.token
 
 # Sistema
 .DS_Store

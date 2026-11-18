@@ -1,4 +1,4 @@
-# 05 — Catálogo de dados
+﻿# 05 — Catálogo de dados
 
 Catálogo das fontes candidatas, com papel no sistema, acesso e status de verificação. A versão
 legível por máquina está em `data/catalogo_dados.csv`.
@@ -22,13 +22,13 @@ condicionado (cadastro, solicitação ou termo).
 
 | ID | Fonte | Tipo | Resolução | Período | Papel | Acesso | Status |
 |---|---|---|---|---|---|---|---|
-| D10 | Sentinel-2 MSI L2A | óptico | 10–20 m | 2015– | features espectrais/fenológicas | Copernicus, aberto | verificado (programa) |
+| D10 | Sentinel-2 MSI L2A | óptico | 10–20 m | 2015– | features espectrais/fenológicas | Copernicus; COGs AWS | verificado (leitura AWS testada) |
 | D11 | Landsat 8/9 OLI/TIRS C2 L2 | óptico | 30 m | 2013– | features e série histórica | USGS, domínio público | verificado |
-| D12 | Sentinel-1 GRD | radar C-band | 10 m | 2014– | estrutura/umidade | Copernicus, aberto | verificado (programa) |
+| D12 | Sentinel-1 GRD/RTC | radar C-band | 10 m | 2014– | estrutura/umidade | CDSE/ASF (Earthdata) | a_verificar (rota/credencial) |
 | D13 | ALOS PALSAR / PALSAR-2 mosaicos | radar L-band | 25 m | 2007– | estrutura (histórico) | JAXA, a_verificar termos | a_verificar |
 | D14 | SRTM | topografia | 30 m | 2000 | elevação/declividade | USGS, domínio público | verificado |
-| D15 | Copernicus DEM GLO-30 | topografia | 30 m | 2011–2015 | elevação (alternativa) | ESA, aberto | a_verificar (termos) |
-| D16 | ERA5-Land | clima (reanálise) | ~9 km | 1950– | clima/temporada | Copernicus C3S, aberto | verificado (DOI) |
+| D15 | Copernicus DEM GLO-30 | topografia | 30 m | 2011–2015 | elevação | ESA; COGs AWS | verificado (leitura AWS testada) |
+| D16 | ERA5-Land | clima (reanálise) | ~9 km | 1950– | clima/temporada | Copernicus C3S/CDS | verificado (CDS testado) |
 | D17 | CHIRPS | precipitação | 0,05° | 1981– | clima | UCSB, aberto | a_verificar (licença) |
 | D18 | WorldClim / CHELSA | clima (normais) | 1 km / 30" | 1970–2000 / 1981–2010 | clima estático | aberto | a_verificar (versão) |
 | D19 | SoilGrids | solo | 250 m | estático | preditor de BGB/estrutura | ISRIC, CC BY | a_verificar (versão) |

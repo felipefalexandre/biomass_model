@@ -103,6 +103,9 @@ Comandos:
 C:\Python315\python.exe -m pytest
 C:\Python315\python.exe tools\select_pilots.py
 C:\Python315\python.exe tools\suggest_pilots_from_ifn.py --bioma Amazonia --raster E:\Mapbiomas\mapbiomas_col11_2025.tif
+C:\Python315\python.exe tools\fetch_s2_pilot.py --lon -60.45 --lat -6.9 --start 2024-07-01 --end 2024-09-30 --out E:\Mapbiomas\biomass\pilots\amazonia_s2_2024.tif
+C:\Python315\python.exe tools\fetch_dem_pilot.py --lon -60.45 --lat -6.9 --out E:\Mapbiomas\biomass\pilots\amazonia_dem30.tif
+C:\Python315\python.exe tools\fetch_era5_land.py --lon -60.45 --lat -6.9 --start-year 2018 --end-year 2025 --out E:\Mapbiomas\biomass\pilots\amazonia_era5land_2018_2025.nc
 ```
 
 ## 5. Artefatos estruturados
