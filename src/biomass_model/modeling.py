@@ -260,7 +260,12 @@ def run_region_cv(
         idx_target = np.flatnonzero(target)
         k = n_calib if n_calib is not None else int(round(calib_frac * len(idx_target)))
         k = min(k, max(0, len(idx_target) - 30))
-        if k and calib_mode == "south" and "pixel_lat" in df.columns:
+        if k and calib_mode == "center" and {"pixel_row", "pixel_col"} <= set(df.columns):
+            sub = df.iloc[idx_target]
+            cr = sub["pixel_row"].median(); cc = sub["pixel_col"].median()
+            dist = (sub["pixel_row"] - cr) ** 2 + (sub["pixel_col"] - cc) ** 2
+            calib = sub.index.to_numpy()[np.argsort(dist.to_numpy())[:k]]
+        elif k and calib_mode == "south" and "pixel_lat" in df.columns:
             order = idx_target[np.argsort(df.iloc[idx_target]["pixel_lat"].to_numpy())]
             calib = order[:k]
         elif k:

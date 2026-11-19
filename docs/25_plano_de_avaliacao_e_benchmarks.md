@@ -146,3 +146,7 @@ Com 10% das células da região retida como calibração (24–35 células), sob
 com 25%, 0,21 e 0,62. A calibração contígua (faixa ao sul) é pior na Amazônia (0,11), então a
 amostra local deve cobrir a região. Critério operacional: nenhum mapa sem calibração local e
 sem validação na parte não usada da calibração.
+
+Limite prático (ADR-0017, adendo): a calibração precisa ser **espalhada**. Com 100 células
+aleatórias, R² 0,25 (Amazônia) e 0,66 (Cerrado); com 100 células compactas no centro do box,
+0,04 e 0,45. No Cerrado, 5 células já capturam o nível (R² 0,51), mas não a variação fina.

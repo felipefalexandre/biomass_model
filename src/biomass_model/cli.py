@@ -307,7 +307,7 @@ def build_parser() -> argparse.ArgumentParser:
     rcv.add_argument("--csv", required=True)
     rcv.add_argument("--out-dir", required=True)
     rcv.add_argument("--calib-frac", type=float, default=0.0)
-    rcv.add_argument("--calib-mode", choices=["random", "south"], default="random")
+    rcv.add_argument("--calib-mode", choices=["random", "south", "center"], default="random")
     rcv.add_argument("--cell-px", type=int, default=None)
     rcv.set_defaults(func=_cmd_region_cv)
 

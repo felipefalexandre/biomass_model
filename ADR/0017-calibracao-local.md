@@ -29,3 +29,21 @@
   passa a incluir ~30 células por região; `docs/14` e `docs/24` devem prever isso.
 - **Arquivos:** `src/biomass_model/modeling.py` (`run_region_cv`), `docs/25`, `docs/31`,
   `data/reference/baselines.csv`.
+
+## Adendo (2026-11-18): tamanho e geometria da amostra
+
+Varredura de células de calibração (1 km, 4 boxes/bioma, amostra aleatória):
+
+| Células | Amazônia R² | Cerrado R² |
+|---|---|---|
+| 0 | −0,10 | 0,24 |
+| 5 | 0,11 | 0,51 |
+| 10 | 0,05 | 0,52 |
+| 25 | 0,15 | 0,55 |
+| 50 | 0,21 | 0,60 |
+| 100 | **0,25** | **0,66** |
+
+Calibração **compacta** (100 células no centro do box): Amazônia 0,04; Cerrado 0,45. Ou seja,
+o ganho depende de a amostra cobrir a variabilidade espacial, não de estar concentrada.
+Recomendação revista: ~100 células espalhadas na Amazônia e ≥25 no Cerrado; amostras
+compactas não são aceitáveis na Amazônia.
