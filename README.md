@@ -82,6 +82,12 @@ identificado como tal.
 | 32 | [Aquisição de dados](docs/32_aquisicao_de_dados.md) | Contas, comandos, saídas e manifestos |
 | 33 | [Relatório do piloto](docs/33_relatorio_piloto.md) | Resultados consolidados e próximos passos |
 | 34 | [Model card AGB](docs/34_model_card_agb.md) | Uso, métricas, limites e calibração |
+| 35 | [Auditoria científica](docs/35_auditoria_cientifica.md) | Diagnóstico do sistema atual |
+| 36 | [Base científica](docs/36_base_cientifica_e_fitofisionomias.md) | Literatura, taxonomia, representatividade |
+| 37 | [Plano experimental anual](docs/37_plano_experimental_anual.md) | Estimativa anual, mudança, critérios |
+| 38 | [Validação e incerteza](docs/38_validacao_independente_e_incerteza.md) | PLOS, ORNL, polígono |
+| 39 | [Arquitetura e roadmap](docs/39_arquitetura_e_roadmap.md) | Módulos, fases, riscos |
+| 40 | [Síntese para aprovação](docs/40_sintese_para_aprovacao.md) | Decisões solicitadas |
 
 ## 4. Estrutura do repositório
 

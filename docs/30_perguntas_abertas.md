@@ -147,3 +147,13 @@ Enquanto uma pergunta não for respondida:
 - o padrão provisório é usado **e declarado** em todo artefato;
 - a decisão é registrada como provisória no ADR correspondente;
 - nenhum resultado é apresentado como definitivo se depender da resposta.
+
+
+## 7. Decisões solicitadas em 2026-11-18 (aguardando)
+
+P1. Adotar produto anual de AGBD + estoque + mudança, 1 km oficial e 30 m diagnóstico? (ADR-0021)
+P2. Proibir GEDI e derivados como feature/prior no inference? (ADR-0022)
+P3. Aprovar taxonomia fitofisionômica níveis 1–2 e critérios de especialização? (ADR-0023)
+P4. Aprovar critérios de aceite espacial/temporal/campo/incerteza? (ADR-0024)
+P5. Autorizar aquisições: MapBiomas pré-2004, PRODES/Fogo/Secundária, SoilGrids, ORNL?
+P6. Buscar campo independente pós-2019 na Amazônia (hoje inexistente)?

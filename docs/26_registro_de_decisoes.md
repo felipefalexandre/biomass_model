@@ -23,6 +23,11 @@
 | ADR-0017 | Calibração local obrigatória por região | aceito |
 | ADR-0018 | Histórico MapBiomas como feature | aceito |
 | ADR-0019 | Área de Aplicabilidade obrigatória no produto | aceito |
+| ADR-0020 | Validação em duas linhas + temporal | proposto |
+| ADR-0021 | Produto anual de estado e mudança | proposto |
+| ADR-0022 | GEDI apenas como calibração | proposto |
+| ADR-0023 | Taxonomia fitofisionômica | proposto |
+| ADR-0024 | Critérios de aceitação e promoção | proposto |
 
 ## ADR-0001 — Python local em vez de GEE
 
@@ -208,3 +213,14 @@ diagnóstico de cobertura, não alvo.
 **Status:** proposto | aceito | substituído por ADR-YYYY
 **Evidência:** (IDs da matriz)
 ```
+
+
+## ADRs propostas (2026-11-18)
+
+- ADR-0020: ver `ADR/0020-validacao-duas-linhas.md`.
+- ADR-0021: ver `ADR/0021-produto-anual-estado-mudanca.md`.
+- ADR-0022: ver `ADR/0022-gedi-apenas-calibracao.md`.
+- ADR-0023: ver `ADR/0023-taxonomia-fitofisionomica.md`.
+- ADR-0024: ver `ADR/0024-criterios-aceitacao.md`.
+
+Todas aguardam aprovação; nenhuma alteração de modelo foi feita.

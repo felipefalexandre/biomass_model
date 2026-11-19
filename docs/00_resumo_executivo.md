@@ -1,6 +1,6 @@
 # 00 — Resumo executivo
 
-Relatório consolidado do piloto: docs/33_relatorio_piloto.md.
+Relatório consolidado do piloto: docs/33_relatorio_piloto.md. Plano para estimativa anual e atualização do estoque: docs/37; auditoria em docs/35; síntese e decisões em docs/40.
 
 ## 1. Problema
 

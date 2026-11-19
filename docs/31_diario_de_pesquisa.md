@@ -293,3 +293,18 @@ obs em 10 m.
   o Cerrado floresta tem inclinação 0,13.
 - Conclusão: o modelo aprende o nível médio de outras regiões; a calibração local reancora
   nível e inclinação. Correção linear apenas (rejeitada) não resolve a inclinação.
+
+### Auditoria e replanejamento para estimativa anual (2026-11-18)
+- Objetivo redefinido: estimar AGBD do ano com dados de satélite do ano e atualizar o estoque,
+  respondendo a mudanças reais; GEDI apenas como calibração, nunca como produto no inference.
+- Auditoria (docs/35): o sistema atual é um espacializador estático de GEDI (compósito 2020-2024),
+  sem capacidade anual; incerteza GEDI baixada mas não usada; pseudo-replicação (16-25 blocos
+  por box); calibração/teste compartilham GEDI.
+- Matriz real dos 11 boxes gerada (data/reference/matriz_boxes.csv); PLOS auditado
+  (data/reference/plos2018_auditoria.csv): 42 usados, 25 pré-2004 recuperáveis, 8 fora do
+  domínio, viés de seleção (24,2 vs 18,8 Mg/ha).
+- ORNL: estimador DDLS viável em princípio, mas fator/datum não resolvidos; protótipo deu
+  386-396 Mg/ha com w=DBH/10 (provável fator 2x ou datum), então não usar até confirmar.
+- Plano (docs/36-40): features anuais, estado+mudança, prior assimétrico, validação temporal
+  por eventos, hierarquia/fisionomia, polígono/incerteza; ADRs 0020-0024 propostas.
+- Nenhum modelo foi alterado, treinado ou substituído; decisões aguardam aprovação.

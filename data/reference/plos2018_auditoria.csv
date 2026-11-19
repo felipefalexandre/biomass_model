@@ -1,0 +1,80 @@
+site,nome,uf,bioma,lon,lat,agb_mg_ha,data_inventario,year,landsat,in_domain,status
+1,Planaltina_DF,DF,Cerrado,-47.61692,-15.18033,4.773184679575113,2012-09-01 00:00:00,2012,True,True,usado
+2,Curu_MG,MG,Cerrado,-44.01089,-17.93097,6.313841385881513,2009-02-01 00:00:00,2009,True,True,usado
+3,Pirenópolis,GO,Cerrado,-48.82861,-15.79778,7.424156062755931,2009-06-01 00:00:00,2009,True,True,usado
+4,Chapada Pratinha - Patrocínio,MG,Cerrado,-46.6133,-19.18144,8.800237295454217,1988,1988,False,False,inventario anterior ao MapBiomas local (2004)
+5,Vead Ceralt Alt Alto Paraíso,GO,Cerrado,-47.4132,-14.05533,9.6172718602125,1989,1989,False,False,inventario anterior ao MapBiomas local (2004)
+6,Chapada Pratinha - Parque Nacional de Brasília,DF,Cerrado,-47.94167,-17.68333,10.380501450071751,1988-1989,1988,False,False,inventario anterior ao MapBiomas local (2004)
+7,"Superfície Erodida de Cuiabá - APA das Cabeceiras do Rio Cuiabá – 
+Rosário Oeste – MT
+",MT,Cerrado,-55.64167,-14.825,10.402143209520933,2003-12-01 00:00:00,2003,False,False,inventario anterior ao MapBiomas local (2004)
+8,Parque Nacional Chapada dos Veadeiros,GO,Cerrado,-47.78086,-14.15359,11.357664085703354,2010,2010,True,True,usado
+9,Espigão do São Fancisco - Correntina,BA,Cerrado,-45.3931,-13.52369,11.766782121513296,1989,1989,False,False,inventario anterior ao MapBiomas local (2004)
+10,Chapada Pratinha - Paracatu,MG,Cerrado,-46.93333,-15.16667,11.974120409199918,1988,1988,False,False,inventario anterior ao MapBiomas local (2004)
+11,"Espigão do São Fancisco - Roda Velha, São Desidério",BA,Cerrado,-45.6852,-12.68015,12.518638970861868,1989,1989,False,False,inventario anterior ao MapBiomas local (2004)
+12,Caldas Novas,GO,Cerrado,-48.68525,-17.75933,12.93684750086913,2010-03-01 00:00:00,2010,True,True,usado
+13,Alto Paraiso,GO,Cerrado,-47.45016,-14.0401,13.055968054649512,2010,2010,True,True,usado
+14,Fazenda jatobá - Posse-BA,BA,Cerrado,-45.375,-13.95833,14.168228424571211,2005,2005,True,False,fora do dominio 3/4 no ano
+15,Complexo Xavantina - Água Boa MT,MT,Cerrado,-52.08984,-14.04426,14.424137740001346,1993-1995,1993,False,False,inventario anterior ao MapBiomas local (2004)
+16,Centro_Rio Sono,TO,Cerrado,-46.57392,-10.59881,14.626723246259505,2008-09-01 00:00:00,2008,True,True,usado
+17,Veadeiros Serra da Mesa,GO,Cerrado,-48.31582,-13.79136,14.679019892183083,1992,1992,False,False,inventario anterior ao MapBiomas local (2004)
+18,Chapada Pratinha - APA GAMA,DF,Cerrado,-47.9,-15.925,14.77394180622971,1988,1988,False,False,inventario anterior ao MapBiomas local (2004)
+19,Vedaeiros  Vila Proprício -GO,GO,Cerrado,-48.80585,-15.3684,14.862596446571205,1995,1995,False,False,inventario anterior ao MapBiomas local (2004)
+20,Correntina,BA,Cerrado,-45.40016,-13.5236,15.214513846184232,2010,2010,True,True,usado
+21,Nazário,GO,Cerrado,-49.78478,-16.62494,15.750439040968287,2009-05-01 00:00:00,2009,True,True,usado
+22,Cavalcante,GO,Cerrado,-47.41431,-13.74961,16.673029412952612,Mar/Apr- 2008,2008,True,True,usado
+23,São Desidério,BA,Cerrado,-45.51126,-12.62032,16.68686773765659,2010,2010,True,False,fora do dominio 3/4 no ano
+24,Espigão do São Fancisco - PNGSV,MG,Cerrado,-45.87623,-15.26055,16.888194067496404,1989,1989,False,False,inventario anterior ao MapBiomas local (2004)
+25,Complexo Xavantina - Nova Xavantina - MT,MT,Cerrado,-52.27693,-15.21539,17.399241839956495,1993-1995,1993,False,False,inventario anterior ao MapBiomas local (2004)
+26,Cristalina,GO,Cerrado,-47.69144,-16.73258,18.43324696661171,Sep/Oct-2008,2008,True,False,fora do dominio 3/4 no ano
+27,Cerrado da FAL  -DF,DF,Cerrado,-47.94167,-15.95833,18.45438798108227,May/Jun-2012,2012,True,True,usado
+28,Silvânia,BA,Cerrado,-48.62751,-16.69455,18.4586070237059,2010,2010,True,True,usado
+29,Grande Cuiabá -Várzea Grande/Cuiabá - MT ,MT,Cerrado,-56.225,-15.33333,18.837618471197835,2003-12-01 00:00:00,2003,False,False,inventario anterior ao MapBiomas local (2004)
+30,APA  Estadual da Chapada dos Guimarães - Chapada dos Guimarães -MT,MT,Cerrado,-55.375,-15.23333,18.871136761768653,1993-1999,1993,False,False,inventario anterior ao MapBiomas local (2004)
+31,Complexo Xavantina - Canarana MT,MT,Cerrado,-52.40137,-13.53721,18.969736765148102,1993-1995,1993,False,False,inventario anterior ao MapBiomas local (2004)
+32,Cont_GO,GO,Cerrado,-46.27552,-13.36437,18.98762920345624,2008-11-01 00:00:00,2008,True,True,usado
+33,Sul_Palma,TO,Cerrado,-46.33946,-12.6995,19.007301241510703,2008-08-01 00:00:00,2008,True,True,usado
+34,Chapada Pratinha - ESECAE,DF,Cerrado,-47.575,-15.55,19.181529585111786,1988,1988,False,False,inventario anterior ao MapBiomas local (2004)
+35,Veadeiros PNCV-GO,GO,Cerrado,-47.71099,-14.1062,19.440522856598605,1989,1989,False,False,inventario anterior ao MapBiomas local (2004)
+36,Chapada Pratinha - Silvânia,GO,Cerrado,-48.63333,-16.66667,20.317473191588686,1989,1989,False,False,inventario anterior ao MapBiomas local (2004)
+37,Jaraguá,GO,Cerrado,-49.33294,-15.7985,20.75151870674514,2009-04-01 00:00:00,2009,True,True,usado
+38,Sul_Manuel Alves de Natividade,TO,Cerrado,-47.6975,-11.43042,20.770521509430182,2008-08-01 00:00:00,2008,True,True,usado
+39,Espigão do São Fancisco - Formosa do Rio Preto -BA,BA,Cerrado,-45.44933,-11.15934,20.781982752355702,1989,1989,False,False,inventario anterior ao MapBiomas local (2004)
+40,NOXA-CT3,MT,Cerrado,-52.4729,-14.86182,21.632949405260845,2014-01-01 00:00:00,2014,True,False,fora do dominio 3/4 no ano
+41,Sul_Tocantins,TO,Cerrado,-48.53372,-13.00112,21.68590027895774,2013-09-01 00:00:00,2013,True,True,usado
+42,Veadeiros Serra Negra,GO,Cerrado,-48.32625,-14.04222,22.53372769669702,1992,1992,False,False,inventario anterior ao MapBiomas local (2004)
+43,Reca_GO,GO,Cerrado,-46.28193,-13.63927,22.76728665506821,2008-09-01 00:00:00,2008,True,False,fora do dominio 3/4 no ano
+44,Sant_MG,MG,Cerrado,-45.51668,-16.62576,22.908373164101135,2008-09-01 00:00:00,2008,True,True,usado
+45,Alto Paraíso,GO,Cerrado,-47.72051,-14.13934,23.45009526629756,2013-09-01 00:00:00,2013,True,True,usado
+46,PN de Sete Cidades - PI PN de Sete Cidades - PI  Cerrado sobre Neossolo Quartzarênico,PI,Cerrado,-41.71456,-4.09991,24.061549026910228,2007,2007,True,True,usado
+47,Vale do Paranã - Iaciara,GO,Cerrado,-46.41767,-14.07332,24.118543850511795,1995-2000,1995,False,False,inventario anterior ao MapBiomas local (2004)
+48,Centro_Bananal,TO,Cerrado,-49.15172,-8.78292,24.173200622464645,2008-10-01 00:00:00,2008,True,True,usado
+49,Norte_Piranhas,TO,Cerrado,-47.97253,-6.16377,24.198134451142998,2008-08-01 00:00:00,2008,True,True,usado
+50,Vale do Paranã Campos Belos/São Domingos/Terra Ronca,GO,Cerrado,-46.46338,-13.26794,25.18231094466154,1995-2000,1995,False,False,inventario anterior ao MapBiomas local (2004)
+51,Sul_Santo Antônio,TO,Cerrado,-48.61633,-12.57814,25.788363750395852,2013-08-01 00:00:00,2013,True,False,fora do dominio 3/4 no ano
+52,RICA-CT,MT,Cerrado,-51.76554,-12.83405,27.218789953006574,2013-09-01 00:00:00,2013,True,True,usado
+53,Pres_MA,MA,Cerrado,-46.7487,-6.07145,27.464991799179728,2008-08-01 00:00:00,2008,True,True,usado
+54,Vale do Paranã Damianópolis/Mambaí,GO,Cerrado,-46.16491,-14.52428,27.86703894474787,1995-2000,1995,False,False,inventario anterior ao MapBiomas local (2004)
+55,Lago_GO,GO,Cerrado,-51.03289,-14.80503,28.7625355831941,2009-03-01 00:00:00,2009,True,True,usado
+56,Vale do Paranã - Alvorada do Norte,GO,Cerrado,-46.5385,-14.46102,29.366197603114095,1995-2000,1995,False,False,inventario anterior ao MapBiomas local (2004)
+57,Mara rosa,GO,Cerrado,-49.00051,-14.02918,30.717576057815677,2008-07-01 00:00:00,2008,True,True,usado
+58,Graj_MA,MA,Cerrado,-43.3469,-3.16028,31.323270364000777,2009-02-01 00:00:00,2009,True,True,usado
+59,Sul_Santa Teresa,TO,Cerrado,-48.01169,-12.17825,31.415525609747114,2008-08-01 00:00:00,2008,True,True,usado
+60,Piranhas,MT,Cerrado,-51.89611,-16.45639,31.524577566716577,2009-08-01 00:00:00,2009,True,True,usado
+61,Centro_Lajeado,TO,Cerrado,-48.83816,-9.32206,32.109046821915335,2008-09-01 00:00:00,2008,True,True,usado
+62,Sul_Javaés,TO,Cerrado,-49.90093,-12.57697,32.4881021651789,2008-08-01 00:00:00,2008,True,True,usado
+63,NOXA-CT2,MT,Cerrado,-52.7803,-14.84332,32.59678139738629,2014-10-01 00:00:00,2014,True,True,usado
+64,Norte_Corda,TO,Cerrado,-48.01172,-6.91348,33.0756570455447,2009-02-01 00:00:00,2009,True,True,usado
+65,Sul_São Valério,TO,Cerrado,-48.96735,-11.5854,33.88585202980414,2013-08-01 00:00:00,2013,True,False,fora do dominio 3/4 no ano
+66,Norte_Araguaia,TO,Amazônia,-48.11003,-5.74875,33.949912105652714,2009-02-01 00:00:00,2009,False,False,fora do bioma Cerrado
+67,"Arraial - PI, Cerrado sobre Neossolo Quartzarênico",PI,Caatinga,-42.4919,-6.52062,34.224573364801685,2006,2006,False,False,fora do bioma Cerrado
+68,Norte_Tocantins,TO,Cerrado,-47.94254,-7.81356,34.91019438240597,2008-08-01 00:00:00,2008,True,True,usado
+69,Centro_Crixás,TO,Cerrado,-48.79338,-11.02714,35.24485954476608,2008-09-01 00:00:00,2008,True,True,usado
+70,Centro_Ribeirão dos Mangues,TO,Cerrado,-48.81431,-10.4356,36.0953460785037,2008-09-01 00:00:00,2008,True,True,usado
+71,Centro_Balsas,TO,Cerrado,-47.69554,-10.46592,37.001023654758725,2008-11-01 00:00:00,2008,True,True,usado
+72,NOXA-CT1,MT,Cerrado,-52.64997,-15.03734,37.054013466275016,2014-07-01 00:00:00,2014,True,True,usado
+73,Centro_Pium,TO,Cerrado,-49.45021,-10.71551,39.195505545836525,2008-09-01 00:00:00,2008,True,True,usado
+74,Mineiros_Serranópolis,GO,Cerrado,-47.72051,-14.13934,39.516991627558035,2009-10-01 00:00:00,2009,True,True,usado
+75,Juss_GO,GO,Cerrado,-50.97211,-16.01122,42.08300706199438,2009-03-01 00:00:00,2009,True,False,fora do dominio 3/4 no ano
+76,Centro_Manoel Alves Pequeno,TO,Cerrado,-47.57896,-8.72227,47.10223050907328,2008-10-01 00:00:00,2008,True,True,usado
+77,Centro_Manoel Alves Grande,TO,Cerrado,-46.84009,-8.08333,50.22061052540352,2008-09-01 00:00:00,2008,True,True,usado
