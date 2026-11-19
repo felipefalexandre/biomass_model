@@ -51,33 +51,44 @@ LiDAR DOI 10.3334/ORNLDAAC/1644.
 árvores ≥5 cm, DBH/altura/copa/WSD por árvore (Hunter et al. 2013,
 DOI 10.5194/bg-10-8385-2013; Schreuder et al. 1987).
 
-**Estimador (Horvitz–Thompson para linha):**
+**Estimador confirmado (2026-11-18):** o dicionário de dados traz `AGB` (Mg por fuste) e
+`area_sampled` (ha), e os arquivos JAM permitem verificar a geometria. A área de inclusão é
+`2 · 500 m · (DBH/10) / 10.000` ha, ou seja **w = DBH/10 m (fator 10 confirmado)** — não era
+necessário inferir datum nem fator.
 
 ```
-B̂ = Σ_i b_i / (2 · L · w_i)        [kg m⁻²; ×10 → Mg ha⁻¹]
-w_i = k · DBH_i                     (k a confirmar; se k = 1/10, w em m com DBH em cm)
+densidade_transecto = Σ_i AGB_i / area_i          [Mg ha⁻¹]
+densidade_sitio     = média entre transectos
+SE                  = desvio entre transectos / √n
 ```
 
-- `b_i`: AGB individual (Chave 2014 ou 2005, com WSD e H medidos).
-- `L`: comprimento total de linha (5 × 500 m = 2.500 m).
-- Variância: bootstrap/jackknife sobre os 5 transectos (não sobre árvores).
-- Palmeiras, lianas e mortas: tratar separadamente; não misturar com árvores “O”.
+- JAM_A01/A02: `AGB` e `area_sampled` fornecidos; estimador aplicado diretamente.
+- TAP_A01: sem coluna AGB; AGB individual calculada por Chave 2005
+  (`0,0509·WSD·DBH²·Htot/1000` Mg), **somente árvores tipo O**; palmeiras e lianas exigem
+  alometria própria e ficam fora nesta versão.
 
-**Teste de viabilidade (TAP_A01, 2009–2011):** com `w=DBH/10`, obtive 386–396 Mg ha⁻¹; com
-`w=DBH/20`, ~193–198. A área nominal de ~0,6 ha descrita por Hunter et al. (2013) sugere que a
-convenção correta pode ser a segunda (ou que o datum das UTM está deslocado). **Não usar os
-números até resolver:**
+**Resultados (dados reais, não publicados como validação final):**
 
-1. ler o readme do sítio e o data dictionary para a definição de fator e área nominal;
-2. confirmar datum/zona das coordenadas UTM (SAD69 vs WGS84; testar EPSG:29191 vs 32721);
-3. recalcular distâncias árvore–transecto e a distribuição de `distância/DBH` (se o máximo for
-   ~10, confirma `w=DBH/10`; se ~20, confirma `/20`);
-4. comparar com LiDAR ORNL e com L4A na mesma data (três fontes independentes);
-5. documentar incerteza de amostragem e alométrica.
+| Sítio | Ano | AGBD (Mg ha⁻¹) | SE | Transectos | Método |
+|---|---|---|---|---|---|
+| JAM_A01 | 2011 | 254,7 | 71,4 | 2 | AGB/área fornecidos |
+| JAM_A02 | 2011 | 308,3 | 13,7 | 6 | AGB/área fornecidos |
+| TAP_A01 | 2009 | 329,8 | 22,4 | 6 | Chave 2005, árvores O |
+| TAP_A01 | 2010 | 323,0 | 21,4 | 6 | idem |
+| TAP_A01 | 2011 | 321,4 | 21,3 | 6 | idem |
 
-**Critério de aceite:** se a mediana de AGB/ha ficar dentro da faixa plausível da literatura
-para a região e a variância entre transectos for compatível, o ORNL entra como validação
-histórica (2009–2018) e possível treino. Se não, registrar a lacuna e não usar.
+TAP_A01 fica acima da mediana GEDI do box de Tapajós usado no piloto (~146 Mg ha⁻¹). Isso pode
+ser subestimação do L4A, diferença de sítio/estrutura ou efeito de excluir palmeiras/lianas; só
+será interpretado após pareamento espacial/temporal.
+
+**Próximos passos:** extrair coordenadas dos KMZ; aplicar o estimador a todos os sítios (com o
+readme de cada um para comprimento de transecto); incluir alometria de palmeiras/lianas; parear
+com Landsat/S2/GEDI do ano; montar a tabela de validação. Não usar os números como verdade até o
+pareamento e a checagem de suporte.
+
+**Critério de aceite:** se a AGBD do sítio for compatível com a literatura regional e a variância
+entre transectos for razoável, o ORNL entra como validação histórica (2009–2018) e possível
+treino. Se não, registrar a lacuna e não usar.
 
 ## 4. IFN (Inventário Florestal Nacional)
 
