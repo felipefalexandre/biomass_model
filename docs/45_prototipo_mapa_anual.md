@@ -68,3 +68,17 @@ python -m biomass_model.cli annual-map `
 2. AOA por pixel e máscara de extrapolação.
 3. Calibração local e validação de campo (G2).
 4. Portões G0–G7 e model card por versão anual.
+
+
+## 8. AOA no mapa 30 m
+
+- AOA calculada por pixel: distância em 40 features padronizadas ao treino; limiar q95 da
+  distância LOO do treino (2,63).
+- 87,5% dos pixels válidos ficam dentro da AOA (197.202 de 225.414); 12,5% fora.
+- AGB média dentro da AOA 19,7 Mg ha⁻¹; fora 32,6 Mg ha⁻¹ — a extrapolação puxa valores altos
+  (64 pixels >200 Mg ha⁻¹ fora da AOA).
+- IC90 por pixel: ±53,3 Mg ha⁻¹ (largura 106,5).
+- Artefato: E:\\Mapbiomas\\biomass\\derived\\maps\\cerrado_central_agb_2021_30m_aoa_ic.tif
+  (7 bandas: AGB, domínio, validade, AOA, distância, lo90, hi90).
+- Leitura: 30 m extrapola mais que 1 km (AOA 86–99% nos boxes); por isso 1 km segue oficial e
+  30 m é diagnóstico, coerente com a decisão de resolução.

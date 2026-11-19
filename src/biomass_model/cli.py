@@ -124,7 +124,8 @@ def _cmd_annual_map(args: argparse.Namespace) -> int:
     if args.resolution == 30:
         from .inference.map import predict_map_30m
         info = predict_map_30m(args.model, args.s2, args.dem, args.era5,
-                               args.mapbiomas_dir, args.year, args.out)
+                               args.mapbiomas_dir, args.year, args.out,
+                               training_csv=args.training_csv, residual_csv=args.residuals)
     else:
         info = predict_map(args.model, args.s2, args.dem, args.era5, args.mapbiomas_dir,
                            args.year, args.out, block=args.block)
@@ -436,6 +437,8 @@ def build_parser() -> argparse.ArgumentParser:
     amap.add_argument("--out", required=True)
     amap.add_argument("--block", type=int, default=100)
     amap.add_argument("--resolution", type=int, default=1000)
+    amap.add_argument("--training-csv", default=None)
+    amap.add_argument("--residuals", default=None)
     amap.set_defaults(func=_cmd_annual_map)
 
     mint = sub.add_parser("map-intervals", help="adiciona IC90 a um mapa por pixel")

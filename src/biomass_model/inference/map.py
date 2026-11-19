@@ -161,8 +161,10 @@ def build_features_30m(annual_tif, dem_tif, era5_nc, mapbiomas_dir, year, res_m=
 
 
 def predict_map_30m(model_path, annual_tif, dem_tif, era5_nc, mapbiomas_dir, year,
-                    out, res_m=30.0, chunk=100_000):
+                    out, res_m=30.0, chunk=100_000, training_csv=None,
+                    residual_csv=None):
     import joblib
+    from scipy.spatial import cKDTree
 
     bundle = joblib.load(model_path)
     if isinstance(bundle, dict):
@@ -181,26 +183,54 @@ def predict_map_30m(model_path, annual_tif, dem_tif, era5_nc, mapbiomas_dir, yea
         valid = valid & (cells["s2_valid_fraction"].to_numpy() > 0.3)
     pred = np.where(valid, pred, np.nan)
 
+    layers = [pred, valid.astype("float32"),
+              cells["s2_valid_fraction"].to_numpy().astype("float32")]
+    names = ["agbd_mg_ha", "domain_mask", "s2_valid_fraction"]
+    extra = {}
+    if training_csv:
+        tr = pd.read_csv(training_csv)
+        tr = tr[~tr["feature_na"].astype(bool)] if "feature_na" in tr else tr
+        Xtr = tr.reindex(columns=feats).to_numpy(dtype="float64")
+        mu = np.nanmean(Xtr, axis=0)
+        sd = np.nanstd(Xtr, axis=0)
+        sd[sd == 0] = 1.0
+        Ztr = (Xtr - mu) / sd
+        tree = cKDTree(Ztr)
+        d_tr = tree.query(Ztr, k=2)[0][:, 1]
+        thr = float(np.quantile(d_tr, 0.95))
+        Z = (X - mu) / sd
+        d_map = np.empty(len(Z), dtype="float32")
+        for i in range(0, len(Z), chunk):
+            d_map[i:i + chunk] = tree.query(Z[i:i + chunk], k=1)[0]
+        inside = (d_map <= thr) & valid
+        layers += [inside.astype("float32"), d_map]
+        names += ["aoa_inside", "aoa_distance"]
+        extra.update({"aoa_threshold": thr, "aoa_fraction": float(inside.mean())})
+    if residual_csv:
+        r = pd.read_csv(residual_csv)
+        q = float((r["agbd"] - r["pred"]).abs().dropna().quantile(0.90))
+        layers += [pred - q, pred + q]
+        names += ["agbd_lo90", "agbd_hi90"]
+        extra.update({"q90": q})
+
     w, h = int(meta["w"]), int(meta["h"])
-    profile = {"driver": "GTiff", "width": w, "height": h, "count": 3,
+    profile = {"driver": "GTiff", "width": w, "height": h, "count": len(layers),
                "dtype": "float32", "crs": meta["crs"], "transform": meta["transform"],
                "compress": "deflate", "predictor": 3, "nodata": np.nan,
                "tiled": True, "blockxsize": 256, "blockysize": 256}
     out_path = Path(out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with rasterio.open(out_path, "w", **profile) as dst:
-        dst.write(pred.reshape(h, w).astype("float32"), 1)
-        dst.write(valid.reshape(h, w).astype("float32"), 2)
-        dst.write(cells["s2_valid_fraction"].to_numpy().reshape(h, w).astype("float32"), 3)
-        dst.set_band_description(1, "agbd_mg_ha")
-        dst.set_band_description(2, "domain_mask")
-        dst.set_band_description(3, "s2_valid_fraction")
+        for i, (layer, name) in enumerate(zip(layers, names), start=1):
+            dst.write(layer.reshape(h, w).astype("float32"), i)
+            dst.set_band_description(i, name)
     info = {"year": year, "resolution_m": res_m, "n_pixels": int(w * h),
             "n_valid": int(np.isfinite(pred).sum()),
             "agbd_mean": float(np.nanmean(pred)), "agbd_min": float(np.nanmin(pred)),
             "agbd_max": float(np.nanmax(pred)), "out": str(out_path),
             "model": str(model_path), "features": len(feats),
-            "note": "prototipo 30 m; sem IC/AOA/calibracao"}
+            "bands": names, **extra,
+            "note": "prototipo 30 m; AOA/IC OOF; sem calibracao/validacao de campo"}
     out_path.with_suffix(".json").write_text(json.dumps(info, indent=2, ensure_ascii=False),
                                              encoding="utf-8")
     return info
