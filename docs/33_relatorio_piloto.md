@@ -115,7 +115,30 @@ calibração, o LOO piora (−0,09 em 1 km) porque o box de menor biomassa é ex
 −20 no fold. Com 10% de calibração local, R² 0,39 em 1 km (0,25 com 4 boxes) e conformal 0,43
 (cobertura 0,892; largura 119). O box do Acre ainda falha com calibração (−0,13).
 
-### 4.7 Referência de campo e tempo
+### 4.7 Diagnóstico dos folds que falham
+
+Decompondo o erro por box (1 km, sem calibração):
+
+| Box | Viés (Mg ha⁻¹) | R² após remover viés | Inclinação obs~pred |
+|---|---|---|---|
+| Amazônia central | −24,8 | 0,07 | 0,92 |
+| Amazônia leste | −14,9 | 0,23 | 0,97 |
+| Amazônia norte | −18,4 | 0,13 | 1,53 |
+| Amazônia oeste | −7,1 | 0,15 | 1,01 |
+| Amazônia sul | **+78,2** | −0,31 | 0,17 |
+| Cerrado central | +7,8 | 0,20 | 0,63 |
+| Cerrado floresta | −16,8 | −0,01 | 0,13 |
+| Cerrado nordeste | −2,6 | 0,24 | 0,93 |
+| Cerrado noroeste | +5,3 | 0,22 | 1,05 |
+| Cerrado oeste | −25,1 | −0,05 | −0,31 |
+| Cerrado sul | −9,6 | 0,06 | 1,03 |
+
+A falha é sobretudo **deslocamento de nível e compressão** (inclinações de 0,13 a 1,53), não
+apenas ruído: o modelo aprende a média de outras regiões. Isso explica por que a calibração
+local (que reancora o nível) funciona e por que a correção linear simples não basta (a
+inclinação também muda).
+
+### 4.8 Referência de campo e tempo
 
 - Os inventários do PLOS 2018 são de 1988–2014. A validação anterior com S2 de 2024 era
   temporalmente inválida (R² 0,328); com Landsat na data, R² 0,288 / RMSE 8,9 / 42 sítios.

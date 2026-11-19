@@ -286,3 +286,10 @@ obs em 10 m.
   treino. Amazônia 86% dentro (R² 0,48 dentro; 0,44 total); Cerrado 84% (0,72; 0,71).
 - A AOA não corrige a transferência, mas separa o que é extrapolação. Decisão: todo mapa terá
   máscara AOA; acurácia reportada dentro da AOA e no total.
+
+### Diagnóstico: falha é deslocamento de nível
+- Decomposição por box (1 km, sem calibração): vieses de −25 a +78 Mg/ha e inclinações
+  obs~pred de 0,13 a 1,53. A Amazônia sul é o caso extremo (+78; inclinação 0,17);
+  o Cerrado floresta tem inclinação 0,13.
+- Conclusão: o modelo aprende o nível médio de outras regiões; a calibração local reancora
+  nível e inclinação. Correção linear apenas (rejeitada) não resolve a inclinação.
