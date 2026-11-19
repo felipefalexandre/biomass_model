@@ -1,0 +1,33 @@
+{
+  "dataset": "dem",
+  "created_at": "2026-11-19T03:11:29+00:00",
+  "git_commit": "9ec7ea1b1e341bad2244f71c857b22ea26bdf7ab",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "dem",
+    "--lon",
+    "-53.00",
+    "--lat",
+    "-11.00",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\pilots\\amazonia_sul_dem30.tif"
+  ],
+  "params": {
+    "lon": -53.0,
+    "lat": -11.0,
+    "half_deg": 0.08
+  },
+  "license": "Copernicus DEM (aberto, atribuicao)",
+  "account": "nenhuma",
+  "source": "/vsicurl/https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_S12_00_W054_00_DEM/Copernicus_DSM_COG_10_S12_00_W054_00_DEM.tif;/vsicurl/https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_S12_00_W053_00_DEM/Copernicus_DSM_COG_10_S12_00_W053_00_DEM.tif;/vsicurl/https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_S11_00_W054_00_DEM/Copernicus_DSM_COG_10_S11_00_W054_00_DEM.tif;/vsicurl/https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_S11_00_W053_00_DEM/Copernicus_DSM_COG_10_S11_00_W053_00_DEM.tif",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\amazonia_sul_dem30.tif",
+      "bytes": 1063565,
+      "sha256": "c0dce4289e7a769f5c663811be4e4b62208d5f985e2764182eb31198949b9bc3"
+    }
+  ]
+}

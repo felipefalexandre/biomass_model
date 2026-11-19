@@ -56,6 +56,7 @@ Coordenadas dos boxes (ADR-0014/0016):
 | Amazônia | central | -60.45, -6.90 | 2019-2024 |
 | Amazônia | leste (Tapajós) | -54.95, -3.15 | 2020-2024 |
 | Amazônia | oeste (Acre) | -67.30, -9.40 | 2020-2024 |
+| Amazônia | sul (PA/MT) | -53.00, -11.00 | 2020-2024 |
 | Cerrado | central | -47.70, -13.95 | 2019-2024 |
 | Cerrado | nordeste (MG) | -45.30, -16.70 | 2020-2024 |
 | Cerrado | oeste (MT) | -52.20, -12.80 | 2020-2024 |

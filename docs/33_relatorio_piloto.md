@@ -108,7 +108,14 @@ savana aberta (BA, 4.913, mediana 2,8) mudou o quadro do Cerrado:
 O gargalo do Cerrado era representação de fisionomia, não apenas calibração. A Amazônia
 segue mais difícil (saturação em AGB alta e heterogeneidade).
 
-### 4.6 Referência de campo e tempo
+### 4.6 Amazônia com 5 boxes: gradiente e extrapolação
+
+O quinto box (sul do Pará/MT, mediana 107) preenche o gradiente que faltava (146–186). Sem
+calibração, o LOO piora (−0,09 em 1 km) porque o box de menor biomassa é extrapolação e chega a
+−20 no fold. Com 10% de calibração local, R² 0,39 em 1 km (0,25 com 4 boxes) e conformal 0,43
+(cobertura 0,892; largura 119). O box do Acre ainda falha com calibração (−0,13).
+
+### 4.7 Referência de campo e tempo
 
 - Os inventários do PLOS 2018 são de 1988–2014. A validação anterior com S2 de 2024 era
   temporalmente inválida (R² 0,328); com Landsat na data, R² 0,288 / RMSE 8,9 / 42 sítios.

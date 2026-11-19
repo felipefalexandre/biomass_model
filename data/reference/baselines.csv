@@ -38,3 +38,7 @@ rf_multi6_hist_loo,cerrado,footprint_30m,72426,35,0.220,57.28,40.0,3.0,GEDI L4A 
 rf_multi6_hist_loo_1km,cerrado,celula_1km,1786,35,0.557,28.96,21.0,-6.0,GEDI L4A 2019-2024 (6 boxes),"folds -0.30/0.20/0.11/0.01/-0.64/-1.08; R2 agregado enganoso"
 rf_multi6_hist_calib10_1km,cerrado,celula_1km,1610,35,0.727,22.83,17.0,-2.0,GEDI L4A 2019-2024 (6 boxes),"10% calibracao; todos os boxes positivos (0.07-0.44)"
 rf_multi6_hist_conformal_1km,cerrado,celula_1km,1600,35,0.710,23.2,17.5,-1.5,GEDI L4A 2019-2024 (6 boxes),"conformal: cobertura 0,888; largura 58"
+rf_multi5_hist_loo,amazonia,footprint_30m,86135,35,-0.236,112.84,86.0,8.0,GEDI L4A 2019-2024 (5 boxes),"box sul (mediana 107) fora do intervalo de treino; fold -5,29"
+rf_multi5_hist_loo_1km,amazonia,celula_1km,1471,35,-0.093,57.95,43.0,4.0,GEDI L4A 2019-2024 (5 boxes),"extrapolacao falha no box de menor biomassa"
+rf_multi5_hist_calib10_1km,amazonia,celula_1km,1325,35,0.393,44.9,33.0,-1.0,GEDI L4A 2019-2024 (5 boxes),"10% calibracao; boxes 0,20/0,30/0,19/-0,13/0,01"
+rf_multi5_hist_conformal_1km,amazonia,celula_1km,1310,35,0.431,43.7,32.0,-0.5,GEDI L4A 2019-2024 (5 boxes),"conformal: cobertura 0,892; largura 119"

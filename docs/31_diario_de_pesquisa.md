@@ -265,3 +265,13 @@ obs em 10 m.
   (0,07–0,44). Conformal: cobertura 0,888, largura 58 Mg/ha.
 - Leitura: o problema do Cerrado era representação de fisionomia (floresta estacional), não
   só calibração. Amazônia segue mais difícil (saturação em AGB alta).
+
+### Amazônia: quinto box cobre o gradiente de biomassa
+- Varredura no MapBiomas encontrou floresta (74% classe 3) em (-53,0, -11,0), sul do Pará/MT,
+  com 20.690 footprints no domínio e mediana 107 — o elo que faltava entre 146 e 186.
+- Leave-one-box-out sem calibração piorou no agregado (R² −0,09 em 1 km), porque o box sul fica
+  fora do intervalo de treino e o modelo extrapola (−20 no fold). É o comportamento esperado.
+- Com 10% de calibração local: **R² 0,39 em 1 km** (era 0,25 com 4 boxes); conformal 0,43,
+  cobertura 0,892, largura 119.
+- Conclusão: cobrir o gradiente ajuda, mas **calibração local é obrigatória**; o box oeste
+  (Acre) ainda falha com calibração (−0,13), pedindo mais representação de borda/perturbação.
