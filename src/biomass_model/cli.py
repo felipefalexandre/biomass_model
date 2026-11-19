@@ -121,9 +121,21 @@ def _cmd_region_conformal(args: argparse.Namespace) -> int:
 def _cmd_annual_map(args: argparse.Namespace) -> int:
     from .inference.map import predict_map
 
-    info = predict_map(args.model, args.s2, args.dem, args.era5, args.mapbiomas_dir,
-                       args.year, args.out, block=args.block)
+    if args.resolution == 30:
+        from .inference.map import predict_map_30m
+        info = predict_map_30m(args.model, args.s2, args.dem, args.era5,
+                               args.mapbiomas_dir, args.year, args.out)
+    else:
+        info = predict_map(args.model, args.s2, args.dem, args.era5, args.mapbiomas_dir,
+                           args.year, args.out, block=args.block)
     print(json.dumps(info, indent=2))
+    return 0
+
+
+def _cmd_map_intervals(args: argparse.Namespace) -> int:
+    from .inference.map import add_intervals
+
+    print(json.dumps(add_intervals(args.map, args.residuals, args.out), indent=2))
     return 0
 
 
@@ -423,7 +435,14 @@ def build_parser() -> argparse.ArgumentParser:
     amap.add_argument("--year", type=int, required=True)
     amap.add_argument("--out", required=True)
     amap.add_argument("--block", type=int, default=100)
+    amap.add_argument("--resolution", type=int, default=1000)
     amap.set_defaults(func=_cmd_annual_map)
+
+    mint = sub.add_parser("map-intervals", help="adiciona IC90 a um mapa por pixel")
+    mint.add_argument("--map", required=True)
+    mint.add_argument("--residuals", required=True)
+    mint.add_argument("--out", required=True)
+    mint.set_defaults(func=_cmd_map_intervals)
 
     ls = sub.add_parser("landsat", help="janela Landsat C2 L2 em torno de uma data (MPC)")
     ls.add_argument("--lon", type=float, required=True)

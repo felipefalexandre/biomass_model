@@ -50,3 +50,21 @@ python -m biomass_model.cli annual-map `
 3. Calibração local por região e validação de campo (G2).
 4. Rodar todos os boxes/anos e comparar com mapas externos de atividade (sobreposição do usuário).
 5. Passar pelos portões G0–G7 antes de chamar de MRV.
+
+
+## 6. Versão 30 m e intervalo de predição
+
+- Mapa em 30 m gerado por predição em blocos (284.089 pixels; 225.414 válidos).
+- Média 21,3 Mg ha⁻¹ (faixa 0,6–376,2), próxima da média GEDI do box (~22,5).
+- IC90 adicionado por pixel com resíduos OOF (q90 = 53,3 Mg ha⁻¹), bandas gbd_lo90/gbd_hi90.
+- Artefatos:
+  - E:\Mapbiomas\biomass\derived\maps\cerrado_central_agb_2021_30m.tif
+  - E:\Mapbiomas\biomass\derived\maps\cerrado_central_agb_2021_30m_ic.tif
+- Limitações: IC cobre só o erro OOF do modelo, não o erro GEDI nem campo; sem AOA; um box/ano.
+
+## 7. Próximos passos (produto)
+
+1. Rodar 30 m para todos os anos/boxes e checar consistência.
+2. AOA por pixel e máscara de extrapolação.
+3. Calibração local e validação de campo (G2).
+4. Portões G0–G7 e model card por versão anual.

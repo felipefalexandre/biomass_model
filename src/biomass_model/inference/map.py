@@ -129,3 +129,108 @@ def predict_map(model_path: str | Path, annual_tif: str | Path, dem_tif: str | P
     out_path.with_suffix(".json").write_text(json.dumps(info, indent=2, ensure_ascii=False),
                                              encoding="utf-8")
     return info
+
+
+def build_features_30m(annual_tif, dem_tif, era5_nc, mapbiomas_dir, year, res_m=30.0):
+    """Features por pixel de 30 m (S2 reamostrado por media; DEM/ERA5/historico por ponto)."""
+    with rasterio.open(annual_tif) as ds:
+        src_res = abs(ds.transform.a)
+        w = int(ds.width * src_res / res_m)
+        h = int(ds.height * src_res / res_m)
+        names = ds.descriptions or tuple(S2_BANDS[: ds.count])
+        arr = ds.read(out_shape=(ds.count, h, w), resampling=Resampling.average)
+        transform = rasterio.transform.from_origin(ds.transform.c, ds.transform.f, res_m, res_m)
+        crs = ds.crs
+    cols, rows = np.meshgrid(np.arange(w), np.arange(h))
+    xs = transform.c + (cols + 0.5) * res_m
+    ys = transform.f - (rows + 0.5) * res_m
+    to_wgs = Transformer.from_crs(crs, "EPSG:4326", always_xy=True)
+    lon, lat = to_wgs.transform(xs.ravel(), ys.ravel())
+
+    cells = pd.DataFrame({"lon": lon, "lat": lat})
+    cells = pd.concat([cells, terrain_features(dem_tif, lon, lat)], axis=1)
+    era5 = load_era5(era5_nc)
+    cells = pd.concat([cells, era5_features(era5, lon, lat,
+                                            pd.Series([f"{year}-07-01"] * len(lon)))], axis=1)
+    for k, v in _mb_history(Path(mapbiomas_dir), lon, lat).items():
+        cells[k] = v
+    cells["mapbiomas_class"] = mapbiomas_class(mapbiomas_dir, year, lon, lat)
+    for i, name in enumerate(names):
+        cells[f"s2_{name}"] = arr[i].ravel().astype("float32")
+    return cells, {"w": w, "h": h, "crs": str(crs), "transform": transform}
+
+
+def predict_map_30m(model_path, annual_tif, dem_tif, era5_nc, mapbiomas_dir, year,
+                    out, res_m=30.0, chunk=100_000):
+    import joblib
+
+    bundle = joblib.load(model_path)
+    if isinstance(bundle, dict):
+        model, feats = bundle["model"], bundle["features"]
+    else:
+        model, feats = bundle, list(bundle.feature_names_in_)
+    cells, meta = build_features_30m(annual_tif, dem_tif, era5_nc, mapbiomas_dir,
+                                     year, res_m=res_m)
+    X = cells.reindex(columns=feats).to_numpy(dtype="float32")
+    pred = np.empty(len(X), dtype="float32")
+    for i in range(0, len(X), chunk):
+        pred[i:i + chunk] = model.predict(X[i:i + chunk])
+    pred = np.clip(pred, 0, 600)
+    valid = cells["mapbiomas_class"].isin([3, 4]).to_numpy()
+    if "s2_valid_fraction" in cells:
+        valid = valid & (cells["s2_valid_fraction"].to_numpy() > 0.3)
+    pred = np.where(valid, pred, np.nan)
+
+    w, h = int(meta["w"]), int(meta["h"])
+    profile = {"driver": "GTiff", "width": w, "height": h, "count": 3,
+               "dtype": "float32", "crs": meta["crs"], "transform": meta["transform"],
+               "compress": "deflate", "predictor": 3, "nodata": np.nan,
+               "tiled": True, "blockxsize": 256, "blockysize": 256}
+    out_path = Path(out)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with rasterio.open(out_path, "w", **profile) as dst:
+        dst.write(pred.reshape(h, w).astype("float32"), 1)
+        dst.write(valid.reshape(h, w).astype("float32"), 2)
+        dst.write(cells["s2_valid_fraction"].to_numpy().reshape(h, w).astype("float32"), 3)
+        dst.set_band_description(1, "agbd_mg_ha")
+        dst.set_band_description(2, "domain_mask")
+        dst.set_band_description(3, "s2_valid_fraction")
+    info = {"year": year, "resolution_m": res_m, "n_pixels": int(w * h),
+            "n_valid": int(np.isfinite(pred).sum()),
+            "agbd_mean": float(np.nanmean(pred)), "agbd_min": float(np.nanmin(pred)),
+            "agbd_max": float(np.nanmax(pred)), "out": str(out_path),
+            "model": str(model_path), "features": len(feats),
+            "note": "prototipo 30 m; sem IC/AOA/calibracao"}
+    out_path.with_suffix(".json").write_text(json.dumps(info, indent=2, ensure_ascii=False),
+                                             encoding="utf-8")
+    return info
+
+
+def add_intervals(map_tif, residual_csv, out, coverage=0.90):
+    # Adiciona IC90 por pixel usando residuos OOF (colunas agbd e pred).
+    import pandas as pd
+    df = pd.read_csv(residual_csv)
+    d = (df["agbd"] - df["pred"]).abs().dropna()
+    q = float(d.quantile(coverage))
+    with rasterio.open(map_tif) as src:
+        agbd = src.read(1)
+        mask = src.read(2)
+        valid = src.read(3)
+        profile = src.profile.copy()
+        profile.update(count=5)
+        out_path = Path(out)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        with rasterio.open(out_path, "w", **profile) as dst:
+            dst.write(agbd, 1)
+            dst.write(mask, 2)
+            dst.write(valid, 3)
+            dst.write(agbd - q, 4)
+            dst.write(agbd + q, 5)
+            dst.set_band_description(1, "agbd_mg_ha")
+            dst.set_band_description(2, "domain_mask")
+            dst.set_band_description(3, "s2_valid_fraction")
+            dst.set_band_description(4, "agbd_lo90")
+            dst.set_band_description(5, "agbd_hi90")
+    return {"out": str(out), "q90": q, "coverage_nominal": coverage,
+            "residual_n": int(len(d)),
+            "note": "IC de residuos OOF; nao inclui erro GEDI/campo"}
