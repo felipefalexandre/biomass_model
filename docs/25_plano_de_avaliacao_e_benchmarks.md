@@ -138,3 +138,11 @@ como promessa de acurácia. Artefatos: `data/reference/baselines.csv`,
   Cerrado em 1 km. Não adotado (`log_target=False`).
 - **S1 como feature:** ganho marginal (R² +0,004) no piloto único; não resolveu a transferência.
 - **S2 composto multi-data:** sem ganho sobre uma data no footprint.
+
+### 4.3 Calibração local (ADR-0017)
+
+Sem calibração, o leave-one-region-out fica em R² −0,10 (Amazônia) e 0,24 (Cerrado) em 1 km.
+Com 10% das células da região retida como calibração (24–35 células), sobe para 0,16 e 0,54;
+com 25%, 0,21 e 0,62. A calibração contígua (faixa ao sul) é pior na Amazônia (0,11), então a
+amostra local deve cobrir a região. Critério operacional: nenhum mapa sem calibração local e
+sem validação na parte não usada da calibração.

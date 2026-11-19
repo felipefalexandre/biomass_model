@@ -1,0 +1,33 @@
+{
+  "dataset": "dem",
+  "created_at": "2026-11-19T01:39:32+00:00",
+  "git_commit": "22c0d4e7b8fa0bd4936cbb74e2c495e54540796f",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "dem",
+    "--lon",
+    "-48.45",
+    "--lat",
+    "-22.85",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\pilots\\cerrado_sul_dem30.tif"
+  ],
+  "params": {
+    "lon": -48.45,
+    "lat": -22.85,
+    "half_deg": 0.08
+  },
+  "license": "Copernicus DEM (aberto, atribuicao)",
+  "account": "nenhuma",
+  "source": "/vsicurl/https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_S23_00_W049_00_DEM/Copernicus_DSM_COG_10_S23_00_W049_00_DEM.tif",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\cerrado_sul_dem30.tif",
+      "bytes": 1098767,
+      "sha256": "59247c5f08e2ca1132d2d777e85d21f87aba7a7c3300783bcb313aa1c465d430"
+    }
+  ]
+}

@@ -42,6 +42,9 @@ def aggregate_cells(df: pd.DataFrame, cell_px: int, min_shots: int = 3) -> pd.Da
         out["degrade_zero"] = grouped["degrade_zero"].mean() >= 0.5
     if "box" in d:
         out["box"] = grouped["box"].first()
+    for col in ("lon", "lat", "pixel_lon", "pixel_lat"):
+        if col in d:
+            out[col] = grouped[col].mean()
     out = out[out["n_shots"] >= min_shots].reset_index()
     out["pixel_row"] = out["cell_row"] * cell_px
     out["pixel_col"] = out["cell_col"] * cell_px
@@ -217,4 +220,83 @@ def run_baseline(
 
     import joblib
     joblib.dump(model, out.with_suffix(".joblib"))
+    return result
+
+
+def run_region_cv(
+    csv_path: str | Path,
+    out_dir: str | Path,
+    *,
+    calib_frac: float = 0.0,
+    n_calib: int | None = None,
+    calib_mode: str = "random",
+    group_col: str = "box",
+    cell_px: int | None = None,
+    min_shots: int = 3,
+    n_estimators: int = 400,
+    seed: int = 42,
+    max_agbd: float = 1000.0,
+) -> dict[str, Any]:
+    """Leave-one-region-out com calibracao local opcional.
+
+    Para cada regiao retida, treina nas demais e em uma amostra da regiao alvo
+    (calib_frac ou n_calib), testando no restante. Mede o custo/beneficio de
+    poucos dados locais para adaptar o modelo.
+    """
+    from sklearn.ensemble import RandomForestRegressor
+
+    df = pd.read_csv(csv_path)
+    df = df[~df["feature_na"].astype(bool)] if "feature_na" in df else df
+    df = df[np.isfinite(df["agbd"]) & (df["agbd"] >= 0) & (df["agbd"] <= max_agbd)]
+    if cell_px:
+        df = aggregate_cells(df, cell_px, min_shots=min_shots)
+    feats = feature_columns(df)
+    rng = np.random.default_rng(seed)
+
+    oof = np.full(len(df), np.nan)
+    per_box, calib_sizes = [], {}
+    for box in sorted(df[group_col].unique()):
+        target = df[group_col].to_numpy() == box
+        idx_target = np.flatnonzero(target)
+        k = n_calib if n_calib is not None else int(round(calib_frac * len(idx_target)))
+        k = min(k, max(0, len(idx_target) - 30))
+        if k and calib_mode == "south" and "pixel_lat" in df.columns:
+            order = idx_target[np.argsort(df.iloc[idx_target]["pixel_lat"].to_numpy())]
+            calib = order[:k]
+        elif k:
+            calib = rng.choice(idx_target, size=k, replace=False)
+        else:
+            calib = np.array([], dtype=int)
+        train_idx = np.flatnonzero(~target)
+        train_idx = np.concatenate([train_idx, calib])
+        test_idx = np.setdiff1d(idx_target, calib)
+        model = RandomForestRegressor(n_estimators=n_estimators, min_samples_leaf=3,
+                                      n_jobs=-1, random_state=seed)
+        model.fit(df.iloc[train_idx][feats].to_numpy(dtype="float64"),
+                  df.iloc[train_idx]["agbd"].to_numpy(dtype="float64"))
+        pred = model.predict(df.iloc[test_idx][feats].to_numpy(dtype="float64"))
+        oof[test_idx] = pred
+        m = _metrics(df.iloc[test_idx]["agbd"].to_numpy(dtype="float64"), pred)
+        m["box"] = box
+        m["n_calib"] = int(k)
+        per_box.append(m)
+        calib_sizes[box] = int(k)
+
+    mask = np.isfinite(oof)
+    overall = _metrics(df.loc[mask, "agbd"].to_numpy(dtype="float64"), oof[mask])
+    result = {
+        "csv": str(csv_path), "n": int(mask.sum()), "features": feats,
+        "calib_frac": calib_frac, "n_calib": n_calib, "calib_mode": calib_mode,
+        "cell_px": cell_px,
+        "calib_sizes": calib_sizes,
+        "overall": overall, "per_box": per_box,
+    }
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    (out.with_suffix(".metrics.json")).write_text(
+        json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+    loc_cols = [c for c in ("lon", "lat", "pixel_lon", "pixel_lat", group_col, "agbd") if c in df.columns]
+    pred_cols = df.loc[mask, loc_cols].copy()
+    pred_cols["pred"] = oof[mask]
+    pred_cols.to_csv(out.with_suffix(".predictions.csv"), index=False)
     return result

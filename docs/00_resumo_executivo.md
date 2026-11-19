@@ -70,6 +70,10 @@ Essa separação evita o erro mais comum em trabalhos de biomassa: confundir a a
   leave-one-box-out dá R² −0,18 (Amazônia) e −0,56 (Cerrado) no footprint; em 1 km, −0,13 e
   +0,42 agregado (folds até −0,81). O ganho dentro do box era autocorrelação espacial, não
   habilidade preditiva. Nenhum modelo atual atende ao critério de aceite (`docs/25`).
+- **Calibração local resolve parte do problema (ADR-0017):** com 10% das células da região
+  retida como calibração (24–35 células), o R² em 1 km sobe para 0,16 (Amazônia) e 0,54
+  (Cerrado); com 25%, 0,21 e 0,62. Regra: nenhum mapa sem calibração local e validação
+  independente na região.
 - Cerrado: L4A subestima savana aberta; campo passa a ser referência primária (ADR-0015).
 - Pendências que bloqueiam a fase de execução: ver `docs/30`.
 

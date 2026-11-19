@@ -1,0 +1,57 @@
+{
+  "dataset": "gedi",
+  "created_at": "2026-11-19T01:19:05+00:00",
+  "git_commit": "22c0d4e7b8fa0bd4936cbb74e2c495e54540796f",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "gedi",
+    "--west",
+    "-60.08",
+    "--south",
+    "-2.58",
+    "--east",
+    "-59.92",
+    "--north",
+    "-2.42",
+    "--start",
+    "2020-01-01",
+    "--end",
+    "2024-12-31",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\gedi\\amazonia_norte_l4a_v21_2020_2024.csv",
+    "--work-dir",
+    "E:\\Mapbiomas\\biomass\\gedi"
+  ],
+  "params": {
+    "bbox": [
+      -60.08,
+      -2.58,
+      -59.92,
+      -2.42
+    ],
+    "start": "2020-01-01",
+    "end": "2024-12-31",
+    "version": "V2_1",
+    "max_granules": null,
+    "min_sensitivity": 0.9,
+    "rows": 25112,
+    "granules_downloaded": 30,
+    "granules_used": 19,
+    "agbd_median": 176.47073364257812,
+    "degrade_zero_fraction": 0.7971089518955081,
+    "path": "E:\\Mapbiomas\\biomass\\gedi\\amazonia_norte_l4a_v21_2020_2024.csv"
+  },
+  "license": "NASA (aberto, atribuicao)",
+  "account": "Earthdata Login + token + app LP DAAC autorizada",
+  "source": "https://doi.org/10.5067/GEDI/GEDI04_A.002",
+  "notes": "HDF5 lidos no diretorio de trabalho; checksums no manifesto de download",
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\gedi\\amazonia_norte_l4a_v21_2020_2024.csv",
+      "bytes": 5421414,
+      "sha256": "79643e28e834b37c50e575331cc434b4e570cf00d4b1f7355f176c489ab57ccd"
+    }
+  ]
+}

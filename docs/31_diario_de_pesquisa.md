@@ -223,3 +223,17 @@ obs em 10 m.
   −4,3). Nao adotado; fica disponivel como opcao.
 - Licao: o problema nao e so escala do alvo, e transferencia entre regioes (paisagem e
   referencia). Reforca a necessidade de mais sitios e calibracao regional.
+
+### Expansão para 4 boxes e calibração local (ADR-0017)
+- Quarto box por bioma: Amazônia norte (Manaus; 24.847 footprints no domínio, mediana 177) e
+  Cerrado sul (Botucatu; 4.404 no domínio, mediana 53, 99% classe 3 — região muito antrópica,
+  mas útil como caso difícil).
+- Leave-one-box-out com 4 boxes (1 km): Amazônia R² −0,10 (folds 0,17/−0,61/−0,19/−0,21);
+  Cerrado R² 0,24 agregado (folds 0,19/−1,34/−0,20/−0,38). Continua sem transferência.
+- **Calibração local:** `run_region_cv` com 10% das células da região retida eleva o R² para
+  **0,16 (Amazônia)** e **0,54 (Cerrado)**; com 25%, 0,21 e 0,62. Faixa contígua ao sul rende
+  menos (0,11 na Amazônia), então a amostra precisa cobrir a variabilidade regional.
+- Decisão: nenhum mapa sem calibração local (~30 células de 1 km, ≈30 km² de referência) e
+  validação na parte não usada da calibração. Ressalva: calibração e teste usam GEDI; o ideal
+  é campo independente.
+- Artefatos: `*_multi_training.csv` (Amazônia 65.445; Cerrado 35.806), `*_regioncv_*`.

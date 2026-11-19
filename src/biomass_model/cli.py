@@ -99,6 +99,15 @@ def _cmd_landsat_field_table(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_region_cv(args: argparse.Namespace) -> int:
+    from .modeling import run_region_cv
+
+    result = run_region_cv(args.csv, args.out_dir, calib_frac=args.calib_frac,
+                           calib_mode=args.calib_mode, cell_px=args.cell_px)
+    print(json.dumps({k: v for k, v in result.items() if k != "features"}, indent=2))
+    return 0
+
+
 def _cmd_field_baseline(args: argparse.Namespace) -> int:
     from .modeling import run_field_baseline
 
@@ -293,6 +302,14 @@ def build_parser() -> argparse.ArgumentParser:
     fbase.add_argument("--block-deg", type=float, default=1.0)
     fbase.add_argument("--trees", type=int, default=400)
     fbase.set_defaults(func=_cmd_field_baseline)
+
+    rcv = sub.add_parser("region-cv", help="leave-one-region-out com calibracao local")
+    rcv.add_argument("--csv", required=True)
+    rcv.add_argument("--out-dir", required=True)
+    rcv.add_argument("--calib-frac", type=float, default=0.0)
+    rcv.add_argument("--calib-mode", choices=["random", "south"], default="random")
+    rcv.add_argument("--cell-px", type=int, default=None)
+    rcv.set_defaults(func=_cmd_region_cv)
 
     ls = sub.add_parser("landsat", help="janela Landsat C2 L2 em torno de uma data (MPC)")
     ls.add_argument("--lon", type=float, required=True)
