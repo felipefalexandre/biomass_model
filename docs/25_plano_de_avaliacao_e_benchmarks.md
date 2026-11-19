@@ -157,3 +157,10 @@ Features de histórico do MapBiomas (2004–2018, sem vazamento) melhoram a tran
 Amazônia 1 km R² −0,10 → 0,08; Cerrado footprint −0,49 → −0,02; com calibração de 10%,
 0,25 e 0,56. O box florestal do Cerrado (MT) continua falhando (fold −3,3), então o histórico
 não elimina a necessidade de calibração local nem de mais regiões de treino.
+
+### 4.5 Calibração: retreinar vs corrigir
+
+Alternativa mais barata (ajustar a·pred+b nos dados locais, sem retreinar) foi testada e
+rejeitada: R² 0,35 (Amazônia) e 0,60 (Cerrado) contra 0,39 e 0,73 ao retreinar com as mesmas
+células. Os coeficientes ficaram instáveis (−1,5 a 2,5), sinal de que a relação entre predição
+e observação muda por região. Portanto: **retreinar com a amostra local**, não apenas corrigir.

@@ -275,3 +275,8 @@ obs em 10 m.
   cobertura 0,892, largura 119.
 - Conclusão: cobrir o gradiente ajuda, mas **calibração local é obrigatória**; o box oeste
   (Acre) ainda falha com calibração (−0,13), pedindo mais representação de borda/perturbação.
+
+### Calibração por correção linear: rejeitada
+- Testada correção a*pred+b com 10% de células locais, sem retreinar: Amazônia R² 0,35 (vs 0,39)
+  e Cerrado 0,60 (vs 0,73). Coeficientes instáveis (até −1,5), então retreinar com a amostra
+  local é o caminho. Registrado em docs/25 §4.5.

@@ -393,3 +393,74 @@ def run_region_conformal(
         json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
     preds.to_csv(out.with_suffix(".predictions.csv"), index=False)
     return result
+
+
+def run_region_residual_calibration(
+    csv_path: str | Path,
+    out_dir: str | Path,
+    *,
+    calib_frac: float = 0.1,
+    group_col: str = "box",
+    cell_px: int | None = None,
+    min_shots: int = 3,
+    n_estimators: int = 400,
+    seed: int = 42,
+    max_agbd: float = 1000.0,
+) -> dict[str, Any]:
+    """Leave-one-region-out com correcao linear local (sem retreinar o RF).
+
+    Treina o modelo nas demais regioes, ajusta a*pred+b nos dados de calibracao
+    da regiao alvo e aplica no restante. Alternativa mais barata a aumentar o treino.
+    """
+    from sklearn.ensemble import RandomForestRegressor
+
+    df = pd.read_csv(csv_path)
+    df = df[~df["feature_na"].astype(bool)] if "feature_na" in df else df
+    df = df[np.isfinite(df["agbd"]) & (df["agbd"] >= 0) & (df["agbd"] <= max_agbd)]
+    if cell_px:
+        df = aggregate_cells(df, cell_px, min_shots=min_shots)
+    feats = feature_columns(df)
+    rng = np.random.default_rng(seed)
+
+    per_box = []
+    rows = []
+    for box in sorted(df[group_col].unique()):
+        target = df[group_col].to_numpy() == box
+        idx_target = np.flatnonzero(target)
+        k = int(round(calib_frac * len(idx_target)))
+        k = min(k, max(0, len(idx_target) - 30))
+        shuffled = rng.permutation(idx_target)
+        calib = shuffled[:k]
+        test = shuffled[k:]
+        train_idx = np.flatnonzero(~target)
+        model = RandomForestRegressor(n_estimators=n_estimators, min_samples_leaf=3,
+                                      n_jobs=-1, random_state=seed)
+        model.fit(df.iloc[train_idx][feats].to_numpy(dtype="float64"),
+                  df.iloc[train_idx]["agbd"].to_numpy(dtype="float64"))
+        pc = model.predict(df.iloc[calib][feats].to_numpy(dtype="float64"))
+        yc = df.iloc[calib]["agbd"].to_numpy(dtype="float64")
+        if len(calib) >= 3:
+            a, b = np.polyfit(pc, yc, 1)
+        else:
+            a, b = 1.0, float(np.mean(yc - pc)) if len(calib) else 0.0
+        pred = a * model.predict(df.iloc[test][feats].to_numpy(dtype="float64")) + b
+        y = df.iloc[test]["agbd"].to_numpy(dtype="float64")
+        m = _metrics(y, np.clip(pred, 0, None))
+        m.update({"box": box, "n_calib": int(k), "slope": float(a), "intercept": float(b)})
+        per_box.append(m)
+        block = df.iloc[test][["pixel_lon", "pixel_lat", group_col, "agbd"]].copy()
+        block["pred"] = np.clip(pred, 0, None)
+        rows.append(block)
+
+    preds = pd.concat(rows, ignore_index=True)
+    overall = _metrics(preds["agbd"].to_numpy(dtype="float64"),
+                       preds["pred"].to_numpy(dtype="float64"))
+    result = {"csv": str(csv_path), "n": int(len(preds)), "features": feats,
+              "calib_frac": calib_frac, "cell_px": cell_px, "overall": overall,
+              "per_box": per_box}
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    (out.with_suffix(".metrics.json")).write_text(
+        json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+    preds.to_csv(out.with_suffix(".predictions.csv"), index=False)
+    return result

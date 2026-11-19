@@ -42,3 +42,5 @@ rf_multi5_hist_loo,amazonia,footprint_30m,86135,35,-0.236,112.84,86.0,8.0,GEDI L
 rf_multi5_hist_loo_1km,amazonia,celula_1km,1471,35,-0.093,57.95,43.0,4.0,GEDI L4A 2019-2024 (5 boxes),"extrapolacao falha no box de menor biomassa"
 rf_multi5_hist_calib10_1km,amazonia,celula_1km,1325,35,0.393,44.9,33.0,-1.0,GEDI L4A 2019-2024 (5 boxes),"10% calibracao; boxes 0,20/0,30/0,19/-0,13/0,01"
 rf_multi5_hist_conformal_1km,amazonia,celula_1km,1310,35,0.431,43.7,32.0,-0.5,GEDI L4A 2019-2024 (5 boxes),"conformal: cobertura 0,892; largura 119"
+rf_residual_calib10_1km,amazonia,celula_1km,1325,35,0.354,44.79,33.0,-7.2,GEDI L4A 2019-2024 (5 boxes),"correcao linear local (a*pred+b); pior que retreinar com calibracao"
+rf_residual_calib10_1km,cerrado,celula_1km,1610,35,0.604,27.54,20.0,-4.5,GEDI L4A 2019-2024 (6 boxes),"correcao linear local; slopes instaveis (-1.5 a 2.5); nao adotada"
