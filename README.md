@@ -1,6 +1,6 @@
 # Sistema de Estimativa de Biomassa Vegetal — Amazônia e Cerrado
 
-**Status:** planejamento concluído; aquisição no pacote, pilotos definidos, GEDI L4A extraído e baseline inicial executado (R² 0,097 na Amazônia). Nenhum produto final.
+**Status:** piloto concluído (5 boxes na Amazônia, 6 no Cerrado) com calibração local, AOA e IC conformal. Cerrado calibrado R² 0,73 / RMSE 22,8 (1 km); Amazônia 0,39 / 44,9. Não é produto nacional: exige calibração por região e validação de campo independente. Ver `docs/33` (relatório) e `docs/34` (model card).
 **Escopo:** AGB (v1) e BGB (modelo separado), carbono e CO₂e, a partir de dados abertos e ferramentas gratuitas, em Python.
 **Domínio:** classes 3 (Formação Florestal) e 4 (Formação Savânica) do MapBiomas Coleção 11, Amazônia e Cerrado.
 **Data de referência desta versão:** 2026-11-17
@@ -80,6 +80,8 @@ identificado como tal.
 | 30 | [Perguntas abertas](docs/30_perguntas_abertas.md) | Pendências para o usuário |
 | 31 | [Diário de pesquisa](docs/31_diario_de_pesquisa.md) | Registro cronológico de decisões e achados |
 | 32 | [Aquisição de dados](docs/32_aquisicao_de_dados.md) | Contas, comandos, saídas e manifestos |
+| 33 | [Relatório do piloto](docs/33_relatorio_piloto.md) | Resultados consolidados e próximos passos |
+| 34 | [Model card AGB](docs/34_model_card_agb.md) | Uso, métricas, limites e calibração |
 
 ## 4. Estrutura do repositório
 
