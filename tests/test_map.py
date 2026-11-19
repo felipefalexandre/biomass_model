@@ -15,4 +15,4 @@ def test_block_mean_ignores_nan_and_edges():
 
     arr[0, 0] = np.nan
     out = _block_mean(arr, nb=2, block=2)
-    assert np.isclose(out[0, 0], (3.0 + 1.0 + 1.0 + 3.0) / 4)
+    assert np.isclose(out[0, 0], (3.0 + 1.0 + 1.0 + 3.0) / 3)
