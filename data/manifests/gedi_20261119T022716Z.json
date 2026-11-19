@@ -1,0 +1,57 @@
+{
+  "dataset": "gedi",
+  "created_at": "2026-11-19T02:27:16+00:00",
+  "git_commit": "bd3f14c0b4e223d94962a7f4fcc44c49e3594b89",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "gedi",
+    "--west",
+    "-45.88",
+    "--south",
+    "-12.58",
+    "--east",
+    "-45.72",
+    "--north",
+    "-12.42",
+    "--start",
+    "2020-01-01",
+    "--end",
+    "2024-12-31",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\gedi\\cerrado_noroeste_l4a_v21_2020_2024.csv",
+    "--work-dir",
+    "E:\\Mapbiomas\\biomass\\gedi"
+  ],
+  "params": {
+    "bbox": [
+      -45.88,
+      -12.58,
+      -45.72,
+      -12.42
+    ],
+    "start": "2020-01-01",
+    "end": "2024-12-31",
+    "version": "V2_1",
+    "max_granules": null,
+    "min_sensitivity": 0.9,
+    "rows": 14965,
+    "granules_downloaded": 40,
+    "granules_used": 23,
+    "agbd_median": 1.331116795539856,
+    "degrade_zero_fraction": 0.730170397594387,
+    "path": "E:\\Mapbiomas\\biomass\\gedi\\cerrado_noroeste_l4a_v21_2020_2024.csv"
+  },
+  "license": "NASA (aberto, atribuicao)",
+  "account": "Earthdata Login + token + app LP DAAC autorizada",
+  "source": "https://doi.org/10.5067/GEDI/GEDI04_A.002",
+  "notes": "HDF5 lidos no diretorio de trabalho; checksums no manifesto de download",
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\gedi\\cerrado_noroeste_l4a_v21_2020_2024.csv",
+      "bytes": 3209640,
+      "sha256": "9b97823c58355053ea4ed1f373b55607ffbf81107401bc5f5c3939ee6d82371a"
+    }
+  ]
+}

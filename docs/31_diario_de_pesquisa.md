@@ -253,3 +253,15 @@ obs em 10 m.
 - Conformal com histórico: cobertura 0,914 (Amazônia, largura 142) e 0,89 (Cerrado, 63).
 - O box florestal do Cerrado (MT, mediana 83) segue falhando (fold −3,3): falta representação
   de floresta estacional/secundária no treino.
+
+### Cerrado: segundo box florestal resolve a falha estrutural
+- Varredura no MapBiomas (classe 3, bioma Cerrado) localizou um box 83% floresta em
+  (-58,5, -12,0); entrou com 31.707 footprints (mediana 79). Também foi testado um box de
+  savana aberta em (-45,8, -12,5), 4.913 footprints (mediana 2,8).
+- Com 6 boxes e histórico, leave-one-box-out: footprint R² 0,22 (era −0,02 com 4 boxes) e
+  1 km 0,56 agregado; o fold floresta saiu de −3,34 para ~0. Os boxes pequenos (sul 175
+  células; noroeste 195) ainda falham.
+- Com 10% de calibração local: **R² 0,73 / RMSE 22,8 em 1 km, todos os boxes positivos**
+  (0,07–0,44). Conformal: cobertura 0,888, largura 58 Mg/ha.
+- Leitura: o problema do Cerrado era representação de fisionomia (floresta estacional), não
+  só calibração. Amazônia segue mais difícil (saturação em AGB alta).

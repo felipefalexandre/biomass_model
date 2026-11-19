@@ -15,6 +15,8 @@ METRICS = ("r2", "rmse", "mae", "bias")
 def feature_columns(df: pd.DataFrame) -> list[str]:
     cols = [c for c in df.columns if c.startswith(("s2_", "s1_", "ls_", "era5_", "mb_")) and not c.endswith("_valid")]
     cols += [c for c in ("elev", "slope", "aspect") if c in df.columns]
+    if "bioma" in df.columns and pd.api.types.is_numeric_dtype(df["bioma"]):
+        cols.append("bioma")
     return cols
 
 
@@ -42,6 +44,8 @@ def aggregate_cells(df: pd.DataFrame, cell_px: int, min_shots: int = 3) -> pd.Da
         out["degrade_zero"] = grouped["degrade_zero"].mean() >= 0.5
     if "box" in d:
         out["box"] = grouped["box"].first()
+    if "bioma" in d:
+        out["bioma"] = grouped["bioma"].first()
     for col in ("lon", "lat", "pixel_lon", "pixel_lat"):
         if col in d:
             out[col] = grouped[col].mean()

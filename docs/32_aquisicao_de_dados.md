@@ -59,6 +59,8 @@ Coordenadas dos boxes (ADR-0014/0016):
 | Cerrado | central | -47.70, -13.95 | 2019-2024 |
 | Cerrado | nordeste (MG) | -45.30, -16.70 | 2020-2024 |
 | Cerrado | oeste (MT) | -52.20, -12.80 | 2020-2024 |
+| Cerrado | floresta (MT) | -58.50, -12.00 | 2020-2024 |
+| Cerrado | noroeste (BA) | -45.80, -12.50 | 2020-2024 |
 
 Cada box usa ±0,08° (~17,8 km) para GEDI e 1600 px de 10 m para S2.
 

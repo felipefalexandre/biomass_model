@@ -93,7 +93,22 @@ Com calibração e conjunto conformal de 10% cada, a cobertura do IC90 foi 0,884
 0,901 (Cerrado), dentro da faixa 80–95%, mas com largura média de 134 e 76 Mg ha⁻¹. O intervalo
 é honesto: o modelo calibrado acerta a cobertura, mas a incerteza é grande.
 
-### 4.5 Referência de campo e tempo
+### 4.5 Cerrado com 6 boxes: representação de fisionomia
+
+Adicionar um segundo box de floresta estacional (MT, 31.707 footprints, mediana 79) e um de
+savana aberta (BA, 4.913, mediana 2,8) mudou o quadro do Cerrado:
+
+| Configuração | Escala | R² | Observação |
+|---|---|---|---|
+| 4 boxes, histórico | 1 km | 0,29 | fold floresta −3,3 |
+| 6 boxes, histórico | 1 km | 0,56 | fold floresta ~0; boxes pequenos falham |
+| 6 boxes + 10% calibração | 1 km | **0,73** | todos os boxes positivos (0,07–0,44) |
+| 6 boxes + conformal | 1 km | 0,71 | cobertura 0,888; largura 58 |
+
+O gargalo do Cerrado era representação de fisionomia, não apenas calibração. A Amazônia
+segue mais difícil (saturação em AGB alta e heterogeneidade).
+
+### 4.6 Referência de campo e tempo
 
 - Os inventários do PLOS 2018 são de 1988–2014. A validação anterior com S2 de 2024 era
   temporalmente inválida (R² 0,328); com Landsat na data, R² 0,288 / RMSE 8,9 / 42 sítios.

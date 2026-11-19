@@ -1,0 +1,33 @@
+{
+  "dataset": "dem",
+  "created_at": "2026-11-19T02:48:21+00:00",
+  "git_commit": "bd3f14c0b4e223d94962a7f4fcc44c49e3594b89",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "dem",
+    "--lon",
+    "-58.50",
+    "--lat",
+    "-12.00",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\pilots\\cerrado_floresta_dem30.tif"
+  ],
+  "params": {
+    "lon": -58.5,
+    "lat": -12.0,
+    "half_deg": 0.08
+  },
+  "license": "Copernicus DEM (aberto, atribuicao)",
+  "account": "nenhuma",
+  "source": "/vsicurl/https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_S13_00_W059_00_DEM/Copernicus_DSM_COG_10_S13_00_W059_00_DEM.tif;/vsicurl/https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_S12_00_W059_00_DEM/Copernicus_DSM_COG_10_S12_00_W059_00_DEM.tif",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\cerrado_floresta_dem30.tif",
+      "bytes": 1064311,
+      "sha256": "3ed2a58a54dfb573ea8616ecad3863f6cb53d05082192690dad5c3ca8bcebe20"
+    }
+  ]
+}
