@@ -103,8 +103,7 @@ fitofisionomias e faixas indicativas. Sem campo/IBGE, a granularidade fina não 
 
 1. **Mapa primeiro** (1 km oficial; 30 m diagnóstico) com IC, AOA e máscara 3/4. É o produto que
    sustenta REDD+/ARR: estoque e insumo para sobreposição com mapas externos de atividade.
-2. **Tabela por polígono derivada** (área, média, estoque, IC, por estrato), usando composição do
-   mapa ou do usuário. É o produto de relatório, não uma arquitetura alternativa.
+2. **Soma/polígono é cálculo do usuário**; a tabela por polígono é apenas QA opcional, não produto.
 3. **Modo polígono** apenas como atalho de relatório: exige médias por estrato **locais/
    calibradas**; nunca usar médias de outro bioma/região sem aviso. Sem mapa, não há análise de
    verificação espacial nem sobreposição com atividade.

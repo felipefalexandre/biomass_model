@@ -92,6 +92,7 @@ identificado como tal.
 | 42 | [Resultados E1](docs/42_resultados_e1.md) | Features anuais vs compósito |
 | 43 | [Estabilidade temporal](docs/43_resultado_mudanca_preliminar.md) | Pares anuais e ruído |
 | 44 | [Requisitos REDD+/ARR](docs/44_requisitos_redd_arr.md) | O que o modelo entrega |
+| 45 | [Protótipo do mapa anual](docs/45_prototipo_mapa_anual.md) | Mapa por pixel 1 km |
 
 ## 4. Estrutura do repositório
 

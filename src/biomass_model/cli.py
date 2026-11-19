@@ -118,6 +118,15 @@ def _cmd_region_conformal(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_annual_map(args: argparse.Namespace) -> int:
+    from .inference.map import predict_map
+
+    info = predict_map(args.model, args.s2, args.dem, args.era5, args.mapbiomas_dir,
+                       args.year, args.out, block=args.block)
+    print(json.dumps(info, indent=2))
+    return 0
+
+
 def _cmd_mrv_check(args: argparse.Namespace) -> int:
     from .mrv import check_predictions
 
@@ -404,6 +413,17 @@ def build_parser() -> argparse.ArgumentParser:
     mrv.add_argument("--class-col", default="mapbiomas_class")
     mrv.add_argument("--aoa-col", default="aoa_inside")
     mrv.set_defaults(func=_cmd_mrv_check)
+
+    amap = sub.add_parser("annual-map", help="mapa anual de AGB por pixel (prototipo)")
+    amap.add_argument("--model", required=True)
+    amap.add_argument("--s2", required=True)
+    amap.add_argument("--dem", required=True)
+    amap.add_argument("--era5", required=True)
+    amap.add_argument("--mapbiomas-dir", required=True)
+    amap.add_argument("--year", type=int, required=True)
+    amap.add_argument("--out", required=True)
+    amap.add_argument("--block", type=int, default=100)
+    amap.set_defaults(func=_cmd_annual_map)
 
     ls = sub.add_parser("landsat", help="janela Landsat C2 L2 em torno de uma data (MPC)")
     ls.add_argument("--lon", type=float, required=True)

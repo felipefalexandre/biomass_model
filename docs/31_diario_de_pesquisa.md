@@ -333,3 +333,11 @@ obs em 10 m.
   auditoria).
 - Implementado mrv-check (G3/G4/G6 automatizados; demais manuais) e testes (27 passando).
 - Atividade, adicionalidade, leakage e permanência continuam fora do modelo.
+
+### Protótipo de mapa anual por pixel (2026-11-18)
+- Requisito confirmado: produto é mapa raster de AGB por pixel; soma/polígono é do usuário.
+- Implementado nnual-map: features S2 anuais -> blocos de 1 km -> DEM/ERA5/histórico ->
+  RF -> GeoTIFF (agbd, domain_mask, valid_fraction).
+- Cerrado central 2021: 16x16 células de 1 km, 194 válidas; média 15,9 Mg/ha (GEDI ~22,5) —
+  subestima sem calibração; protótipo, sem IC/AOA.
+- Próximo: 30 m chunked, IC conformal, AOA, calibração e validação de campo (G2).

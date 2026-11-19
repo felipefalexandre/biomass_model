@@ -44,7 +44,7 @@ desmatamento, adicionalidade, leakage, permanência, elegibilidade e certificaç
 
 1. **Validação independente** por bioma/estrato, com ≥30 sítios e período compatível; R² ≥0,40 e
    |viés| ≤15% (critério provisório de `docs/37`).
-2. **Estoque por polígono** com erro compatível com o IC declarado (sem viés >15%).
+2. **Mapa por pixel** consistente: soma do usuário reproduz o total; sem viés agregado >15% quando validado.
 3. **Incerteza** com cobertura IC90 85–95% por bioma/ano e por polígono.
 4. **Estratificação** acordada (IBGE/MapBiomas/idade) e composição documentada.
 5. **Modelo versionado** (features, hiperparâmetros, sementes, manifestos, model card).
