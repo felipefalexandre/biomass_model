@@ -13,7 +13,9 @@
   5. independência: zero GEDI/derivados no inference (auditado);
   6. estabilidade: sem oscilação anual sistemática atribuível a ruído de features (diagnóstico,
      não detecção de desmatamento);
-  7. reprodutibilidade: pipeline anual completo com manifesto e testes.
+  7. reprodutibilidade: pipeline anual completo com manifesto e testes;
+  8. proveniência/QA: linhagem, hashes, versões, faixas válidas, nodata e consistência anual;
+  9. portões MRV G0–G7 de docs/44 completos (sem eles, produto experimental).
 - **Consequências:** ausência de campo suficiente mantém o modelo como experimental; resultados
   negativos são registrados e o baseline é mantido. Detecção de desmatamento não é critério.
 - **Arquivos:** `docs/37` §6, `docs/44`.

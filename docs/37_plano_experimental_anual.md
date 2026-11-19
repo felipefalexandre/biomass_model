@@ -99,6 +99,9 @@ de qualidade, não critério de promoção.
 6. **Estabilidade:** nenhuma oscilação anual sistemática atribuível a ruído de features; versões
    anuais documentadas. (Não é critério de detecção de desmatamento.)
 7. **Reprodutibilidade:** pipeline anual completo com manifesto e testes.
+8. **Proveniência/QA:** linhagem de dados, hashes, versões, faixas válidas, nodata, bordas e
+   consistência anual documentados.
+9. **Portões MRV:** G0–G7 de docs/44 completos; sem eles o produto é experimental, não MRV.
 
 Não aprovar por R² médio contra GEDI. Ganho tem que ser consistente entre boxes e anos.
 

@@ -67,3 +67,50 @@ desmatamento, adicionalidade, leakage, permanência, elegibilidade e certificaç
 3. P6 (PLOS/ORNL) e campo novo; curvas de calibração.
 4. P7 (polígono/incerteza) e P8 (produto anual).
 5. Model card, protocolo de auditoria e validação externa.
+
+## 7. Portões MRV obrigatórios do produto de biomassa
+
+Estes portões são **indispensáveis para gerar o produto** (mapa, estoque, estrato). Não são
+opcionais nem “fase futura”. Um produto só é liberado se todos estiverem documentados e
+verificáveis. Eles não certificam projeto nem substituem auditoria externa.
+
+| Portão | Requisito | Evidência mínima | Bloqueia? |
+|---|---|---|---|
+| G0 Escopo | Versão, ano, bioma, domínio, resolução, limitações | model card + changelog | sim |
+| G1 Dados/proveniência | Fontes, licenças, contas, datas, hashes, versões | `data/manifests/` + catálogo | sim |
+| G2 Validação | LOO espacial + campo independente; métricas por box/estrato | relatório de métricas + sítios reservados | sim |
+| G3 Incerteza | IC por célula e por polígono; cobertura e componentes | conformal + bootstrap espacial | sim |
+| G4 Estratificação | Crosswalk, composição, AOA, máscara 3/4 e lacunas | crosswalk + fração AOA + mapa de domínio | sim |
+| G5 Reprodutibilidade | Código versionado, seeds, ambiente, testes | commit + `pytest` + manifesto | sim |
+| G6 QA/QC | Faixas válidas, nodata, bordas, consistência anual, duplicatas | relatório de QA + flags | sim |
+| G7 Auditoria | Premissas, limitações, decisões, histórico de versões | ADRs + diário + model card | sim |
+
+### 7.1 Indispensável (dentro do produto)
+
+- acurácia contra referência independente, com sítios nunca usados no ajuste;
+- incerteza calibrada em cada escala (célula, estrato, polígono);
+- estratificação explícita e rastreável (fitofisionomia/composição);
+- domínio e AOA explícitos, com áreas não estimadas;
+- linhagem completa de dados e código;
+- QA/QC automatizado e registrado;
+- versionamento anual e changelog;
+- limitações e premissas escritas;
+- capacidade de auditoria por terceiro (reproduzir o número).
+
+### 7.2 Fora do produto
+
+- mapas/modelos de desmatamento, fogo e regeneração (atividade);
+- linha de base de desmatamento, adicionalidade, leakage, permanência;
+- elegibilidade, certificação e emissão de créditos.
+
+A MRV do projeto combina **este produto de biomassa** com **dados de atividade externos**; o
+modelo não precisa gerar nem prever a atividade.
+
+### 7.3 Verificação automatizada (implementada)
+
+python -m biomass_model.cli mrv-check --csv <predicoes.csv> avalia G6 (faixas, duplicatas), G4 (domínio/AOA) e G3 (cobertura IC quando há lo/hi/obs). G0/G1/G2/G5/G7 permanecem manuais por exigirem artefatos externos (model card, manifestos, relatório de campo, commit, ADRs).
+
+### 7.4 Critério de liberação
+
+Um ano/região só é publicado como base MRV se G0–G7 estiverem completos. Sem campo independente,
+o produto pode existir como **experimental**, explicitamente marcado, mas não como base MRV.

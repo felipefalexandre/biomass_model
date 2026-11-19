@@ -326,3 +326,10 @@ obs em 10 m.
 - Atividade (desmatamento/fogo/regeneração) vem de mapas/modelos externos; a biomassa é insumo.
 - docs/37, 40, 41, 43, 44 revistos; ADR-0021/0024 ajustados. A E2a passa a ser diagnóstico de
   estabilidade temporal, não validação de mudança.
+
+### MRV como requisito do produto (2026-11-18)
+- MRV deixou de ser contexto de projeto: G0-G7 são portões obrigatórios para gerar o produto de
+  biomassa (escopo, proveniência, validação, incerteza, estratificação, reprodutibilidade, QA/QC,
+  auditoria).
+- Implementado mrv-check (G3/G4/G6 automatizados; demais manuais) e testes (27 passando).
+- Atividade, adicionalidade, leakage e permanência continuam fora do modelo.

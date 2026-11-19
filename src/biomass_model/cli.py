@@ -118,6 +118,15 @@ def _cmd_region_conformal(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_mrv_check(args: argparse.Namespace) -> int:
+    from .mrv import check_predictions
+
+    result = check_predictions(args.csv, args.out, value_col=args.value_col,
+                               class_col=args.class_col, aoa_col=args.aoa_col)
+    print(json.dumps(result, indent=2))
+    return 0
+
+
 def _cmd_polygon_stats(args: argparse.Namespace) -> int:
     from .polygon import polygon_stats
 
@@ -387,6 +396,14 @@ def build_parser() -> argparse.ArgumentParser:
     pst.add_argument("--block-px", type=int, default=5)
     pst.add_argument("--n-boot", type=int, default=400)
     pst.set_defaults(func=_cmd_polygon_stats)
+
+    mrv = sub.add_parser("mrv-check", help="QA/MRV de uma tabela de predicoes")
+    mrv.add_argument("--csv", required=True)
+    mrv.add_argument("--out", default=None)
+    mrv.add_argument("--value-col", default="pred")
+    mrv.add_argument("--class-col", default="mapbiomas_class")
+    mrv.add_argument("--aoa-col", default="aoa_inside")
+    mrv.set_defaults(func=_cmd_mrv_check)
 
     ls = sub.add_parser("landsat", help="janela Landsat C2 L2 em torno de uma data (MPC)")
     ls.add_argument("--lon", type=float, required=True)
