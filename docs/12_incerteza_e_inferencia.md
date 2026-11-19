@@ -119,3 +119,11 @@ testa. Em 1 km, com calibração local:
 A cobertura nominal é atingida, mas os intervalos são largos — consequência direta da
 transferência imperfeita entre regiões. Calibração e conjuntos conformais vêm da mesma
 referência GEDI; com campo independente, a largura tende a aumentar.
+
+## Área de Aplicabilidade (ADR-0019)
+
+`modeling.run_region_aoa` (CLI `region-aoa`) calcula a distância em features padronizadas e
+usa o quantil 95% da distância leave-one-out do treino como limiar. Em 1 km com calibração de
+10%: 86% das células da Amazônia e 84% do Cerrado ficam dentro da AOA; dentro dela, R² 0,48 e
+0,72. A AOA **não** conserta a transferência (Acre e sul do Pará continuam negativos), mas
+impede que a extrapolação seja entregue como se fosse acurácia.

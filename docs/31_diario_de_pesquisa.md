@@ -280,3 +280,9 @@ obs em 10 m.
 - Testada correção a*pred+b com 10% de células locais, sem retreinar: Amazônia R² 0,35 (vs 0,39)
   e Cerrado 0,60 (vs 0,73). Coeficientes instáveis (até −1,5), então retreinar com a amostra
   local é o caminho. Registrado em docs/25 §4.5.
+
+### Área de Aplicabilidade (ADR-0019)
+- `run_region_aoa`: distância em features padronizadas, limiar = q95 da distância LOO do
+  treino. Amazônia 86% dentro (R² 0,48 dentro; 0,44 total); Cerrado 84% (0,72; 0,71).
+- A AOA não corrige a transferência, mas separa o que é extrapolação. Decisão: todo mapa terá
+  máscara AOA; acurácia reportada dentro da AOA e no total.

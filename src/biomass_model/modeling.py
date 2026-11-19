@@ -464,3 +464,100 @@ def run_region_residual_calibration(
         json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
     preds.to_csv(out.with_suffix(".predictions.csv"), index=False)
     return result
+
+
+def run_region_aoa(
+    csv_path: str | Path,
+    out_dir: str | Path,
+    *,
+    calib_frac: float = 0.1,
+    group_col: str = "box",
+    cell_px: int | None = None,
+    min_shots: int = 3,
+    n_estimators: int = 400,
+    seed: int = 42,
+    max_agbd: float = 1000.0,
+    aoa_quantile: float = 0.95,
+) -> dict[str, Any]:
+    """Leave-one-region-out com Area de Aplicabilidade (Meyer & Pebesma, 2021).
+
+    d(x) = distancia euclidiana em features padronizadas pelo treino. O limiar e o
+    quantil `aoa_quantile` da distancia leave-one-out dos pontos de treino. Reporta
+    fracao dentro da AOA e metricas dentro/fora.
+    """
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.neighbors import NearestNeighbors
+
+    df = pd.read_csv(csv_path)
+    df = df[~df["feature_na"].astype(bool)] if "feature_na" in df else df
+    df = df[np.isfinite(df["agbd"]) & (df["agbd"] >= 0) & (df["agbd"] <= max_agbd)]
+    if cell_px:
+        df = aggregate_cells(df, cell_px, min_shots=min_shots)
+    feats = feature_columns(df)
+    rng = np.random.default_rng(seed)
+
+    rows, per_box = [], []
+    for box in sorted(df[group_col].unique()):
+        target = df[group_col].to_numpy() == box
+        idx_target = np.flatnonzero(target)
+        k = int(round(calib_frac * len(idx_target)))
+        k = min(k, max(0, len(idx_target) - 30))
+        shuffled = rng.permutation(idx_target)
+        calib = shuffled[:k]
+        test = shuffled[k:]
+        train_idx = np.concatenate([np.flatnonzero(~target), calib])
+
+        X_train = df.iloc[train_idx][feats].to_numpy(dtype="float64")
+        X_test = df.iloc[test][feats].to_numpy(dtype="float64")
+        mu, sd = X_train.mean(axis=0), X_train.std(axis=0)
+        sd[sd == 0] = 1.0
+        Z_train = (X_train - mu) / sd
+        Z_test = (X_test - mu) / sd
+
+        nn = NearestNeighbors(n_neighbors=2).fit(Z_train)
+        d_train = nn.kneighbors(Z_train, return_distance=True)[0][:, 1]
+        threshold = float(np.quantile(d_train, aoa_quantile))
+        d_test = nn.kneighbors(Z_test, return_distance=True)[0][:, 0] if len(Z_test) else np.array([])
+
+        model = RandomForestRegressor(n_estimators=n_estimators, min_samples_leaf=3,
+                                      n_jobs=-1, random_state=seed)
+        model.fit(X_train, df.iloc[train_idx]["agbd"].to_numpy(dtype="float64"))
+        pred = model.predict(X_test)
+        y = df.iloc[test]["agbd"].to_numpy(dtype="float64")
+        inside = d_test <= threshold
+
+        m = _metrics(y, pred)
+        m.update({
+            "box": box, "n_calib": int(k), "aoa_threshold": threshold,
+            "aoa_fraction": float(inside.mean()) if len(inside) else float("nan"),
+            "r2_inside": float(_metrics(y[inside], pred[inside])["r2"]) if inside.sum() > 5 else None,
+            "rmse_inside": float(_metrics(y[inside], pred[inside])["rmse"]) if inside.sum() > 5 else None,
+            "n_inside": int(inside.sum()),
+        })
+        per_box.append(m)
+        block = df.iloc[test][["pixel_lon", "pixel_lat", group_col, "agbd"]].copy()
+        block["pred"] = pred
+        block["aoa_d"] = d_test
+        block["aoa_inside"] = inside
+        rows.append(block)
+
+    preds = pd.concat(rows, ignore_index=True)
+    inside = preds["aoa_inside"].to_numpy()
+    overall = _metrics(preds["agbd"].to_numpy(dtype="float64"),
+                       preds["pred"].to_numpy(dtype="float64"))
+    overall.update({
+        "aoa_fraction": float(inside.mean()),
+        "r2_inside": float(_metrics(preds.loc[inside, "agbd"].to_numpy(dtype="float64"),
+                                    preds.loc[inside, "pred"].to_numpy(dtype="float64"))["r2"]) if inside.sum() > 5 else None,
+        "rmse_inside": float(_metrics(preds.loc[inside, "agbd"].to_numpy(dtype="float64"),
+                                      preds.loc[inside, "pred"].to_numpy(dtype="float64"))["rmse"]) if inside.sum() > 5 else None,
+    })
+    result = {"csv": str(csv_path), "n": int(len(preds)), "features": feats,
+              "calib_frac": calib_frac, "cell_px": cell_px,
+              "overall": overall, "per_box": per_box}
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    (out.with_suffix(".metrics.json")).write_text(
+        json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+    preds.to_csv(out.with_suffix(".predictions.csv"), index=False)
+    return result

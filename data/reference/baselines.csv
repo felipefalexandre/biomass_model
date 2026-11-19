@@ -44,3 +44,5 @@ rf_multi5_hist_calib10_1km,amazonia,celula_1km,1325,35,0.393,44.9,33.0,-1.0,GEDI
 rf_multi5_hist_conformal_1km,amazonia,celula_1km,1310,35,0.431,43.7,32.0,-0.5,GEDI L4A 2019-2024 (5 boxes),"conformal: cobertura 0,892; largura 119"
 rf_residual_calib10_1km,amazonia,celula_1km,1325,35,0.354,44.79,33.0,-7.2,GEDI L4A 2019-2024 (5 boxes),"correcao linear local (a*pred+b); pior que retreinar com calibracao"
 rf_residual_calib10_1km,cerrado,celula_1km,1610,35,0.604,27.54,20.0,-4.5,GEDI L4A 2019-2024 (6 boxes),"correcao linear local; slopes instaveis (-1.5 a 2.5); nao adotada"
+rf_aoa_1km,amazonia,celula_1km,1471,35,0.438,41.76,31.0,-4.0,GEDI L4A 2019-2024 (5 boxes),"AOA 86% dentro; R2 0,475 dentro (RMSE 38,1); boxes Acre/PA-sul extrapolam"
+rf_aoa_1km,cerrado,celula_1km,1786,35,0.706,23.76,17.0,-1.0,GEDI L4A 2019-2024 (6 boxes),"AOA 84% dentro; R2 0,717 dentro (RMSE 23,9)"

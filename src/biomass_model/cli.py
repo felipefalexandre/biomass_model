@@ -118,6 +118,15 @@ def _cmd_region_conformal(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_region_aoa(args: argparse.Namespace) -> int:
+    from .modeling import run_region_aoa
+
+    result = run_region_aoa(args.csv, args.out_dir, calib_frac=args.calib_frac,
+                            cell_px=args.cell_px)
+    print(json.dumps({k: v for k, v in result.items() if k != "features"}, indent=2))
+    return 0
+
+
 def _cmd_field_baseline(args: argparse.Namespace) -> int:
     from .modeling import run_field_baseline
 
@@ -329,6 +338,13 @@ def build_parser() -> argparse.ArgumentParser:
     rcf.add_argument("--conformal-frac", type=float, default=0.1)
     rcf.add_argument("--cell-px", type=int, default=None)
     rcf.set_defaults(func=_cmd_region_conformal)
+
+    raoa = sub.add_parser("region-aoa", help="Area de Aplicabilidade por regiao")
+    raoa.add_argument("--csv", required=True)
+    raoa.add_argument("--out-dir", required=True)
+    raoa.add_argument("--calib-frac", type=float, default=0.1)
+    raoa.add_argument("--cell-px", type=int, default=None)
+    raoa.set_defaults(func=_cmd_region_aoa)
 
     ls = sub.add_parser("landsat", help="janela Landsat C2 L2 em torno de uma data (MPC)")
     ls.add_argument("--lon", type=float, required=True)
