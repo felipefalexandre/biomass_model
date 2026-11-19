@@ -237,3 +237,10 @@ obs em 10 m.
   validação na parte não usada da calibração. Ressalva: calibração e teste usam GEDI; o ideal
   é campo independente.
 - Artefatos: `*_multi_training.csv` (Amazônia 65.445; Cerrado 35.806), `*_regioncv_*`.
+
+### Incerteza: split conformal por região
+- `run_region_conformal` + CLI `region-conformal`: calibração 10%, conformal 10%, teste 80%.
+- 1 km: cobertura IC90 0,884 (Amazônia; largura 134 Mg/ha) e 0,901 (Cerrado; 76 Mg/ha),
+  dentro da meta de 80-95%, com intervalos largos.
+- Ressalva: calibração/conformal/teste usam GEDI; a largura deve crescer com campo
+  independente. Registrado em docs/12.

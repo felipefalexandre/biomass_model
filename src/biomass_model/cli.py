@@ -108,6 +108,16 @@ def _cmd_region_cv(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_region_conformal(args: argparse.Namespace) -> int:
+    from .modeling import run_region_conformal
+
+    result = run_region_conformal(args.csv, args.out_dir, calib_frac=args.calib_frac,
+                                  conformal_frac=args.conformal_frac,
+                                  cell_px=args.cell_px)
+    print(json.dumps({k: v for k, v in result.items() if k != "features"}, indent=2))
+    return 0
+
+
 def _cmd_field_baseline(args: argparse.Namespace) -> int:
     from .modeling import run_field_baseline
 
@@ -310,6 +320,14 @@ def build_parser() -> argparse.ArgumentParser:
     rcv.add_argument("--calib-mode", choices=["random", "south", "center"], default="random")
     rcv.add_argument("--cell-px", type=int, default=None)
     rcv.set_defaults(func=_cmd_region_cv)
+
+    rcf = sub.add_parser("region-conformal", help="intervalo conformal por regiao")
+    rcf.add_argument("--csv", required=True)
+    rcf.add_argument("--out-dir", required=True)
+    rcf.add_argument("--calib-frac", type=float, default=0.1)
+    rcf.add_argument("--conformal-frac", type=float, default=0.1)
+    rcf.add_argument("--cell-px", type=int, default=None)
+    rcf.set_defaults(func=_cmd_region_conformal)
 
     ls = sub.add_parser("landsat", help="janela Landsat C2 L2 em torno de uma data (MPC)")
     ls.add_argument("--lon", type=float, required=True)

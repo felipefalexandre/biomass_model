@@ -24,3 +24,5 @@ rf_regioncv_center_n100_1km,amazonia,celula_1km,950,25,0.035,50.39,37.0,-3.0,GED
 rf_regioncv_n5_1km,cerrado,celula_1km,1020,25,0.511,27.06,19.6,-1.0,GEDI L4A 2019-2024 (4 boxes),"5 celulas aleatorias ja capturam o nivel"
 rf_regioncv_n100_1km,cerrado,celula_1km,750,25,0.655,21.56,15.9,-0.5,GEDI L4A 2019-2024 (4 boxes),"100 celulas aleatorias"
 rf_regioncv_center_n100_1km,cerrado,celula_1km,750,25,0.453,26.96,19.8,0.2,GEDI L4A 2019-2024 (4 boxes),"100 celulas compactas; pior que espalhadas"
+rf_conformal_1km,amazonia,celula_1km,978,25,0.162,48.24,36.3,-2.0,GEDI L4A 2019-2024 (4 boxes),"split conformal: cobertura IC90 0,884; largura media 134 Mg/ha"
+rf_conformal_1km,cerrado,celula_1km,835,25,0.485,28.15,20.1,-0.6,GEDI L4A 2019-2024 (4 boxes),"split conformal: cobertura IC90 0,901; largura media 76 Mg/ha"

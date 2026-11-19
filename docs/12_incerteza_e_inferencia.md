@@ -104,3 +104,18 @@ Na prática:
 3. Mapa de desvio-padrão e mapa de AOA.
 4. Relatório de cobertura empírica dos ICs.
 5. Lista de suposições e o que aconteceria se forem violadas (análise de sensibilidade).
+
+## Incerteza no piloto (2026-11-18)
+
+Implementado split conformal em `modeling.run_region_conformal` (CLI `region-conformal`):
+calibração (10%) treina, conjunto conformal (10%) estima o quantil dos resíduos e o restante
+testa. Em 1 km, com calibração local:
+
+| Bioma | R² | RMSE | Cobertura IC90 | Largura média |
+|---|---|---|---|---|
+| Amazônia | 0,16 | 48,2 | 0,884 | 134 Mg ha⁻¹ |
+| Cerrado | 0,49 | 28,2 | 0,901 | 76 Mg ha⁻¹ |
+
+A cobertura nominal é atingida, mas os intervalos são largos — consequência direta da
+transferência imperfeita entre regiões. Calibração e conjuntos conformais vêm da mesma
+referência GEDI; com campo independente, a largura tende a aumentar.

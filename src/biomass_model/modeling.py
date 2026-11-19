@@ -305,3 +305,87 @@ def run_region_cv(
     pred_cols["pred"] = oof[mask]
     pred_cols.to_csv(out.with_suffix(".predictions.csv"), index=False)
     return result
+
+
+def run_region_conformal(
+    csv_path: str | Path,
+    out_dir: str | Path,
+    *,
+    calib_frac: float = 0.1,
+    conformal_frac: float = 0.1,
+    coverage: float = 0.9,
+    group_col: str = "box",
+    cell_px: int | None = None,
+    min_shots: int = 3,
+    n_estimators: int = 400,
+    seed: int = 42,
+    max_agbd: float = 1000.0,
+) -> dict[str, Any]:
+    """Leave-one-region-out com calibracao e intervalo conformal (split).
+
+    A regiao retida e dividida em calibracao (treino), conformal (residuos) e teste.
+    Reporta cobertura e largura media do intervalo por regiao.
+    """
+    from sklearn.ensemble import RandomForestRegressor
+
+    df = pd.read_csv(csv_path)
+    df = df[~df["feature_na"].astype(bool)] if "feature_na" in df else df
+    df = df[np.isfinite(df["agbd"]) & (df["agbd"] >= 0) & (df["agbd"] <= max_agbd)]
+    if cell_px:
+        df = aggregate_cells(df, cell_px, min_shots=min_shots)
+    feats = feature_columns(df)
+    rng = np.random.default_rng(seed)
+
+    rows, per_box = [], []
+    for box in sorted(df[group_col].unique()):
+        target = df[group_col].to_numpy() == box
+        idx_target = np.flatnonzero(target)
+        n_cal = int(round(calib_frac * len(idx_target)))
+        n_conf = int(round(conformal_frac * len(idx_target)))
+        n_cal = min(n_cal, max(0, len(idx_target) - n_conf - 30))
+        shuffled = rng.permutation(idx_target)
+        calib = shuffled[:n_cal]
+        conf = shuffled[n_cal:n_cal + n_conf]
+        test = shuffled[n_cal + n_conf:]
+        train_idx = np.concatenate([np.flatnonzero(~target), calib])
+
+        model = RandomForestRegressor(n_estimators=n_estimators, min_samples_leaf=3,
+                                      n_jobs=-1, random_state=seed)
+        model.fit(df.iloc[train_idx][feats].to_numpy(dtype="float64"),
+                  df.iloc[train_idx]["agbd"].to_numpy(dtype="float64"))
+        pred_conf = model.predict(df.iloc[conf][feats].to_numpy(dtype="float64"))
+        resid = np.abs(df.iloc[conf]["agbd"].to_numpy(dtype="float64") - pred_conf)
+        q = float(np.quantile(resid, coverage)) if len(resid) else float("nan")
+        pred = model.predict(df.iloc[test][feats].to_numpy(dtype="float64"))
+        y = df.iloc[test]["agbd"].to_numpy(dtype="float64")
+        inside = np.abs(y - pred) <= q
+        m = _metrics(y, pred)
+        m.update({"box": box, "n_calib": int(len(calib)), "n_conformal": int(len(conf)),
+                  "q90": q, "coverage90": float(inside.mean()),
+                  "width90": float(2 * q)})
+        per_box.append(m)
+        loc_cols = [c for c in ("lon", "lat", "pixel_lon", "pixel_lat", group_col, "agbd") if c in df.columns]
+        block = df.iloc[test][loc_cols].copy()
+        block["pred"] = pred
+        block["lo"] = pred - q
+        block["hi"] = pred + q
+        rows.append(block)
+
+    preds = pd.concat(rows, ignore_index=True)
+    all_y = preds["agbd"].to_numpy(dtype="float64")
+    all_pred = preds["pred"].to_numpy(dtype="float64")
+    all_inside = (all_y >= preds["lo"].to_numpy()) & (all_y <= preds["hi"].to_numpy())
+    overall = _metrics(all_y, all_pred)
+    overall.update({"coverage90": float(all_inside.mean()),
+                    "width90": float((preds["hi"] - preds["lo"]).mean())})
+    result = {
+        "csv": str(csv_path), "n": int(len(preds)), "features": feats,
+        "calib_frac": calib_frac, "conformal_frac": conformal_frac,
+        "cell_px": cell_px, "overall": overall, "per_box": per_box,
+    }
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    (out.with_suffix(".metrics.json")).write_text(
+        json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+    preds.to_csv(out.with_suffix(".predictions.csv"), index=False)
+    return result

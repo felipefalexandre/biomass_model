@@ -1,5 +1,7 @@
 # 00 — Resumo executivo
 
+Relatório consolidado do piloto: docs/33_relatorio_piloto.md.
+
 ## 1. Problema
 
 Estimar biomassa vegetal (AGB, BGB, total), carbono e CO₂e para Amazônia e Cerrado, de forma
