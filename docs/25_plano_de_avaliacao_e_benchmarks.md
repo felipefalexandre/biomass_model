@@ -150,3 +150,10 @@ sem validação na parte não usada da calibração.
 Limite prático (ADR-0017, adendo): a calibração precisa ser **espalhada**. Com 100 células
 aleatórias, R² 0,25 (Amazônia) e 0,66 (Cerrado); com 100 células compactas no centro do box,
 0,04 e 0,45. No Cerrado, 5 células já capturam o nível (R² 0,51), mas não a variação fina.
+
+### 4.4 Histórico de uso (ADR-0018)
+
+Features de histórico do MapBiomas (2004–2018, sem vazamento) melhoram a transferência:
+Amazônia 1 km R² −0,10 → 0,08; Cerrado footprint −0,49 → −0,02; com calibração de 10%,
+0,25 e 0,56. O box florestal do Cerrado (MT) continua falhando (fold −3,3), então o histórico
+não elimina a necessidade de calibração local nem de mais regiões de treino.

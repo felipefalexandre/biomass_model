@@ -354,6 +354,9 @@ def build_training_table(
     bioma: str,
     domain_classes: Iterable[int] = (3, 4),
     s1_path: str | Path | None = None,
+    history: bool = False,
+    history_start: int = 2004,
+    history_end: int = 2018,
 ) -> dict:
     gedi = pd.read_csv(gedi_csv)
     with rasterio.open(Path(mapbiomas_dir) / "mapbiomas_col11_2024.tif") as ds:
@@ -389,6 +392,25 @@ def build_training_table(
     elif "nobs" in names:
         table["s2_valid"] = table["s2_nobs"] >= 3
 
+    if history:
+        years = list(range(history_start, history_end + 1))
+        series = np.stack([mapbiomas_class(mapbiomas_dir, y, lon_c, lat_c) for y in years])
+        in_domain = np.isin(series, list(domain_classes))
+        table["mb_domain_years"] = in_domain.sum(axis=0).astype("float32")
+        table["mb_forest_years"] = (series == 3).sum(axis=0).astype("float32")
+        table["mb_savanna_years"] = (series == 4).sum(axis=0).astype("float32")
+        changes = (np.diff(series, axis=0) != 0).sum(axis=0)
+        table["mb_changes"] = changes.astype("float32")
+        last_change = np.full(series.shape[1], -1)
+        for i in range(1, len(years)):
+            moved = series[i] != series[i - 1]
+            last_change[moved] = i
+        since = np.where(last_change >= 0, len(years) - 1 - last_change, len(years))
+        table["mb_years_since_change"] = since.astype("float32")
+        for y in (2004, 2010, 2014, 2018):
+            if y in years:
+                table[f"mb_class_{y}"] = series[years.index(y)].astype("float32")
+
     if s1_path is not None:
         s1 = sample_raster(s1_path, lon_c, lat_c)
         with rasterio.open(s1_path) as ds:
@@ -402,7 +424,7 @@ def build_training_table(
                                             pd.to_datetime(table["granule_time"]))], axis=1)
     table["bioma"] = bioma
 
-    feature_cols = [c for c in table.columns if c.startswith(("s2_", "s1_", "ls_", "era5_"))] + ["elev", "slope", "aspect"]
+    feature_cols = [c for c in table.columns if c.startswith(("s2_", "s1_", "ls_", "era5_", "mb_"))] + ["elev", "slope", "aspect"]
     table["feature_na"] = table[feature_cols].isna().any(axis=1)
 
     out_path = Path(out_csv)

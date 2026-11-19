@@ -169,7 +169,7 @@ def _cmd_train_table(args: argparse.Namespace) -> int:
 
     summary = build_training_table(
         args.gedi, args.s2, args.dem, args.era5, args.mapbiomas_dir, args.out,
-        bioma=args.bioma, s1_path=args.s1,
+        bioma=args.bioma, s1_path=args.s1, history=args.history,
     )
     print(json.dumps(summary, indent=2))
     return 0
@@ -282,6 +282,7 @@ def build_parser() -> argparse.ArgumentParser:
     table.add_argument("--out", required=True)
     table.add_argument("--bioma", choices=["amazonia", "cerrado"], required=True)
     table.add_argument("--s1", default=None, help="opcional: composite Sentinel-1 RTC")
+    table.add_argument("--history", action="store_true", help="features de historico MapBiomas")
     table.set_defaults(func=_cmd_train_table)
 
     baseline = sub.add_parser("baseline", help="RandomForest com CV por blocos espaciais")

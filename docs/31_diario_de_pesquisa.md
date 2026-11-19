@@ -244,3 +244,12 @@ obs em 10 m.
   dentro da meta de 80-95%, com intervalos largos.
 - Ressalva: calibração/conformal/teste usam GEDI; a largura deve crescer com campo
   independente. Registrado em docs/12.
+
+### Histórico MapBiomas (ADR-0018)
+- Features `mb_*` (2004-2018): anos no domínio, anos floresta/savana, mudanças, anos desde a
+  última mudança, classes em 2004/2010/2014/2018.
+- Leave-one-box-out: Amazônia 1 km R² −0,10 → 0,08; Cerrado footprint −0,49 → −0,02; 1 km
+  0,24 → 0,29. Com calibração 10%: 0,25 e 0,56.
+- Conformal com histórico: cobertura 0,914 (Amazônia, largura 142) e 0,89 (Cerrado, 63).
+- O box florestal do Cerrado (MT, mediana 83) segue falhando (fold −3,3): falta representação
+  de floresta estacional/secundária no treino.
