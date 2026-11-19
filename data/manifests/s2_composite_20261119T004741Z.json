@@ -1,0 +1,75 @@
+{
+  "dataset": "s2_composite",
+  "created_at": "2026-11-19T00:47:41+00:00",
+  "git_commit": "ce6553fad9fbde459582142a8247656062c13084",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "s2-composite",
+    "--lon",
+    "-67.30",
+    "--lat",
+    "-9.40",
+    "--start",
+    "2020-01-01",
+    "--end",
+    "2024-12-31",
+    "--max-items",
+    "25",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\pilots\\amazonia_oeste_s2comp_2020_2024.tif"
+  ],
+  "params": {
+    "lon": -67.3,
+    "lat": -9.4,
+    "start": "2020-01-01",
+    "end": "2024-12-31",
+    "size": 1600,
+    "max_items": 25,
+    "max_cloud": 30.0,
+    "items": [
+      "S2B_19LFK_20230725_0_L2A",
+      "S2B_19LFK_20240530_0_L2A",
+      "S2B_19LFK_20221107_0_L2A",
+      "S2A_19LFK_20230620_0_L2A",
+      "S2A_19LFK_20240714_0_L2A",
+      "S2B_19LFK_20240709_0_L2A",
+      "S2A_19LFK_20240724_0_L2A",
+      "S2B_19LFK_20240729_0_L2A",
+      "S2B_19LFK_20230705_0_L2A",
+      "S2B_19LFK_20240719_0_L2A",
+      "S2B_19LFK_20240818_0_L2A",
+      "S2A_19LFK_20230908_0_L2A",
+      "S2B_19LFK_20240828_0_L2A",
+      "S2A_19LFK_20240813_0_L2A",
+      "S2B_19LFK_20230824_0_L2A",
+      "S2B_19LFK_20230625_0_L2A",
+      "S2A_19LFK_20230819_0_L2A",
+      "S2A_19LFK_20230630_0_L2A",
+      "S2B_19LFK_20240808_0_L2A",
+      "S2A_19LFK_20230730_0_L2A",
+      "S2A_19LFK_20230829_0_L2A",
+      "S2A_19LFK_20230720_1_L2A",
+      "S2A_19LFK_20240624_0_L2A",
+      "S2B_19LFK_20240917_0_L2A",
+      "S2A_19LFK_20221102_0_L2A"
+    ]
+  },
+  "license": "Copernicus Sentinel data policy (atribuicao)",
+  "account": "nenhuma",
+  "source": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/19/L/FK/2023/7/S2B_19LFK_20230725_0_L2A/B04.tif",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\amazonia_oeste_s2comp_2020_2024.tif",
+      "bytes": 54526829,
+      "sha256": "cd052af356ff1b1cc67222925f356f0fb01921854a2e3c444f12d2ad69d28fb7"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\amazonia_oeste_s2comp_2020_2024.json",
+      "bytes": 1322,
+      "sha256": "76d7ca7a95408b33c36816adc1e7203e52f379acfad876449b6c89aca14d3ef4"
+    }
+  ]
+}

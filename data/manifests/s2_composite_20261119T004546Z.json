@@ -1,0 +1,74 @@
+{
+  "dataset": "s2_composite",
+  "created_at": "2026-11-19T00:45:46+00:00",
+  "git_commit": "ce6553fad9fbde459582142a8247656062c13084",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "s2-composite",
+    "--lon",
+    "-52.20",
+    "--lat",
+    "-12.80",
+    "--start",
+    "2020-01-01",
+    "--end",
+    "2024-12-31",
+    "--max-items",
+    "25",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\pilots\\cerrado_oeste_s2comp_2020_2024.tif"
+  ],
+  "params": {
+    "lon": -52.2,
+    "lat": -12.8,
+    "start": "2020-01-01",
+    "end": "2024-12-31",
+    "size": 1600,
+    "max_items": 25,
+    "max_cloud": 30.0,
+    "items": [
+      "S2B_22LCL_20240909_0_L2A",
+      "S2A_22LCL_20240825_0_L2A",
+      "S2A_22LCL_20240904_0_L2A",
+      "S2A_22LCL_20240815_0_L2A",
+      "S2B_22LCL_20240830_0_L2A",
+      "S2B_22LCL_20240827_0_L2A",
+      "S2A_22LCL_20240914_0_L2A",
+      "S2A_22LCL_20241001_0_L2A",
+      "S2A_22LCL_20240822_0_L2A",
+      "S2A_22LCL_20240921_0_L2A",
+      "S2B_22LCL_20240820_0_L2A",
+      "S2A_22LCL_20240901_0_L2A",
+      "S2B_22LCL_20240926_0_L2A",
+      "S2B_22LCL_20240906_0_L2A",
+      "S2B_22LCL_20240916_0_L2A",
+      "S2B_22LCL_20240817_0_L2A",
+      "S2B_22LCL_20240919_0_L2A",
+      "S2A_22LCL_20241004_0_L2A",
+      "S2A_22LCL_20241210_0_L2A",
+      "S2C_22LCL_20241210_2_L2A",
+      "S2B_22LCL_20241009_0_L2A",
+      "S2A_22LCL_20241220_0_L2A",
+      "S2A_22LCL_20241024_0_L2A",
+      "S2B_22LCL_20241128_0_L2A"
+    ]
+  },
+  "license": "Copernicus Sentinel data policy (atribuicao)",
+  "account": "nenhuma",
+  "source": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22/L/CL/2024/9/S2B_22LCL_20240909_0_L2A/B04.tif",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\cerrado_oeste_s2comp_2020_2024.tif",
+      "bytes": 50066063,
+      "sha256": "cecb87b32777af5da4394d4c0cd9719b631273afdea8eaf862c2dad9215284bb"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\cerrado_oeste_s2comp_2020_2024.json",
+      "bytes": 1290,
+      "sha256": "b051cab17fe70c271c9ae78c8e6f3af958f1c47226b00893b2f0f3e5073c4c37"
+    }
+  ]
+}

@@ -5,3 +5,8 @@ rf_baseline_v1_comp_1km,amazonia,celula_1km,327,26,0.285,34.33,26.30,1.55,GEDI L
 rf_field_v1_cerrado,cerrado,celula_1km,45,15,0.328,8.34,6.53,0.02,PLOS 2018 S3 (campo),"45 de 75 sitios no dominio 3/4; blocos de 1 grau; 2 folds negativos"
 rf_baseline_v1_s1,amazonia,footprint_30m,19869,30,0.098,92.31,70.09,1.38,GEDI L4A V2.1 2019-2024,"S2 composto + S1 mediana (8 datas 2024, descendente); ganho marginal"
 rf_baseline_v1_s1_1km,amazonia,celula_1km,327,30,0.289,34.24,26.29,1.22,GEDI L4A V2.1 2019-2024,"327 celulas com >=3 footprints; S1 nao melhora o 1 km"
+rf_field_landsat_cerrado,cerrado,celula_1km,42,25,0.288,8.89,6.74,0.27,PLOS 2018 (campo) + Landsat na data do inventario,"temporalmente alinhado; 42 sitios no dominio (36 classe 4); 1 fold negativo"
+rf_multi3_loo,amazonia,footprint_30m,40554,25,-0.181,118.95,92.28,-21.74,GEDI L4A 2019-2024 (3 boxes),"leave-one-box-out: R2 por fold -0.47/0.01/-0.14; nao generaliza entre regioes"
+rf_multi3_loo_1km,amazonia,celula_1km,872,25,-0.134,58.72,43.84,-9.65,GEDI L4A 2019-2024 (3 boxes),"leave-one-box-out 1 km: folds -0.54/-0.23/-0.10"
+rf_multi3_loo,cerrado,footprint_30m,31334,25,-0.557,57.92,31.96,18.26,GEDI L4A 2019-2024 (3 boxes),"leave-one-box-out: fold oeste (floresta, mediana 83) falha (-3.29)"
+rf_multi3_loo_1km,cerrado,celula_1km,834,25,0.417,24.89,18.31,2.65,GEDI L4A 2019-2024 (3 boxes),"R2 agregado enganoso: folds 0.13/-0.25/-0.81; media entre boxes domina"

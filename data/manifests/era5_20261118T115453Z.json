@@ -1,0 +1,49 @@
+{
+  "dataset": "era5",
+  "created_at": "2026-11-18T11:54:53+00:00",
+  "git_commit": "ce6553fad9fbde459582142a8247656062c13084",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "era5",
+    "--lon",
+    "-54.95",
+    "--lat",
+    "-3.15",
+    "--start-year",
+    "2018",
+    "--end-year",
+    "2025",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\pilots\\amazonia_leste_era5land_2018_2025.nc"
+  ],
+  "params": {
+    "lon": -54.95,
+    "lat": -3.15,
+    "start_year": 2018,
+    "end_year": 2025,
+    "pad": 0.1,
+    "variables": [
+      "2m_temperature",
+      "total_precipitation",
+      "potential_evaporation",
+      "surface_solar_radiation_downwards",
+      "volumetric_soil_water_layer_1",
+      "volumetric_soil_water_layer_2",
+      "volumetric_soil_water_layer_3",
+      "volumetric_soil_water_layer_4"
+    ]
+  },
+  "license": "Copernicus C3S",
+  "account": "conta CDS + chave em ~/.cdsapirc",
+  "source": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land-monthly-means",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\amazonia_leste_era5land_2018_2025.nc",
+      "bytes": 102203,
+      "sha256": "563a1eefd7f6a69ec0c0ccc19f46610692d66bd8fc2a83e62831ae7a7f762345"
+    }
+  ]
+}

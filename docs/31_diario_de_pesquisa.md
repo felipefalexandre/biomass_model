@@ -192,3 +192,26 @@ obs em 10 m.
   quando houver serie maior.
 - Decisao Q6 registrada: adotar limites da literatura (vies <=10%; RMSE <=30% Amazonia /
   <=40% Cerrado; IC90 80-95%), citando Avitabile 2016, Santoro 2021 e Duncanson 2022.
+
+### Referência de campo: alinhamento temporal com Landsat
+- O PLOS 2018 tem inventários de 1988-2014; a validação anterior usava S2 de 2024, seis a
+  trinta anos depois — inválida para checar pixel. Corrigido com Landsat C2 L2 via MPC
+  (`datasets/landsat.py`), mediana de cenas em ±45 dias da data do inventário.
+- 50 sítios com janela Landsat (2004-2014), 42 no domínio 3/4 no ano do inventário
+  (36 classe 4, 6 classe 3). Baseline: **R² 0,288 / RMSE 8,89 / viés +0,27** (42 sítios).
+- O resultado anterior "melhor" (R² 0,328 com S2 de 2024) era artefato do descasamento
+  temporal; agora o número é defensável. Clima continua sendo a variável dominante.
+
+### Expansão multi-região e generalização (ADR-0016)
+- Adicionados dois boxes por bioma, além do original: Amazônia leste (Tapajós, mediana 146),
+  Amazônia oeste (Acre, 175), Cerrado nordeste (MG, 7,6) e Cerrado oeste (MT, 83, classe 3).
+  Cada box ~17,8 km; GEDI 2020-2024; S2 composto 2020-2024; DEM/ERA5 próprios.
+- Validação leave-one-box-out (3 boxes/bioma): footprint R² **−0,18** (Amazônia) e **−0,56**
+  (Cerrado); 1 km R² −0,13 e +0,42 agregado, mas folds de 0,13/−0,25/−0,81 no Cerrado.
+- Interpretação: o R² intra-box (0,10-0,29) era sobretudo autocorrelação espacial; entre
+  regiões o modelo não transfere. O R² agregado de 1 km é enganoso porque captura a diferença
+  de média entre boxes, não habilidade local.
+- Decisão: validação principal passa a ser por região; produto nacional fica fora de questão
+  sem mais sítios, calibração regional e referência de melhor qualidade.
+- Artefatos: `amazonia_multi_training.csv` (40.598), `cerrado_multi_training.csv` (31.402),
+  `.metrics.json/.predictions.csv` em `E:\Mapbiomas\biomass\derived\*_multi3_loo_*`.

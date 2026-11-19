@@ -49,7 +49,20 @@ key: <UID>:<CHAVE>
 
 ## Comandos
 
-Coordenadas dos pilotos: Amazônia `-60.45, -6.90`; Cerrado `-47.70, -13.95`.
+Coordenadas dos boxes (ADR-0014/0016):
+
+| Bioma | Box | Lon, Lat | Período GEDI |
+|---|---|---|---|
+| Amazônia | central | -60.45, -6.90 | 2019-2024 |
+| Amazônia | leste (Tapajós) | -54.95, -3.15 | 2020-2024 |
+| Amazônia | oeste (Acre) | -67.30, -9.40 | 2020-2024 |
+| Cerrado | central | -47.70, -13.95 | 2019-2024 |
+| Cerrado | nordeste (MG) | -45.30, -16.70 | 2020-2024 |
+| Cerrado | oeste (MT) | -52.20, -12.80 | 2020-2024 |
+
+Cada box usa ±0,08° (~17,8 km) para GEDI e 1600 px de 10 m para S2.
+
+### Sentinel-2 L2A
 
 ### Sentinel-2 L2A
 
@@ -146,6 +159,27 @@ python -m biomass_model.cli s1 --lon -60.45 --lat -6.90 `
 Saída tem ~1600 px de 10 m (16 km). O treino aceita `--s1 <tif>` para anexar as bandas como
 features `s1_*`.
 
+### Landsat C2 L2 (sítios de campo antigos)
+
+Mesma rota MPC (`landsat-c2-l2`), sem conta. Janela de 1 km em 30 m, mediana de cenas em
+±45 dias da data do inventário, máscara de nuvem por `qa_pixel` e reflectância
+`DN*0.0000275 − 0.2`. Necessário porque os inventários do PLOS 2018 são de 1988–2014.
+
+```powershell
+python -m biomass_model.cli landsat --lon -47.61692 --lat -15.18033 `
+  --date 2012-09-01 --out E:\Mapbiomas\biomass\fields\plos2018\site_001\landsat_2012.tif
+python -m biomass_model.cli landsat-sites --sites data\reference\plos2018_sites.csv `
+  --out-dir E:\Mapbiomas\biomass\fields\plos2018 --year-start 2004 --year-end 2014
+python -m biomass_model.cli landsat-field-table --sites data\reference\plos2018_sites.csv `
+  --work-root E:\Mapbiomas\biomass\fields\plos2018 `
+  --era5 E:\Mapbiomas\biomass\era5\cerrado_era5land_2019_2024_bbox.nc `
+  --mapbiomas-dir E:\Mapbiomas `
+  --out E:\Mapbiomas\biomass\derived\cerrado_field_landsat.csv
+```
+
+Datas sujas do PLOS (`2010`, `Mar/Apr- 2008`) são normalizadas; só 2004–2014 entra porque o
+MapBiomas/Collection 11 local começa em 2004.
+
 ### MapBiomas
 
 MapBiomas Coleção 11 já está local em `E:\Mapbiomas` (`mapbiomas_col11_*.tif` e
@@ -179,6 +213,7 @@ Manifestos são pequenos e **vão para o git**; os dados brutos não.
 | Copernicus DEM | Copernicus DEM, aberto | atribuição |
 | ERA5-Land | Copernicus C3S | atribuição; não redistribuir como produto próprio sem checar termos |
 | GEDI L4A | NASA, aberto | atribuição e citação do DOI |
+| Landsat C2 L2 | USGS, aberto | atribuição |
 | MapBiomas | CC BY-SA | *share-alike*: confirmar efeito em produto derivado |
 
 ## Limitações conhecidas

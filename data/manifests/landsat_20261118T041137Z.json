@@ -1,0 +1,39 @@
+{
+  "dataset": "landsat",
+  "created_at": "2026-11-18T04:11:37+00:00",
+  "git_commit": "ce6553fad9fbde459582142a8247656062c13084",
+  "python": "3.15.0",
+  "argv": [
+    "-c"
+  ],
+  "params": {
+    "lon": -47.61692,
+    "lat": -15.18033,
+    "date": "2012-09-01",
+    "days": 45,
+    "half_m": 500.0,
+    "items": [
+      "LE07_L2SP_221071_20121006_02_T1",
+      "LE07_L2SP_221070_20121006_02_T1",
+      "LE07_L2SP_221070_20120718_02_T1",
+      "LE07_L2SP_221071_20120803_02_T1"
+    ]
+  },
+  "license": "USGS Landsat Collection 2 (aberto)",
+  "account": "nenhuma (MPC assina o acesso)",
+  "source": "https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_001\\landsat_2012.tif",
+      "bytes": 25616,
+      "sha256": "8408ed849648156585f996591df51fbd7695ce4ca3b0a4160732a22562921cf8"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_001\\landsat_2012.json",
+      "bytes": 573,
+      "sha256": "fde2d5d872c3cd63e9caa05eacd774d8dd0f93dbbcb174e8f10e42b95b9dae0b"
+    }
+  ]
+}

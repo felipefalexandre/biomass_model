@@ -19,6 +19,7 @@
 | ADR-0013 | Grade de modelagem e amostragem nos footprints | aceito |
 | ADR-0014 | Escala do piloto (~17 km por bioma) | aceito |
 | ADR-0015 | Referência do Cerrado: campo primeiro, GEDI auxiliar | aceito |
+| ADR-0016 | Validação entre regiões (leave-one-box-out) | aceito |
 
 ## ADR-0001 — Python local em vez de GEE
 

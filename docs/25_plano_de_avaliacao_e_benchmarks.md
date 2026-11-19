@@ -46,6 +46,15 @@ erro relativo ~30% é a ordem de grandeza em produtos de AGB tropical (Avitabile
 Santoro et al. 2021) e 30–40% no GEDI L4A (Duncanson et al. 2022). O limite do Cerrado é mais
 frouxo por heterogeneidade e escassez de campo. Revisões exigem evidência e registro.
 
+### 4.1 Validação principal: entre regiões
+
+Desde ADR-0016, o critério é avaliado **por região**, com `leave-one-box-out` (treina em N−1
+boxes e testa no box retido). R² agregado de todos os boxes é apenas descritivo: ele mistura
+diferenças de média entre regiões com habilidade preditiva. Resultado atual (3 boxes/bioma):
+R² por fold negativo em quase todos os casos, mesmo em 1 km — ver `data/reference/baselines.csv`.
+Portanto, nenhum resultado atual satisfaz o critério de aceite; o relato deve ser "prova de
+conceito", com RMSE e viés por região.
+
 ## 5. Benchmarks
 
 | Benchmark | Uso | Cuidado |

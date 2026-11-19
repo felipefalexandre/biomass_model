@@ -1,0 +1,242 @@
+{
+  "dataset": "landsat_sites",
+  "created_at": "2026-11-18T04:42:05+00:00",
+  "git_commit": "ce6553fad9fbde459582142a8247656062c13084",
+  "python": "3.15.0",
+  "argv": [
+    "-c"
+  ],
+  "params": {
+    "sites_csv": "data/reference/plos2018_sites.csv",
+    "bioma": "Cerrado",
+    "years": [
+      2004,
+      2014
+    ],
+    "half_m": 500.0,
+    "days": 45,
+    "max_items": 6,
+    "sites": 40,
+    "failures": [
+      {
+        "site": 8,
+        "year": 2010,
+        "error": "Invalid isoformat string: '2010'"
+      },
+      {
+        "site": 13,
+        "year": 2010,
+        "error": "Invalid isoformat string: '2010'"
+      },
+      {
+        "site": 14,
+        "year": 2005,
+        "error": "Invalid isoformat string: '2005'"
+      },
+      {
+        "site": 20,
+        "year": 2010,
+        "error": "Invalid isoformat string: '2010'"
+      },
+      {
+        "site": 22,
+        "year": 2008,
+        "error": "Invalid isoformat string: 'Mar/Apr- 2'"
+      },
+      {
+        "site": 23,
+        "year": 2010,
+        "error": "Invalid isoformat string: '2010'"
+      },
+      {
+        "site": 26,
+        "year": 2008,
+        "error": "Invalid isoformat string: 'Sep/Oct-20'"
+      },
+      {
+        "site": 27,
+        "year": 2012,
+        "error": "Invalid isoformat string: 'May/Jun-20'"
+      },
+      {
+        "site": 28,
+        "year": 2010,
+        "error": "Invalid isoformat string: '2010'"
+      },
+      {
+        "site": 46,
+        "year": 2007,
+        "error": "Invalid isoformat string: '2007'"
+      }
+    ],
+    "skipped": 25,
+    "out_dir": "E:\\Mapbiomas\\biomass\\fields\\plos2018"
+  },
+  "license": "USGS Landsat Collection 2 (aberto)",
+  "account": "nenhuma (MPC assina o acesso)",
+  "source": null,
+  "notes": "um GeoTIFF por sitio (mediana de cenas em +-45 dias do inventario)",
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_001\\landsat_2012.tif",
+      "bytes": 25636
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_002\\landsat_2009.tif",
+      "bytes": 22784
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_003\\landsat_2009.tif",
+      "bytes": 25476
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_012\\landsat_2010.tif",
+      "bytes": 24812
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_016\\landsat_2008.tif",
+      "bytes": 25492
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_021\\landsat_2009.tif",
+      "bytes": 26300
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_032\\landsat_2008.tif",
+      "bytes": 25036
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_033\\landsat_2008.tif",
+      "bytes": 25978
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_037\\landsat_2009.tif",
+      "bytes": 25442
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_038\\landsat_2008.tif",
+      "bytes": 25850
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_040\\landsat_2014.tif",
+      "bytes": 25010
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_041\\landsat_2013.tif",
+      "bytes": 26364
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_043\\landsat_2008.tif",
+      "bytes": 25228
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_044\\landsat_2008.tif",
+      "bytes": 25414
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_045\\landsat_2013.tif",
+      "bytes": 25884
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_048\\landsat_2008.tif",
+      "bytes": 25544
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_049\\landsat_2008.tif",
+      "bytes": 25294
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_051\\landsat_2013.tif",
+      "bytes": 25834
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_052\\landsat_2013.tif",
+      "bytes": 25726
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_053\\landsat_2008.tif",
+      "bytes": 26122
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_055\\landsat_2009.tif",
+      "bytes": 25306
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_057\\landsat_2008.tif",
+      "bytes": 25510
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_058\\landsat_2009.tif",
+      "bytes": 24532
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_059\\landsat_2008.tif",
+      "bytes": 25538
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_060\\landsat_2009.tif",
+      "bytes": 25428
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_061\\landsat_2008.tif",
+      "bytes": 25290
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_062\\landsat_2008.tif",
+      "bytes": 25684
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_063\\landsat_2014.tif",
+      "bytes": 25638
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_064\\landsat_2009.tif",
+      "bytes": 25362
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_065\\landsat_2013.tif",
+      "bytes": 25818
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_068\\landsat_2008.tif",
+      "bytes": 25806
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_069\\landsat_2008.tif",
+      "bytes": 25656
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_070\\landsat_2008.tif",
+      "bytes": 25724
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_071\\landsat_2008.tif",
+      "bytes": 25356
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_072\\landsat_2014.tif",
+      "bytes": 24472
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_073\\landsat_2008.tif",
+      "bytes": 25560
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_074\\landsat_2009.tif",
+      "bytes": 24814
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_075\\landsat_2009.tif",
+      "bytes": 25482
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_076\\landsat_2008.tif",
+      "bytes": 25538
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\plos2018\\site_077\\landsat_2008.tif",
+      "bytes": 25946
+    }
+  ]
+}

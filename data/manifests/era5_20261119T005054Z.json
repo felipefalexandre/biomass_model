@@ -1,0 +1,49 @@
+{
+  "dataset": "era5",
+  "created_at": "2026-11-19T00:50:54+00:00",
+  "git_commit": "ce6553fad9fbde459582142a8247656062c13084",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "era5",
+    "--lon",
+    "-52.20",
+    "--lat",
+    "-12.80",
+    "--start-year",
+    "2018",
+    "--end-year",
+    "2025",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\pilots\\cerrado_oeste_era5land_2018_2025.nc"
+  ],
+  "params": {
+    "lon": -52.2,
+    "lat": -12.8,
+    "start_year": 2018,
+    "end_year": 2025,
+    "pad": 0.1,
+    "variables": [
+      "2m_temperature",
+      "total_precipitation",
+      "potential_evaporation",
+      "surface_solar_radiation_downwards",
+      "volumetric_soil_water_layer_1",
+      "volumetric_soil_water_layer_2",
+      "volumetric_soil_water_layer_3",
+      "volumetric_soil_water_layer_4"
+    ]
+  },
+  "license": "Copernicus C3S",
+  "account": "conta CDS + chave em ~/.cdsapirc",
+  "source": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land-monthly-means",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\cerrado_oeste_era5land_2018_2025.nc",
+      "bytes": 111190,
+      "sha256": "3133869bfe39f60a917bb03ba0b71c382f2837a14b268260c9fe9f89824fc4a3"
+    }
+  ]
+}

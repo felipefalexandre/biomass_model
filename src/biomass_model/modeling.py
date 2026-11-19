@@ -13,7 +13,7 @@ METRICS = ("r2", "rmse", "mae", "bias")
 
 
 def feature_columns(df: pd.DataFrame) -> list[str]:
-    cols = [c for c in df.columns if c.startswith(("s2_", "s1_", "era5_")) and not c.endswith("_valid")]
+    cols = [c for c in df.columns if c.startswith(("s2_", "s1_", "ls_", "era5_")) and not c.endswith("_valid")]
     cols += [c for c in ("elev", "slope", "aspect") if c in df.columns]
     return cols
 
@@ -40,6 +40,8 @@ def aggregate_cells(df: pd.DataFrame, cell_px: int, min_shots: int = 3) -> pd.Da
     out["mapbiomas_class"] = grouped["mapbiomas_class"].agg(lambda s: int(s.mode().iat[0]))
     if "degrade_zero" in d:
         out["degrade_zero"] = grouped["degrade_zero"].mean() >= 0.5
+    if "box" in d:
+        out["box"] = grouped["box"].first()
     out = out[out["n_shots"] >= min_shots].reset_index()
     out["pixel_row"] = out["cell_row"] * cell_px
     out["pixel_col"] = out["cell_col"] * cell_px
@@ -135,6 +137,7 @@ def run_baseline(
     max_agbd: float = 1000.0,
     cell_px: int | None = None,
     min_shots: int = 3,
+    group_col: str | None = None,
 ) -> dict[str, Any]:
     from sklearn.ensemble import RandomForestRegressor
     from sklearn.model_selection import GroupKFold
@@ -144,12 +147,16 @@ def run_baseline(
     df = df[np.isfinite(df["agbd"]) & (df["agbd"] >= 0) & (df["agbd"] <= max_agbd)]
     if cell_px:
         df = aggregate_cells(df, cell_px, min_shots=min_shots)
+    if group_col:
+        df = df.dropna(subset=[group_col])
     df = add_blocks(df, block_px=block_px).reset_index(drop=True)
 
     feats = feature_columns(df)
     X = df[feats].to_numpy(dtype="float64")
     y = df["agbd"].to_numpy(dtype="float64")
-    groups = df["block_id"].to_numpy()
+    groups = (df[group_col] if group_col else df["block_id"]).to_numpy()
+    if group_col:
+        df["block_id"] = df[group_col].astype(str)
 
     folds = list(GroupKFold(n_splits=n_splits).split(X, y, groups))
     oof = np.full(len(y), np.nan)

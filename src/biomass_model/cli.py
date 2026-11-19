@@ -69,6 +69,36 @@ def _cmd_field_table(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_landsat(args: argparse.Namespace) -> int:
+    from .datasets.landsat import fetch_landsat_window
+
+    result = fetch_landsat_window(args.lon, args.lat, args.date, args.out,
+                                  half_m=args.half_m, days=args.days,
+                                  max_items=args.max_items)
+    print(json.dumps({k: v for k, v in result.items() if k != "items"}, indent=2))
+    return 0
+
+
+def _cmd_landsat_sites(args: argparse.Namespace) -> int:
+    from .datasets.landsat import fetch_landsat_sites
+
+    result = fetch_landsat_sites(args.sites, args.out_dir, bioma=args.bioma,
+                                 years=(args.year_start, args.year_end),
+                                 half_m=args.half_m, days=args.days,
+                                 max_items=args.max_items)
+    print(json.dumps({k: v for k, v in result.items() if k != "failures"}, indent=2))
+    return 0
+
+
+def _cmd_landsat_field_table(args: argparse.Namespace) -> int:
+    from .features import build_landsat_field_table
+
+    print(json.dumps(build_landsat_field_table(
+        args.sites, args.work_root, args.era5, args.mapbiomas_dir, args.out,
+        bioma=args.bioma, half_m=args.half_m), indent=2))
+    return 0
+
+
 def _cmd_field_baseline(args: argparse.Namespace) -> int:
     from .modeling import run_field_baseline
 
@@ -131,7 +161,8 @@ def _cmd_baseline(args: argparse.Namespace) -> int:
 
     result = run_baseline(args.csv, args.out_dir, n_splits=args.folds,
                           block_px=args.block_px, n_estimators=args.trees,
-                          cell_px=args.cell_px, min_shots=args.min_shots)
+                          cell_px=args.cell_px, min_shots=args.min_shots,
+                          group_col=args.group_col)
     print(json.dumps({k: v for k, v in result.items() if k != "importance"}, indent=2))
     return 0
 
@@ -243,6 +274,7 @@ def build_parser() -> argparse.ArgumentParser:
     baseline.add_argument("--cell-px", type=int, default=None,
                           help="agrega footprints em celulas (33 px ~ 1 km)")
     baseline.add_argument("--min-shots", type=int, default=3)
+    baseline.add_argument("--group-col", default=None, help="agrupa folds (ex.: box)")
     baseline.set_defaults(func=_cmd_baseline)
 
     ftable = sub.add_parser("field-table", help="tabela de features em sitios de campo")
@@ -261,6 +293,37 @@ def build_parser() -> argparse.ArgumentParser:
     fbase.add_argument("--block-deg", type=float, default=1.0)
     fbase.add_argument("--trees", type=int, default=400)
     fbase.set_defaults(func=_cmd_field_baseline)
+
+    ls = sub.add_parser("landsat", help="janela Landsat C2 L2 em torno de uma data (MPC)")
+    ls.add_argument("--lon", type=float, required=True)
+    ls.add_argument("--lat", type=float, required=True)
+    ls.add_argument("--date", required=True)
+    ls.add_argument("--out", required=True)
+    ls.add_argument("--half-m", type=float, default=500.0)
+    ls.add_argument("--days", type=int, default=45)
+    ls.add_argument("--max-items", type=int, default=6)
+    ls.set_defaults(func=_cmd_landsat)
+
+    lss = sub.add_parser("landsat-sites", help="janelas Landsat por sitio de campo")
+    lss.add_argument("--sites", required=True)
+    lss.add_argument("--out-dir", required=True)
+    lss.add_argument("--bioma", default="Cerrado")
+    lss.add_argument("--year-start", type=int, default=2004)
+    lss.add_argument("--year-end", type=int, default=2014)
+    lss.add_argument("--half-m", type=float, default=500.0)
+    lss.add_argument("--days", type=int, default=45)
+    lss.add_argument("--max-items", type=int, default=6)
+    lss.set_defaults(func=_cmd_landsat_sites)
+
+    lft = sub.add_parser("landsat-field-table", help="tabela de campo com Landsat na data")
+    lft.add_argument("--sites", required=True)
+    lft.add_argument("--work-root", required=True)
+    lft.add_argument("--era5", required=True)
+    lft.add_argument("--mapbiomas-dir", required=True)
+    lft.add_argument("--out", required=True)
+    lft.add_argument("--bioma", default="Cerrado")
+    lft.add_argument("--half-m", type=float, default=500.0)
+    lft.set_defaults(func=_cmd_landsat_field_table)
 
     return parser
 

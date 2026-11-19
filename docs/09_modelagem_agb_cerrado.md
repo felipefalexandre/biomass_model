@@ -78,9 +78,18 @@ diagnóstico de cobertura (ADR-0015). Nenhuma métrica contra L4A será apresent
 O S3 do artigo de Roitman et al. (2018) tem 77 sítios com coordenadas e AGB; 75 são Cerrado. Só 45
 caem nas classes 3/4 do MapBiomas 2024 — os outros 30 são formações campestres ou uso antrópico,
 excluídas pelo domínio (ADR-0010). Com features de 1 km e CV por blocos de 1°, o baseline de 45
-sítios deu R² 0,328, RMSE 8,34 e MAE 6,53 Mg ha⁻¹ (2 folds negativos). Temperatura média domina a
-importância, seguida de elevação. n=45 é indicativo, não conclusivo; a perda de 40% dos sítios por
-causa do domínio é uma limitação registrada (RC12), e não um erro a esconder.
+sítios deu R² 0,328, RMSE 8,34 e MAE 6,53 Mg ha⁻¹ (2 folds negativos). **Esse número usava S2 de
+2024, mas os inventários são de 1988–2014** — temporalmente inválido.
+
+Correção: features Landsat na data do inventário (mediana ±45 dias) e classe MapBiomas do ano.
+Entram 42 sítios no domínio (36 classe 4, 6 classe 3), com R² 0,288, RMSE 8,89 e viés +0,27
+Mg ha⁻¹. O resultado "melhor" com S2 de 2024 era artefato de descasamento temporal. Temperatura
+média domina a importância, seguida de elevação; n=42 é indicativo, não conclusivo. A perda de
+sítios por causa do domínio segue registrada (RC12).
+
+No GEDI, o Cerrado tem 3 boxes (central, nordeste, oeste) e o leave-one-box-out falha
+(R² −0,56 no footprint; 1 km agregado +0,42 com folds até −0,81), reforçando ADR-0016 e a
+prioridade de campo sobre L4A (ADR-0015).
 
 ## 4. Erros esperados e como tratá-los
 

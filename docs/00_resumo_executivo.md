@@ -66,6 +66,10 @@ Essa separação evita o erro mais comum em trabalhos de biomassa: confundir a a
   S2 composto (10 datas) não há ganho (R² 0,094); agregando em 1 km, R² 0,285 / RMSE 34,3.
   Sentinel-1 RTC (8 datas) acrescenta pouco: R² 0,098 no footprint e 0,289 em 1 km. Piso
   honesto, não resultado final (`data/reference/baselines.csv`).
+- **Generalização entre regiões é o gargalo (ADR-0016):** com 3 boxes por bioma, o
+  leave-one-box-out dá R² −0,18 (Amazônia) e −0,56 (Cerrado) no footprint; em 1 km, −0,13 e
+  +0,42 agregado (folds até −0,81). O ganho dentro do box era autocorrelação espacial, não
+  habilidade preditiva. Nenhum modelo atual atende ao critério de aceite (`docs/25`).
 - Cerrado: L4A subestima savana aberta; campo passa a ser referência primária (ADR-0015).
 - Pendências que bloqueiam a fase de execução: ver `docs/30`.
 
