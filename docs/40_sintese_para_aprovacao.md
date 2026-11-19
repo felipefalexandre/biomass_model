@@ -97,3 +97,15 @@ GEDI (calibração, não produto).
 Nada será implementado antes da aprovação. Na implementação, uma hipótese por vez, sempre com
 baseline A0, split congelado, testes de regressão e registro de resultado negativo. Melhorias só
 são promovidas se passarem pelos critérios de `docs/37` §6 e pela Linha B.
+
+
+## 9. Atualização 2026-11-18: continuidade confirmada
+
+O usuário aprovou os pontos anteriores e esclareceu o objetivo final (REDD+/ARR). A sugestão de
+estimar por estrato/polígono foi incorporada como **camada de relatório**, não como substituta do
+mapa. Permanecem: mapa anual estado+mudança, GEDI só calibração, validação A/B/T, calibração
+local. Novos artefatos: `docs/41` (mapa vs estrato), `docs/42` (E1), `docs/43` (mudança
+preliminar), `docs/44` (REDD+/ARR), ADR-0025/0026.
+
+Decisões adicionais a confirmar: (i) incluir classes 2 e 6 no produto? (ii) 30 m apenas
+diagnóstico? (iii) orçamento/parceria de campo?

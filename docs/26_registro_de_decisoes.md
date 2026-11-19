@@ -28,6 +28,8 @@
 | ADR-0022 | GEDI apenas como calibração | proposto |
 | ADR-0023 | Taxonomia fitofisionômica | proposto |
 | ADR-0024 | Critérios de aceitação e promoção | proposto |
+| ADR-0025 | Domínio 3/4 vs estrato fitofisionômico | aceito |
+| ADR-0026 | Produto mapa-first + tabela por polígono | aceito |
 
 ## ADR-0001 — Python local em vez de GEE
 
@@ -224,3 +226,11 @@ diagnóstico de cobertura, não alvo.
 - ADR-0024: ver `ADR/0024-criterios-aceitacao.md`.
 
 Todas aguardam aprovação; nenhuma alteração de modelo foi feita.
+
+
+## ADRs 0025–0026 (2026-11-18)
+
+- ADR-0025: ver `ADR/0025-dominio-vs-estrato.md` (domínio 3/4 é filtro espacial; fitofisionomia
+  é estrato separado).
+- ADR-0026: ver `ADR/0026-produto-mapa-primeiro.md` (mapa-first; tabela por polígono derivada;
+  sem produto polygon-only independente).

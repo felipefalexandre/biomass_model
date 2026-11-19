@@ -308,3 +308,14 @@ obs em 10 m.
 - Plano (docs/36-40): features anuais, estado+mudança, prior assimétrico, validação temporal
   por eventos, hierarquia/fisionomia, polígono/incerteza; ADRs 0020-0024 propostas.
 - Nenhum modelo foi alterado, treinado ou substituído; decisões aguardam aprovação.
+
+### E1, E2a e produtos (2026-11-18)
+- E1: features S2 anuais (2019-2022) vs compósito multi-ano em 2 boxes. Resultado neutro/negativo:
+  Amazônia 30 m levemente melhor (R² -0,171 -> -0,150), 1 km pior; Cerrado pior. Não promovido.
+- Bug corrigido: aggregate_cells colapsava anos na mesma célula; agora agrupa por célula e ano.
+- E2a: pares anuais na mesma célula (GEDI) — ruído de ΔAGB enorme (SD 72 Amazônia; 25 Cerrado);
+  RF não supera Δ=0 no Cerrado e ganha pouco na Amazônia. Não valida mudança; exige eventos/campo.
+- Produtos: mapa-first confirmado; tabela por polígono derivada; `polygon-stats` implementado.
+  Teste de viabilidade: estrato com médias transferidas erra -41% a +43%; mapa mantém padrão.
+- REDD+/ARR: requisitos mapeados em docs/44; modelo entrega biomassa/estoque/mudança, não
+  adicionalidade/vazamento/permanência.

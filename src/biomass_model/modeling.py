@@ -35,7 +35,10 @@ def aggregate_cells(df: pd.DataFrame, cell_px: int, min_shots: int = 3) -> pd.Da
     d = df.copy()
     d["cell_row"] = d["pixel_row"] // cell_px
     d["cell_col"] = d["pixel_col"] // cell_px
-    grouped = d.groupby(["cell_row", "cell_col"])
+    keys = ["cell_row", "cell_col"]
+    if "year" in d:
+        keys.append("year")
+    grouped = d.groupby(keys)
     out = grouped[feats].mean()
     out["agbd"] = grouped["agbd"].mean()
     out["n_shots"] = grouped.size()

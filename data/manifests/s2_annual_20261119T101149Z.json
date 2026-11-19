@@ -1,0 +1,65 @@
+{
+  "dataset": "s2_annual",
+  "created_at": "2026-11-19T10:11:49+00:00",
+  "git_commit": "43db0f7bbcd44bdb7dddf08aad7cc8e5c79676db",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "s2-annual",
+    "--lon",
+    "-60.45",
+    "--lat",
+    "-6.90",
+    "--year",
+    "2022",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\pilots\\annual\\amazonia_central_2022_s2.tif"
+  ],
+  "params": {
+    "lon": -60.45,
+    "lat": -6.9,
+    "year": 2022,
+    "size": 1600,
+    "max_items": 30,
+    "max_cloud": 40.0,
+    "items": [
+      "S2B_20MQT_20220701_0_L2A",
+      "S2B_20MQT_20220909_0_L2A",
+      "S2B_20MQT_20220731_0_L2A",
+      "S2B_20MQT_20220711_0_L2A",
+      "S2A_20MQT_20220706_0_L2A",
+      "S2A_20MQT_20220626_0_L2A",
+      "S2A_20MQT_20220904_0_L2A",
+      "S2A_20MQT_20220726_0_L2A",
+      "S2A_20MQT_20221103_0_L2A",
+      "S2B_20MQT_20220830_0_L2A",
+      "S2A_20MQT_20220924_0_L2A",
+      "S2B_20MQT_20220522_0_L2A",
+      "S2B_20MQT_20220929_0_L2A",
+      "S2A_20MQT_20220527_0_L2A",
+      "S2B_20MQT_20220512_0_L2A",
+      "S2B_20MQT_20221009_0_L2A",
+      "S2A_20MQT_20220407_0_L2A",
+      "S2A_20MQT_20220716_0_L2A",
+      "S2B_20MQT_20220721_0_L2A",
+      "S2B_20MQT_20220201_0_L2A"
+    ]
+  },
+  "license": "Copernicus Sentinel data policy (atribuicao)",
+  "account": "nenhuma",
+  "source": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/20/M/QT/2022/7/S2B_20MQT_20220701_0_L2A/B04.tif",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\annual\\amazonia_central_2022_s2.tif",
+      "bytes": 93153436,
+      "sha256": "5ae64b8d2855691a30ba79da149b840b739d86c552a9034287a5653a3d7778cd"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\pilots\\annual\\amazonia_central_2022_s2.json",
+      "bytes": 1224,
+      "sha256": "f46c6125eb321eed6826bdcdb491c91768dca8a3bfbbbc3d35184a4507bb2c3e"
+    }
+  ]
+}

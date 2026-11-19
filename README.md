@@ -88,6 +88,10 @@ identificado como tal.
 | 38 | [Validação e incerteza](docs/38_validacao_independente_e_incerteza.md) | PLOS, ORNL, polígono |
 | 39 | [Arquitetura e roadmap](docs/39_arquitetura_e_roadmap.md) | Módulos, fases, riscos |
 | 40 | [Síntese para aprovação](docs/40_sintese_para_aprovacao.md) | Decisões solicitadas |
+| 41 | [Produtos: mapa vs estrato](docs/41_produtos_mapa_vs_estrato.md) | Arquitetura de produto e viabilidade |
+| 42 | [Resultados E1](docs/42_resultados_e1.md) | Features anuais vs compósito |
+| 43 | [Mudança preliminar](docs/43_resultado_mudanca_preliminar.md) | Pares anuais e ruído |
+| 44 | [Requisitos REDD+/ARR](docs/44_requisitos_redd_arr.md) | O que o modelo entrega |
 
 ## 4. Estrutura do repositório
 

@@ -118,6 +118,17 @@ def _cmd_region_conformal(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_polygon_stats(args: argparse.Namespace) -> int:
+    from .polygon import polygon_stats
+
+    result = polygon_stats(args.csv, args.out, filter_col=args.filter_col,
+                            filter_value=args.filter_value, value_col=args.value_col,
+                            class_col=args.class_col, block_px=args.block_px,
+                            n_boot=args.n_boot)
+    print(json.dumps(result, indent=2))
+    return 0
+
+
 def _cmd_region_aoa(args: argparse.Namespace) -> int:
     from .modeling import run_region_aoa
 
@@ -133,6 +144,16 @@ def _cmd_field_baseline(args: argparse.Namespace) -> int:
     result = run_field_baseline(args.csv, args.out_dir, block_deg=args.block_deg,
                                 n_estimators=args.trees)
     print(json.dumps({k: v for k, v in result.items() if k != "importance"}, indent=2))
+    return 0
+
+
+def _cmd_s2_annual(args: argparse.Namespace) -> int:
+    from .datasets.s2 import fetch_annual
+
+    result = fetch_annual(args.lon, args.lat, args.year, args.out,
+                          size=args.size, max_items=args.max_items,
+                          max_cloud=args.max_cloud)
+    print(json.dumps({k: v for k, v in result.items() if k != "items"}, indent=2))
     return 0
 
 
@@ -231,6 +252,16 @@ def build_parser() -> argparse.ArgumentParser:
     s1.add_argument("--size", type=int, default=1600)
     s1.add_argument("--max-items", type=int, default=8)
     s1.set_defaults(func=_cmd_s1)
+
+    s2a = sub.add_parser("s2-annual", help="composto anual S2 + fenologia")
+    s2a.add_argument("--lon", type=float, required=True)
+    s2a.add_argument("--lat", type=float, required=True)
+    s2a.add_argument("--year", type=int, required=True)
+    s2a.add_argument("--out", required=True)
+    s2a.add_argument("--size", type=int, default=1600)
+    s2a.add_argument("--max-items", type=int, default=30)
+    s2a.add_argument("--max-cloud", type=float, default=40.0)
+    s2a.set_defaults(func=_cmd_s2_annual)
 
     dem = sub.add_parser("dem", help="DEM Copernicus GLO-30")
     dem.add_argument("--lon", type=float, required=True)
@@ -345,6 +376,17 @@ def build_parser() -> argparse.ArgumentParser:
     raoa.add_argument("--calib-frac", type=float, default=0.1)
     raoa.add_argument("--cell-px", type=int, default=None)
     raoa.set_defaults(func=_cmd_region_aoa)
+
+    pst = sub.add_parser("polygon-stats", help="estoque e IC por poligono")
+    pst.add_argument("--csv", required=True)
+    pst.add_argument("--out", default=None)
+    pst.add_argument("--filter-col", default=None)
+    pst.add_argument("--filter-value", default=None)
+    pst.add_argument("--value-col", default="pred")
+    pst.add_argument("--class-col", default="mapbiomas_class")
+    pst.add_argument("--block-px", type=int, default=5)
+    pst.add_argument("--n-boot", type=int, default=400)
+    pst.set_defaults(func=_cmd_polygon_stats)
 
     ls = sub.add_parser("landsat", help="janela Landsat C2 L2 em torno de uma data (MPC)")
     ls.add_argument("--lon", type=float, required=True)

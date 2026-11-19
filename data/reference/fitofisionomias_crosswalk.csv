@@ -1,0 +1,21 @@
+bioma,fitofisionomia_ibge,mapbiomas_classe,mapbiomas_codigo,faixa_agbd_indicativa_mg_ha,fonte_status
+Amazônia,Floresta Ombrófila Densa,Formação Florestal,3,180-400,literatura; a calibrar
+Amazônia,Floresta Ombrófila Aberta,Formação Florestal,3,150-350,literatura; a calibrar
+Amazônia,Floresta Estacional Sempre-Verde,Formação Florestal,3,150-320,literatura; a calibrar
+Amazônia,Floresta Estacional Semidecidual,Formação Florestal,3,120-300,literatura; a calibrar
+Amazônia,Floresta Estacional Decidual,Formação Florestal,3,100-260,literatura; a calibrar
+Amazônia,Campinarana (vegetação sobre areia branca),Formação Florestal,3,60-180,literatura; a calibrar
+Amazônia,Floresta secundária (regeneração),Formação Florestal,3,10-250,depende da idade; a calibrar
+Amazônia,Floresta de bambu (Acre),Formação Florestal,3,80-220,literatura; a calibrar
+Amazônia,Savana Arborizada / Formação Savânica,Formação Savânica,4,20-120,literatura; a calibrar
+Amazônia,Savana Parque / campestre,Formação Savânica,4,5-50,literatura; a calibrar
+Cerrado,Cerrado Denso (sensu stricto),Formação Savânica,4,40-120,literatura; a calibrar
+Cerrado,Cerrado Típico (sensu stricto),Formação Savânica,4,25-90,literatura; a calibrar
+Cerrado,Cerrado Ralo (sensu stricto),Formação Savânica,4,10-50,literatura; a calibrar
+Cerrado,Cerrado Rupestre,Formação Savânica,4,5-40,literatura; a calibrar
+Cerrado,Cerradão,Formação Florestal,3,80-200,literatura; a calibrar
+Cerrado,Mata de Galeria,Formação Florestal,3,100-250,literatura; a calibrar
+Cerrado,Mata Ciliar,Formação Florestal,3,80-220,literatura; a calibrar
+Cerrado,Campo Sujo,Formação Campestre,2,5-30,literatura; a calibrar (fora do domínio 3/4)
+Cerrado,Campo Limpo,Formação Campestre,2,1-15,literatura; a calibrar (fora do domínio 3/4)
+Cerrado,Vereda / Palmeiral,Formação Campestre,2,5-40,literatura; a calibrar (fora do domínio 3/4)

@@ -7,6 +7,7 @@ e a de menor cobertura de nuvem no periodo.
 from __future__ import annotations
 
 import json
+import warnings
 from pathlib import Path
 from typing import Any
 
@@ -253,6 +254,114 @@ def fetch_composite(
         write_manifest(build_manifest(
             "s2_composite",
             {"lon": lon, "lat": lat, "start": start, "end": end, "size": size,
+             "max_items": max_items, "max_cloud": max_cloud, "items": meta["items"]},
+            [out_path, meta_path], license=LICENSE, account=ACCOUNT,
+            source=items[0].assets["red"].href,
+        ))
+    return {"path": str(out_path), "meta": str(meta_path), **meta}
+
+
+def fetch_annual(
+    lon: float,
+    lat: float,
+    year: int,
+    out: str | Path,
+    size: int = 1600,
+    max_items: int = 30,
+    max_cloud: float = 40.0,
+    manifest: bool = True,
+) -> dict[str, Any]:
+    """Composito anual com metricas fenologicas (S2) para o ano year.
+
+    Bandas: medianas e indices, percentis de NDVI, amplitude sazonal, NBR/NDII,
+    fracao valida e numero de observacoes. Usado no modelo anual (ADR-0021).
+    """
+    start, end = f"{year}-01-01", f"{year}-12-31"
+    items = search_items(lon, lat, start, end, size=size, max_cloud=max_cloud)
+    if not items:
+        raise RuntimeError(f"nenhuma cena S2 em {year}")
+    tile = items[0].id.split("_")[1]
+    items = [it for it in items if it.id.split("_")[1] == tile][:max_items]
+    _, bounds, crs, transform = _window_for_items(items, lon, lat, size)
+
+    def stack(name, resampling=Resampling.bilinear):
+        layers = []
+        for item in items:
+            with rasterio.open(item.assets[name].href) as ds:
+                layers.append(_read_band(ds, bounds, size, resampling))
+        return np.stack(layers)
+
+    scl = stack("scl", Resampling.nearest)
+    valid = ~np.isin(scl.astype("uint8"), list(SCL_BAD))
+    n_scenes = len(items)
+
+    def masked_median(arr):
+        arr = arr.astype("float32").copy()
+        arr[~valid] = np.nan
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", RuntimeWarning)
+            return np.nanmedian(arr, axis=0)
+
+    nir, red = stack("nir"), stack("red")
+    swir16, swir22 = stack("swir16"), stack("swir22")
+    blue, green = stack("blue"), stack("green")
+    med = {k: masked_median(v) for k, v in
+           (("blue", blue), ("green", green), ("red", red), ("nir", nir),
+            ("swir16", swir16), ("swir22", swir22))}
+
+    def scene_index(a, b):
+        with np.errstate(divide="ignore", invalid="ignore"):
+            idx = np.where(a + b > 0, (a - b) / (a + b), np.nan)
+        idx[~valid] = np.nan
+        return idx
+
+    ndvi_scenes = scene_index(nir, red)
+    ndmi_scenes = scene_index(nir, swir16)
+    nbr_scenes = scene_index(nir, swir22)
+    ndii_scenes = scene_index(nir, swir16)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)
+        ndvi = np.nanmedian(ndvi_scenes, axis=0)
+        ndmi = np.nanmedian(ndmi_scenes, axis=0)
+        nbr = np.nanmedian(nbr_scenes, axis=0)
+        ndii = np.nanmedian(ndii_scenes, axis=0)
+        ndvi_p10 = np.nanpercentile(ndvi_scenes, 10, axis=0)
+        ndvi_p90 = np.nanpercentile(ndvi_scenes, 90, axis=0)
+    ndvi_amp = ndvi_p90 - ndvi_p10
+    nirv = ndvi * med["nir"]
+    nobs = valid.sum(axis=0).astype("float32")
+    valid_fraction = (nobs / n_scenes).astype("float32")
+
+    layers = [med["blue"], med["green"], med["red"], med["nir"], med["swir16"],
+              med["swir22"], ndvi, ndmi, nirv, nbr, ndii, ndvi_p10, ndvi_p90,
+              ndvi_amp, nobs, valid_fraction]
+    names = ["blue", "green", "red", "nir", "swir16", "swir22", "ndvi",
+             "ndmi", "nirv", "nbr", "ndii", "ndvi_p10", "ndvi_p90",
+             "ndvi_amp", "nobs", "valid_fraction"]
+
+    out_path = Path(out)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    profile = {
+        "driver": "GTiff", "width": size, "height": size, "count": len(layers),
+        "dtype": "float32", "crs": crs, "transform": transform,
+        "compress": "deflate", "predictor": 3, "tiled": True,
+        "blockxsize": 512, "blockysize": 512, "nodata": np.nan,
+    }
+    with rasterio.open(out_path, "w", **profile) as dst:
+        dst.write(np.stack(layers).astype("float32"))
+        for i, name in enumerate(names, start=1):
+            dst.set_band_description(i, name)
+
+    meta = {"lon": lon, "lat": lat, "year": year, "size_px": size, "tile": tile,
+            "crs": str(crs), "items": [it.id for it in items], "n_items": len(items),
+            "bands": names, "source": items[0].assets["red"].href,
+            "median_nobs": float(np.nanmedian(nobs))}
+    meta_path = out_path.with_suffix(".json")
+    meta_path.write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
+    if manifest:
+        write_manifest(build_manifest(
+            "s2_annual",
+            {"lon": lon, "lat": lat, "year": year, "size": size,
              "max_items": max_items, "max_cloud": max_cloud, "items": meta["items"]},
             [out_path, meta_path], license=LICENSE, account=ACCOUNT,
             source=items[0].assets["red"].href,
