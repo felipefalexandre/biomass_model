@@ -341,3 +341,8 @@ obs em 10 m.
 - Cerrado central 2021: 16x16 células de 1 km, 194 válidas; média 15,9 Mg/ha (GEDI ~22,5) —
   subestima sem calibração; protótipo, sem IC/AOA.
 - Próximo: 30 m chunked, IC conformal, AOA, calibração e validação de campo (G2).
+
+### Handoff para reinício (2026-11-18)
+- Criado HANDOFF.md com ambiente, dados, commits, resultados, decisões, pendências e comandos.
+- Estado: 30 testes; mapa 30 m com AOA/IC; ORNL recuperado (fator 10); features anuais em 2 boxes.
+- Próximo: expandir features anuais para todos os boxes/anos e rodar mapas; validação campo.

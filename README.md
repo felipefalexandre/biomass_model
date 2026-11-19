@@ -1,5 +1,6 @@
 # Sistema de Estimativa de Biomassa Vegetal — Amazônia e Cerrado
 
+**Retomada:** leia HANDOFF.md antes de continuar.
 **Status:** piloto concluído (5 boxes na Amazônia, 6 no Cerrado) com calibração local, AOA e IC conformal. Cerrado calibrado R² 0,73 / RMSE 22,8 (1 km); Amazônia 0,39 / 44,9. Não é produto nacional: exige calibração por região e validação de campo independente. Ver `docs/33` (relatório) e `docs/34` (model card).
 **Escopo:** AGB (v1) e BGB (modelo separado), carbono e CO₂e, a partir de dados abertos e ferramentas gratuitas, em Python. O modelo estima biomassa/estoque; não estima desmatamento nem reflorestamento (atividade é externa).
 **Domínio:** classes 3 (Formação Florestal) e 4 (Formação Savânica) do MapBiomas Coleção 11, Amazônia e Cerrado.
