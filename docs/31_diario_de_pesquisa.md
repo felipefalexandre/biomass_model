@@ -319,3 +319,10 @@ obs em 10 m.
   Teste de viabilidade: estrato com médias transferidas erra -41% a +43%; mapa mantém padrão.
 - REDD+/ARR: requisitos mapeados em docs/44; modelo entrega biomassa/estoque/mudança, não
   adicionalidade/vazamento/permanência.
+
+### Correção de escopo (2026-11-18)
+- O modelo é de **estimativa de biomassa** (mapa e estoque por polígono/estrato). Não estima
+  desmatamento/reflorestamento, não detecta eventos e não faz contabilidade de perda/ganho.
+- Atividade (desmatamento/fogo/regeneração) vem de mapas/modelos externos; a biomassa é insumo.
+- docs/37, 40, 41, 43, 44 revistos; ADR-0021/0024 ajustados. A E2a passa a ser diagnóstico de
+  estabilidade temporal, não validação de mudança.

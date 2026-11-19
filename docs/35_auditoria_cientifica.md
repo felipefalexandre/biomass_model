@@ -2,7 +2,7 @@
 
 **Data:** 2026-11-18 · **Escopo:** auditoria do sistema atual, sem alterar modelos ou resultados.
 **Pergunta-guia:** o sistema atual consegue estimar o estoque de biomassa de **um ano** a partir de
-dados de satélite desse ano, atualizar o estoque e reagir a mudanças reais — sem depender de GEDI
+dados de satélite desse ano, estimar o estoque e representar o estado anual — sem depender de GEDI
 ou de outro mapa no momento da estimativa?
 
 **Resposta curta:** não. O sistema atual é um espacializador estático de GEDI (compósito
@@ -43,8 +43,7 @@ arquitetura precisa de uma camada temporal explícita.
 
 1. **Compósito multi-ano estático.** As features S2 são uma mediana de 2020–2024. Um footprint de
    2019 e outro de 2023 recebem a mesma reflectância (ou quase), apagando mudanças anuais. O
-   modelo não pode, por construção, reagir a desmatamento, fogo ou regeneração de um ano
-   específico.
+   modelo não representa o estado de um ano específico (e não estima desmatamento).
 2. **Alvo não anualizado.** GEDI L4A existe de 2019 a 2023/2024, com cobertura orbital desigual.
    Não há como treinar um modelo anual para anos sem GEDI usando apenas GEDI; será preciso
    campo e/ou pseudo-invariância.
@@ -56,12 +55,11 @@ arquitetura precisa de uma camada temporal explícita.
 5. **Representatividade desigual.** A fração de área fora do domínio 3/4 chega a 56% (Acre) e
    90% (Cerrado sul); os footprints, porém, são quase todos 3/4. Ou seja, a amostra é de
    remanescentes, não da paisagem. Isso afeta a extrapolação para mosaicos agropecuários.
-6. **Domínio anual mutável.** Usar a classe 3/4 do ano como máscara faz áreas desmatadas
-   “desaparecerem” do mapa, em vez de aparecerem como perda de estoque. Para contabilidade de
-   estoque, é preciso um módulo de transições (perda/ganho), não apenas máscara.
-7. **Falta de validação temporal.** Nenhum experimento atual mede se o modelo responde
-   corretamente a uma mudança conhecida (PRODES, MapBiomas, fogo) ou se permanece estável em
-   áreas sem mudança.
+6. **Domínio anual mutável.** A máscara 3/4 do ano pode mudar. O modelo de biomassa não faz
+   contabilidade de transições: áreas que saem do domínio ficam fora do mapa e a atividade
+   (desmatamento/fogo/regeneração) é calculada externamente, com os mapas próprios.
+7. **Falta de consistência anual.** Nenhum experimento mede estabilidade entre anos nem se o
+   mapa de um ano usa apenas dados daquele ano (sem compósito multi-ano).
 8. **Uso de GEDI no inference.** Hoje o GEDI é alvo, não feature; isso é compatível com “não
    depender de GEDI para estimar”. Mas o produto atual **é** uma espacialização de GEDI e não um
    estimador autônomo; a diferença precisa ser explicitada no model card e nos critérios.
@@ -138,9 +136,9 @@ objetivo atual: ele **espacializa um compósito GEDI multi-ano**; não **estima 
 ano** nem **atualiza** o estoque. As mudanças necessárias são de desenho, não de hiperparâmetro:
 
 1. features e máscaras **por ano**;
-2. modelo com **estado temporal** (estoque e mudança), não um único ajuste estático;
-3. validação **temporal e de mudança**, além da espacial;
+2. modelo **anual** (features do ano), não um único ajuste estático;
+3. validação **anual** (leave-one-year-out) e espacial;
 4. referência GEDI usada **somente para calibrar**, com auditoria de independência no inference;
-5. contabilidade explícita de transições (perda/ganho), não apenas máscara 3/4.
+5. sem contabilidade de transições no modelo: a atividade é externa; o produto é biomassa/estoque.
 
 Esses pontos estruturam o plano em `docs/37`.

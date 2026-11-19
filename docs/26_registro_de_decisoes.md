@@ -24,7 +24,7 @@
 | ADR-0018 | Histórico MapBiomas como feature | aceito |
 | ADR-0019 | Área de Aplicabilidade obrigatória no produto | aceito |
 | ADR-0020 | Validação em duas linhas + temporal | proposto |
-| ADR-0021 | Produto anual de estado e mudança | proposto |
+| ADR-0021 | Produto anual de biomassa (sem modelar desmatamento) | aceito |
 | ADR-0022 | GEDI apenas como calibração | proposto |
 | ADR-0023 | Taxonomia fitofisionômica | proposto |
 | ADR-0024 | Critérios de aceitação e promoção | proposto |
@@ -225,7 +225,7 @@ diagnóstico de cobertura, não alvo.
 - ADR-0023: ver `ADR/0023-taxonomia-fitofisionomica.md`.
 - ADR-0024: ver `ADR/0024-criterios-aceitacao.md`.
 
-Todas aguardam aprovação; nenhuma alteração de modelo foi feita.
+ADR-0020/0022/0023/0024 aprovados; ADR-0021/0025/0026 revisados e aceitos. Nenhuma alteração de modelo foi feita.
 
 
 ## ADRs 0025–0026 (2026-11-18)

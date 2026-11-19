@@ -8,7 +8,7 @@ Relações AGB–reflectância–estrutura mudam entre fisionomias: dossel fecha
 AGB alta; savana aberta tem resposta dominada por fração lenhosa e sombra; floresta estacional
 tem sazonalidade distinta da ombrófila; formações secundárias têm AGB baixa e crescimento rápido.
 Um único modelo global mistura essas relações. A hipótese desta etapa é que **estratificar por
-fisionomia/estado sucessional** melhora transferência e resposta a mudanças — mas ela pode ser
+fisionomia/estado sucessional** melhora transferência e a estimativa anual — mas ela pode ser
 rejeitada; o protocolo em `docs/37` testa isso contra o baseline.
 
 ## 2. Evidências verificadas (matriz)
@@ -96,9 +96,9 @@ Caso contrário: *partial pooling* hierárquico ou feature categórica, nunca mo
 |---|---|---|
 | H1 | Fisionomia categórica reduz viés por box | R²/RMSE por box não melhora de forma consistente |
 | H2 | Modelos hierárquicos superam modelo único e modelos isolados | partial pooling não supera M1/M2 em LOO |
-| H3 | Histórico/idade de regeneração melhora resposta temporal | sem ganho em mudanças conhecidas |
-| H4 | Features anuais (S2/S1/Landsat do ano) capturam mudança real | ΔAGB não correlaciona com mudança observada |
-| H5 | Modelo de estado com prior assimétrico (perda abrupta, ganho gradual) supera modelo direto | piora estabilidade ou não reduz falso ganho |
+| H3 | Histórico/idade de regeneração melhora a AGBD anual | sem ganho em LOO/LOYO |
+| H4 | Features anuais (S2/S1/Landsat do ano) capturam o estado anual | não supera o compósito estático de forma consistente |
+| H5 | Consistência temporal melhora com features anuais estáveis | oscilação anual não diminui |
 | H6 | Calibração local pode ser reduzida com fisionomia/hierarquia | necessidade de amostras locais não cai |
 | H7 | GEDI pode calibrar sem ser dependência operacional | inference exige GEDI ou derivados |
 | H8 | 1 km é a escala defensável para estoque; 30 m é diagnóstico | 30 m supera 1 km em validação de campo/polígono |

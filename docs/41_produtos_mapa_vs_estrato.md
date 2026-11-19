@@ -34,7 +34,7 @@ define **como** a biomassa se relaciona com as covariáveis. São camadas distin
 3. Para um polígono, recortar e agregar (média ponderada por área), com block bootstrap.
 
 **Prós:** responde qualquer polígono; mostra onde está a biomassa; permite comparar com mapas de
-desmatamento e estimar perda potencial; a composição por estrato pode ser derivada do próprio mapa;
+desmatamento (sobreposição externa; o modelo não estima perda); a composição pode vir do mapa;
 incerteza espacialmente explícita.
 **Contras:** exige inferência em toda a área (custo computacional); depende de o modelo ser válido
 em todos os pixels (AOA); risco de precisão aparente em 30 m; erros espacialmente correlacionados.
@@ -47,7 +47,7 @@ em todos os pixels (AOA); risco de precisão aparente em 30 m; erros espacialmen
 
 **Prós:** barato e rápido; não precisa mapear pixels; direto para relatório; robusto a ruído de
 pixel; fácil de auditar por estrato.
-**Contras:** não localiza perda nem compara com desmatamento; depende de composição confiável;
+**Contras:** não localiza padrões nem permite sobreposição espacial; depende de composição confiável;
 AGBD por estrato transferido de outra região enviesa o total; não valida padrões espaciais; não
 gera mapa.
 
@@ -56,7 +56,7 @@ gera mapa.
 Mapa como produto principal; tabela por polígono derivada por zonal stats; composição do usuário
 entra como **entrada opcional/restrição** (checagem de consistência e relatório por estrato). Se o
 usuário só tem composição, o sistema pode rodar em “modo polígono” usando médias locais
-calibradas, com aviso de que não há mapa nem localização de perda.
+calibradas, com aviso de que não há mapa nem verificação espacial.
 
 ## 3. Teste de viabilidade com dados reais
 
@@ -93,7 +93,7 @@ Leitura:
 - **Modelo espacial** estima AGBD de **células** a partir de satélite/clima/solo.
 - **Estrato** é uma camada intermediária: AGBD média por fitofisionomia, estimada por campo,
   modelo ou literatura, com incerteza e domínio de validade. Serve como prior/restrição e como
-  camada de relatório; não substitui o mapa onde há mudança espacial.
+  camada de relatório; não substitui o mapa onde há variação espacial.
 
 Para “fórmulas para todas as fitofisionomias”, o entregável realista é uma **tabela de priors por
 estrato** (média, faixa, fonte, validade), calibrada com campo; o crosswalk já lista as
@@ -102,17 +102,17 @@ fitofisionomias e faixas indicativas. Sem campo/IBGE, a granularidade fina não 
 ## 5. Recomendação
 
 1. **Mapa primeiro** (1 km oficial; 30 m diagnóstico) com IC, AOA e máscara 3/4. É o produto que
-   sustenta REDD+/ARR: estoque, mudança e comparação com desmatamento.
+   sustenta REDD+/ARR: estoque e insumo para sobreposição com mapas externos de atividade.
 2. **Tabela por polígono derivada** (área, média, estoque, IC, por estrato), usando composição do
    mapa ou do usuário. É o produto de relatório, não uma arquitetura alternativa.
 3. **Modo polígono** apenas como atalho de relatório: exige médias por estrato **locais/
    calibradas**; nunca usar médias de outro bioma/região sem aviso. Sem mapa, não há análise de
-   perda nem verificação espacial.
+   verificação espacial nem sobreposição com atividade.
 4. **Não** aplicar alometria de árvore a pixel.
 5. Para fitofisionomias finas: cruzar IBGE 1:250k + MapBiomas secundária + estrutura; se a
    composição vier do usuário, registrar a fonte e a incerteza.
 
-**Decisão de continuidade:** o plano aprovado (mapa anual estado+mudança, GEDI só calibração,
+**Decisão de continuidade:** o plano aprovado (mapa anual de biomassa, GEDI só calibração,
 Linhas A/B/T) permanece. A sugestão de estimar por estrato/polígono entra como **camada de
 relatório e checagem**, não como substituta do mapa. Ver ADR-0026.
 

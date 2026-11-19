@@ -28,13 +28,13 @@
 melhora de viés/RMSE; em 1 km piorou. No Cerrado, piorou nas duas escalas. O resultado é neutro a
 negativo e **não promove A1**.
 
-## 3. Por que este teste ainda não responde à hipótese de mudança
+## 3. Por que este teste é de robustez anual, não de mudança
 
 - Cada ano tem **footprints diferentes** (órbitas/qualidade), então o fold anual mede também
   mudança de composição da amostra, não só mudança da relação features→AGB.
 - 2022 tem n pequeno (861 Amazônia; 2.004 Cerrado); 2023 foi excluído (57–285).
 - O compósito estático A0 também muda pouco entre folds, mas é uma referência válida.
-- O teste decisivo é **mesma localização ao longo do tempo** (pares/eventos) e não LOO-year
+- O teste decisivo é **validação de campo e consistência anual**; mudança de cobertura é atividade externa, não escopo
   agregado.
 
 ## 4. Bug encontrado e corrigido
@@ -46,8 +46,7 @@ análise temporal em 1 km.
 
 ## 5. Próximos passos (E2)
 
-1. Construir pares de células **na mesma localização** em anos consecutivos (2019–2024) e treinar
-   ΔAGB contra Δfeatures, com eventos PRODES/Fogo/MapBiomas.
-2. Adicionar 2024 (há footprints e S2) e os boxes restantes às features anuais.
-3. Testar sensibilidade a `max_items`/estação (ano inteiro vs estação seca).
-4. Só então decidir entre A1, A2 (histórico/transições) e A5 (estado-espaço).
+1. Adicionar 2024 (há footprints e S2) e os boxes restantes às features anuais.
+2. Testar sensibilidade a `max_items`/estação (ano inteiro vs estação seca).
+3. Avaliar consistência anual (mesma célula, variação de features e de mapa) como diagnóstico.
+4. Só então decidir entre A1 e A2 (covariáveis de estado); modelos de mudança estão fora do escopo.

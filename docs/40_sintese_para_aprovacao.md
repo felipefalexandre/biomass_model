@@ -6,8 +6,8 @@
 
 O sistema atual **não** estima o estoque de um ano nem o atualiza: ele espacializa um compósito
 GEDI multi-ano (2020–2024). Para o objetivo declarado — estimar AGBD anual a partir de dados de
-satélite **do próprio ano**, responder a mudanças reais e não depender de GEDI no inference — é
-necessário um desenho de **estado + mudança**, com features anuais e validação temporal.
+satélite **do próprio ano** e não depender de GEDI no inference — é necessário um desenho
+**anual**, com features do ano, validação espacial/anual e sem modelar a atividade.
 
 Isso não invalida o que foi feito: os 11 boxes, a validação LOO, a calibração local, o AOA e o
 conformal continuam sendo a base de avaliação. O que muda é o **estimando temporal** e o papel do
@@ -17,27 +17,26 @@ GEDI (calibração, não produto).
 
 1. **Alvo e inferência:** hoje o alvo é GEDI L4A; no inference as features já não usam GEDI. A
    regra “GEDI só calibra” é compatível, mas precisa ser auditada e declarada.
-2. **Tempo:** o compósito S2 é único para todos os anos; isso apaga mudanças. É a maior
+2. **Tempo:** o compósito S2 é único para todos os anos; isso apaga diferenças anuais. É a maior
    limitação para o objetivo.
 3. **Referência:** calibração e teste compartilham GEDI (Linha A); campo é só PLOS 2018 (Linha B,
    R² 0,29). Falta validação pós-2019 na Amazônia.
 4. **Representatividade:** a Amazônia não tem box abaixo de ~107 Mg ha⁻¹; o Cerrado tem dois
    regimes com vazio entre ~25 e ~50; não há cronossequência de regeneração nem pós-fogo.
-5. **Contabilidade:** a máscara 3/4 do ano faz áreas desmatadas desaparecerem; para estoque é
-   preciso reportar perda/ganho explicitamente.
+5. **Atividade externa:** a máscara 3/4 do ano pode mudar; o modelo entrega biomassa/estoque.
+   Desmatamento, fogo e regeneração são mapas/modelos externos, não saída deste modelo.
 
 ## 3. Recomendação de sequência (maior potencial primeiro)
 
 1. **E1 — features anuais + modelo direto (A1).** Sem novas dependências; usa S2/S1 de
    2019–2024. É o teste mais direto da hipótese “dados do ano capturam o estado”.
-2. **E2 — fogo/PRODES/secundária + testes de mudança.** Transforma o modelo em algo que
-   responde a mudanças; mede sinal, contraste e falso alarme.
+2. **E2 — covariáveis de estado (secundária/fogo).** Só entram se melhorarem a AGBD; não são
+   alvo nem detecção de mudança.
 3. **E7 — curvas de calibração local.** Define o custo real de MRV e testa se fisionomia/hierarquia
    reduzem a necessidade de amostras.
 4. **E3/E4 — fisionomia e hierarquia.** Só depois de E1/E2, para não gastar esforço em
    estratificação sem sinal temporal.
-5. **E5/E6 — estado-espaço e prior assimétrico.** Onde o ganho científico é maior (perda
-   abrupta vs ganho gradual), mas com maior custo de implementação.
+5. **E9 — polígono e incerteza.** Fecha o produto; depende de E1–E7.
 6. **E9 — polígono e incerteza.** Fecha o produto; depende de E1–E7.
 7. **Linha B — PLOS/ORNL.** Em paralelo desde o início; sem ela, nenhum resultado é promovido.
 
@@ -53,20 +52,20 @@ GEDI (calibração, não produto).
 - **Campo pós-2019 na Amazônia** (não existe hoje): essencial para Linha B.
 - **ORNL**: resolver fator/datum e calcular AGB/ha; validação 2009–2018.
 - **MapBiomas pré-2004**: recupera 25 sítios PLOS.
-- **PRODES/Fogo/Secundária/SoilGrids**: catálogo e ingestão.
+- **Fogo/Secundária/SoilGrids** (opcionais) e ORNL; PRODES é atividade externa, não feature.
 - **Financiamento de campo** para calibração local (~100 células na Amazônia; ≥25 no Cerrado).
 
 ## 6. Decisões solicitadas (aprovação)
 
-1. **Produto:** adotar AGBD anual + estoque + mudança, com 1 km oficial e 30 m diagnóstico?
+1. **Produto:** adotar AGBD anual + estoque (mapa e polígono), 1 km oficial e 30 m diagnóstico?
 2. **Independência:** GEDI (e derivados) proibido como feature/prior no inference?
 3. **Taxonomia:** adotar níveis 1–2 (IBGE + MapBiomas + estrutura) e os critérios objetivos de
    especialização de `docs/36`?
 4. **Critérios de aceite:** aprovar os limites de `docs/37` §6 (espacial, temporal, campo,
    incerteza, independência)?
 5. **Prioridade:** começar por E1/E2/E7 e manter Linha B em paralelo?
-6. **Aquisições:** autorizar MapBiomas pré-2004, PRODES/Fogo/Secundária, SoilGrids e a
-   recuperação do ORNL?
+6. **Aquisições:** autorizar MapBiomas pré-2004, Fogo/Secundária (opcionais), SoilGrids e a
+   recuperação do ORNL? (PRODES não é necessário ao modelo; atividade é externa.)
 7. **Campo:** buscar parceria/financiamento para validação independente pós-2019 na Amazônia?
 
 ## 7. Mapa dos entregáveis
@@ -103,7 +102,7 @@ são promovidas se passarem pelos critérios de `docs/37` §6 e pela Linha B.
 
 O usuário aprovou os pontos anteriores e esclareceu o objetivo final (REDD+/ARR). A sugestão de
 estimar por estrato/polígono foi incorporada como **camada de relatório**, não como substituta do
-mapa. Permanecem: mapa anual estado+mudança, GEDI só calibração, validação A/B/T, calibração
+mapa. Permanecem: mapa anual de biomassa, GEDI só calibração, validação espacial/anual e de campo, calibração
 local. Novos artefatos: `docs/41` (mapa vs estrato), `docs/42` (E1), `docs/43` (mudança
 preliminar), `docs/44` (REDD+/ARR), ADR-0025/0026.
 
