@@ -131,3 +131,10 @@ homogeneidade local. Ao agregar em 1 km, o RMSE cai para 34,3 Mg ha⁻¹ (R² 0,
 é redução da variância do alvo — o produto em 30 m deve ser tratado como camada diagnóstica, não
 como promessa de acurácia. Artefatos: `data/reference/baselines.csv`,
 `biomass_model.modeling.run_baseline`.
+
+### 4.2 Modelos testados e rejeitados
+
+- **Alvo em log1p:** piorou a Amazonia (R² −1,00; viés −101 Mg ha⁻¹) e não estabilizou o
+  Cerrado em 1 km. Não adotado (`log_target=False`).
+- **S1 como feature:** ganho marginal (R² +0,004) no piloto único; não resolveu a transferência.
+- **S2 composto multi-data:** sem ganho sobre uma data no footprint.

@@ -138,6 +138,7 @@ def run_baseline(
     cell_px: int | None = None,
     min_shots: int = 3,
     group_col: str | None = None,
+    log_target: bool = False,
 ) -> dict[str, Any]:
     from sklearn.ensemble import RandomForestRegressor
     from sklearn.model_selection import GroupKFold
@@ -154,6 +155,7 @@ def run_baseline(
     feats = feature_columns(df)
     X = df[feats].to_numpy(dtype="float64")
     y = df["agbd"].to_numpy(dtype="float64")
+    y_fit = np.log1p(y) if log_target else y
     groups = (df[group_col] if group_col else df["block_id"]).to_numpy()
     if group_col:
         df["block_id"] = df[group_col].astype(str)
@@ -166,8 +168,10 @@ def run_baseline(
             n_estimators=n_estimators, min_samples_leaf=3, n_jobs=-1,
             random_state=seed, oob_score=False,
         )
-        model.fit(X[train_idx], y[train_idx])
+        model.fit(X[train_idx], y_fit[train_idx])
         pred = model.predict(X[test_idx])
+        if log_target:
+            pred = np.clip(np.expm1(pred), 0, None)
         oof[test_idx] = pred
         fold = _metrics(y[test_idx], pred)
         fold["fold"] = i
@@ -176,7 +180,7 @@ def run_baseline(
     model = RandomForestRegressor(
         n_estimators=n_estimators, min_samples_leaf=3, n_jobs=-1, random_state=seed,
     )
-    model.fit(X, y)
+    model.fit(X, y_fit)
 
     overall = _metrics(y, oof)
     by_class = {
@@ -200,6 +204,7 @@ def run_baseline(
         "scale_px": int(cell_px) if cell_px else 1,
         "features": feats,
         "blocks": int(df["block_id"].nunique()),
+        "log_target": bool(log_target),
         "cv": {"overall": overall, "per_fold": per_fold, "degrade_zero": strict},
         "by_class": by_class,
         "importance": sorted(

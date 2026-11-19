@@ -215,3 +215,11 @@ obs em 10 m.
   sem mais sítios, calibração regional e referência de melhor qualidade.
 - Artefatos: `amazonia_multi_training.csv` (40.598), `cerrado_multi_training.csv` (31.402),
   `.metrics.json/.predictions.csv` em `E:\Mapbiomas\biomass\derived\*_multi3_loo_*`.
+
+### Teste de transformacao logaritmica do alvo
+- Implementado `log_target` em `run_baseline` (RF em log1p, predicao com expm1 e piso 0).
+- Resultado no leave-one-box-out: Amazonia piorou muito (R² −1,00 no footprint, vies −101
+  Mg/ha) e Cerrado melhorou no footprint (−0,07 vs −0,56), mas piorou em 1 km (0,07; fold oeste
+  −4,3). Nao adotado; fica disponivel como opcao.
+- Licao: o problema nao e so escala do alvo, e transferencia entre regioes (paisagem e
+  referencia). Reforca a necessidade de mais sitios e calibracao regional.
