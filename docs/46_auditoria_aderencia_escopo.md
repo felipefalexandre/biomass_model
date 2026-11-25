@@ -762,7 +762,7 @@ O usuário aprovou as decisões da seção 11, com dois ajustes:
 - **Inventários:** autorizada a aquisição de dados abertos de 2000 em diante, antigos e novos
   (ADR-0031), com ingestão canônica (ADR-0032).
 
-Implementado nesta etapa (53 testes passando):
+Implementado nesta etapa (54 testes passando):
 
 - `inventory/`: esquema canônico, validação, escrita e adaptadores PLOS, IFN, ORNL e GEDI L4A.
 - `allometry/`: Chave 2005, palmeira e liana.

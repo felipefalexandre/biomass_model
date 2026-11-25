@@ -3,6 +3,7 @@ import pandas as pd
 from shapely.geometry import Point
 
 from biomass_model.inventory.adapters import (
+    load_ceda_manaus,
     load_ifn_panel,
     load_ornl_site,
     load_plos2018,
@@ -123,3 +124,22 @@ def test_ornl_adapter_tree_measurements(tmp_path):
     assert row["agb_mg_ha"] > 0
     assert np.isfinite(row["agb_uncertainty_mg_ha"])
     assert "ornl_ddls" in row["quality_flags"]
+
+
+def test_ceda_adapter(tmp_path):
+    import geopandas as gpd
+    from shapely.geometry import box
+
+    path = tmp_path / "ceda.shp"
+    gpd.GeoDataFrame(
+        {"Plot_ID": ["P1"], "AGB": [120.0], "n": [250]},
+        geometry=[box(824000, 9718000, 824100, 9718060)],
+        crs="EPSG:32720",
+    ).to_file(path)
+    out = load_ceda_manaus(path)
+    assert len(out) == 1
+    row = out.iloc[0]
+    assert row["source"] == "CEDA_MANAUS"
+    assert np.isclose(row["agb_mg_ha"], 120.0)
+    assert np.isclose(row["support_area_ha"], 0.6)
+    assert row["biome"] == "Amazônia"

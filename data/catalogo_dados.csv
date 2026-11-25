@@ -29,7 +29,7 @@ D34,Legenda MapBiomas Colecao 11,metadado oficial,-,2026,classes e codigos IBGE,
 D35,Painel de Biomassa e Carbono (IFN),AGB por unidade amostral,ponto/UA,IFN,calibracao/validacao regional,SFB,CC BY,verificado,"439970 registros; coordenadas ~0,1 grau; equacoes multiplas"
 D36,Roitman et al. 2018 PLOS ONE,Cerrado s.s. (parcelas/arvores),77 sitios / 893 parcelas,variado,calibracao/validacao,PLOS,CC BY,verificado,DOI 10.1371/journal.pone.0196742
 D37,Sustainable Landscapes Brazil,inventario arvore-a-arvore,sitios,2009-2018,validacao,ORNL DAAC,aberto (login Earthdata),a_verificar,ds_id=1641
-D38,Manaus plots AGB 2014,AGB por parcela,22 parcelas,2014,validacao,CEDA,OGL,a_verificar,download nao testado
+D38,Manaus plots AGB 2014,AGB por parcela,23 parcelas,2014,validacao,CEDA,OGL,verificado,baixado e ingerido (23 parcelas; OGL)
 D39,RAINFOR census 2017-2019,DAP por arvore,29 parcelas,2017-2019,validacao,EIDC,OGL,verificado,DOI 10.5285/63d4b774-4e03-4db2-95ad-dcca18f0d681
 D40,Vourlitis Cerrado MT,dados por arvore,parcelas,2011-2018,validacao,Mendeley,aberto,verificado,DOI 10.17632/2989vngvys.2
 D41,Maraca ecotone forests,AGB/C por parcela,129 parcelas,censo 4,validacao,Mendeley,aberto,verificado,DOI 10.17632/2j354jtddx.2

@@ -1,0 +1,66 @@
+{
+  "dataset": "ceda_manaus",
+  "created_at": "2026-11-25T02:20:31+00:00",
+  "git_commit": "5dd585fc1ed55307f23ae17f45b873f96bf745ee",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "ceda-manaus",
+    "--out-dir",
+    "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus"
+  ],
+  "params": {
+    "files": [
+      "00README_catalogue_and_licence.txt",
+      "Manaus2014_Plots100x60m_AGB.dbf",
+      "Manaus2014_Plots100x60m_AGB.prj",
+      "Manaus2014_Plots100x60m_AGB.sbn",
+      "Manaus2014_Plots100x60m_AGB.sbx",
+      "Manaus2014_Plots100x60m_AGB.shp",
+      "Manaus2014_Plots100x60m_AGB.shx"
+    ],
+    "out_dir": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus"
+  },
+  "license": "Open Government Licence v3 (OGL)",
+  "account": "nenhuma",
+  "source": "https://catalogue.ceda.ac.uk/uuid/c7aa24fb8d5c458daefdf0f4410ba830",
+  "notes": "shapefile de 23 parcelas 100x60m; AGB por parcela",
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus\\00README_catalogue_and_licence.txt",
+      "bytes": 787,
+      "sha256": "6ee81bc3c1186659117dd1909c6f76f76ce91d94d33fa186465629faa7c02b50"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus\\Manaus2014_Plots100x60m_AGB.dbf",
+      "bytes": 8745,
+      "sha256": "30fa7c663010e2c2196f24c65eff9bb63916992fbc547d554f847783430b9de0"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus\\Manaus2014_Plots100x60m_AGB.prj",
+      "bytes": 409,
+      "sha256": "693557f8e699aae3a62e393c8c917a3ea42813517f953695634d5af2d0293f79"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus\\Manaus2014_Plots100x60m_AGB.sbn",
+      "bytes": 332,
+      "sha256": "3533e464be0f0eddbc6a976e04a628ff85c108d990f3d321f5c00c2ede515e92"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus\\Manaus2014_Plots100x60m_AGB.sbx",
+      "bytes": 124,
+      "sha256": "5a21ea08bda7827a3ebd9965edd42f62bb17cd84c7e97b2abffdf6b5be0cdd2c"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus\\Manaus2014_Plots100x60m_AGB.shp",
+      "bytes": 3244,
+      "sha256": "cddcaaaaa61259b0d45ab56255860e54d8daf6f5192a9c221d029374185c7505"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus\\Manaus2014_Plots100x60m_AGB.shx",
+      "bytes": 284,
+      "sha256": "23bd5e28babf473ba260ed61dbe9c35897145017d1ddd0021852a271b910a5ae"
+    }
+  ]
+}

@@ -94,7 +94,8 @@ python -m biomass_model.cli train-field `
 3. A mesma fonte é usada para treino e teste; falta holdout independente.
 4. Clima histórico usa fallback de climatologia recente.
 5. Sem incerteza de referência, alometria ou modelo; sem intervalo de predição.
-6. Sem Amazônia, sem vegetação secundária, sem pós-fogo e sem gradiente de borda.
+6. Sem Amazônia no treino/modelo; a base CEDA/NCEO Manaus 2014 (23 parcelas) foi ingerida e
+   fica reservada para validação independente, mas ainda não foi usada neste modelo.
 7. A fitofisionomia disponível é apenas `savanna`; a variante com IBGE `legenda_2` foi testada
    em `docs/48` e não trouxe ganho consistente (30 `savanna` + 10 `unknown`).
 8. As features são Landsat; o mapa operacional em 30 m usa S2, então este modelo **não** é

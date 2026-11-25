@@ -162,6 +162,7 @@ def _cmd_polygon_stats(args: argparse.Namespace) -> int:
 
 def _cmd_inventory(args: argparse.Namespace) -> int:
     from .inventory.adapters import (
+        load_ceda_manaus,
         load_gedi_l4a,
         load_ifn_panel,
         load_ornl_directory,
@@ -179,6 +180,8 @@ def _cmd_inventory(args: argparse.Namespace) -> int:
                                     limit=args.limit)
     elif args.source == "gedi":
         frame = load_gedi_l4a(args.path, usage=args.usage, max_rows=args.max_rows)
+    elif args.source == "ceda":
+        frame = load_ceda_manaus(args.path, usage=args.usage)
     else:
         raise ValueError(f"fonte desconhecida: {args.source}")
 
@@ -331,6 +334,14 @@ def _cmd_s2_annual(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_ceda(args: argparse.Namespace) -> int:
+    from .datasets.ceda import fetch_ceda_manaus
+
+    result = fetch_ceda_manaus(args.out_dir, download=not args.no_download)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
 def _cmd_ibge(args: argparse.Namespace) -> int:
     from .datasets.ibge import fetch_ibge_vegetacao
 
@@ -450,6 +461,11 @@ def build_parser() -> argparse.ArgumentParser:
     s2a.add_argument("--max-items", type=int, default=30)
     s2a.add_argument("--max-cloud", type=float, default=40.0)
     s2a.set_defaults(func=_cmd_s2_annual)
+
+    ceda = sub.add_parser("ceda-manaus", help="parcelas AGB CEDA/NCEO Manaus 2014")
+    ceda.add_argument("--out-dir", required=True)
+    ceda.add_argument("--no-download", action="store_true")
+    ceda.set_defaults(func=_cmd_ceda)
 
     ibge = sub.add_parser("ibge-vegetacao", help="vegetacao IBGE 1:250.000 (areas/tabelas)")
     ibge.add_argument("--out-dir", required=True)
@@ -593,7 +609,8 @@ def build_parser() -> argparse.ArgumentParser:
     mrv.set_defaults(func=_cmd_mrv_check)
 
     inv = sub.add_parser("inventory", help="ingere inventario/observacao no esquema canonico")
-    inv.add_argument("--source", choices=["plos2018", "ifn", "ornl", "gedi"], required=True)
+    inv.add_argument("--source", choices=["plos2018", "ifn", "ornl", "gedi", "ceda"],
+                     required=True)
     inv.add_argument("--path", required=True)
     inv.add_argument("--out", required=True)
     inv.add_argument("--usage", default="validation",

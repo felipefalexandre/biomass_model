@@ -427,6 +427,61 @@ def load_ornl_directory(
     return merge_observations(frames)
 
 
+def load_ceda_manaus(
+    path: str | Path,
+    *,
+    usage: str = "validation",
+) -> pd.DataFrame:
+    """Carrega o shapefile CEDA/NCEO Manaus 2014 (23 parcelas de 100 x 60 m)."""
+    import geopandas as gpd
+
+    from ..datasets.ceda import CITATION as CEDA_CITATION
+    from ..datasets.ceda import LICENSE as CEDA_LICENSE
+
+    gdf = gpd.read_file(path)
+    if gdf.empty:
+        raise ValueError("shapefile CEDA vazio")
+    if gdf.crs is None:
+        gdf = gdf.set_crs("EPSG:32720")
+    metric = gdf.to_crs("EPSG:32720")
+    geo = gdf.to_crs("EPSG:4326")
+    rows = []
+    for i, (_, row) in enumerate(gdf.iterrows()):
+        lon = float(geo.geometry.iloc[i].centroid.x)
+        lat = float(geo.geometry.iloc[i].centroid.y)
+        area_ha = float(metric.geometry.iloc[i].area / 10_000.0)
+        plot = str(row.get("Plot_ID", i))
+        fit = classify_fitofisionomia("tropical forest", biome="Amazônia")
+        rows.append({
+            "observation_id": f"ceda:{plot}",
+            "source": "CEDA_MANAUS",
+            "source_version": "v1.0_2014",
+            "observation_type": "field",
+            "reference_date": "2014-01-01",
+            "geometry_wkt": _point_wkt(lon, lat),
+            "crs": "EPSG:4326",
+            "lon": lon,
+            "lat": lat,
+            "location_accuracy_m": 30.0,
+            "support_area_ha": area_ha,
+            "biome": "Amazônia",
+            "fitofisionomia": fit["fitofisionomia"],
+            "fitofisionomia_group": fit["fitofisionomia_group"],
+            "mapbiomas_class": fit["mapbiomas_class"],
+            "agb_mg_ha": _safe_float(row.get("AGB")),
+            "agb_uncertainty_mg_ha": np.nan,
+            "uncertainty_type": "",
+            "method": "ceda_plot_agb",
+            "allometric_equation": "",
+            "quality_flags": "ceda_manaus;plot_100x60m;agb_from_source;uncertainty_unavailable",
+            "license": CEDA_LICENSE,
+            "citation": CEDA_CITATION,
+            "model_status": usage,
+            "notes": f"n_trees={row.get('n')}; meanDBH={row.get('meanDBH')}; meanH={row.get('meanH')}",
+        })
+    return normalize_observations(pd.DataFrame(rows))
+
+
 def load_gedi_l4a(
     path: str | Path,
     *,
