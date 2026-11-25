@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 
 from biomass_model.training.field import train_field_model
+from biomass_model.training.inference import predict_field_model
 
 
 def _feature_table():
@@ -67,3 +68,18 @@ def test_train_field_model_ridge(tmp_path):
     assert result["algorithm"] == "ridge"
     assert result["overall"]["n"] == 30
     assert (tmp_path / "ridge.joblib").exists()
+
+
+def test_predict_field_model(tmp_path):
+    csv = tmp_path / "features.csv"
+    _feature_table().to_csv(csv, index=False)
+    train_field_model(
+        csv, tmp_path / "model", block_size_m=100_000, buffer_m=20_000,
+        n_estimators=50, min_samples_leaf=1, min_test=3, use_categoricals=False,
+    )
+    summary = predict_field_model(tmp_path / "model.joblib", csv,
+                                  tmp_path / "predictions.csv")
+    assert summary["n"] == 30
+    assert "metrics" in summary
+    assert np.isfinite(summary["metrics"]["rmse"])
+    assert (tmp_path / "predictions.csv").exists()

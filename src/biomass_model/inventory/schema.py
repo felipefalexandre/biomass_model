@@ -15,6 +15,7 @@ import pandas as pd
 
 OBSERVATION_COLUMNS = [
     "observation_id",
+    "site",
     "source",
     "source_version",
     "observation_type",
@@ -116,7 +117,7 @@ def normalize_observations(df: pd.DataFrame) -> pd.DataFrame:
     out = out[OBSERVATION_COLUMNS]
 
     for col in (
-        "observation_id", "source", "source_version", "observation_type",
+        "observation_id", "site", "source", "source_version", "observation_type",
         "reference_date", "geometry_wkt", "crs", "biome", "fitofisionomia",
         "fitofisionomia_group", "uncertainty_type", "method", "allometric_equation",
         "quality_flags", "license", "citation", "model_status", "notes",

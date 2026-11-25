@@ -1,0 +1,143 @@
+{
+  "dataset": "landsat_sites",
+  "created_at": "2026-11-25T02:34:35+00:00",
+  "git_commit": "e343f1486dc0870d2d893fb7c1ef88a6321cfebd",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "landsat-sites",
+    "--sites",
+    "E:\\Mapbiomas\\biomass\\derived\\ceda_manaus_sites.csv",
+    "--out-dir",
+    "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat",
+    "--bioma",
+    "Amazonia",
+    "--year-start",
+    "2014",
+    "--year-end",
+    "2014",
+    "--half-m",
+    "500",
+    "--days",
+    "60",
+    "--max-items",
+    "8"
+  ],
+  "params": {
+    "sites_csv": "E:\\Mapbiomas\\biomass\\derived\\ceda_manaus_sites.csv",
+    "bioma": "Amazonia",
+    "years": [
+      2014,
+      2014
+    ],
+    "half_m": 500.0,
+    "days": 60,
+    "max_items": 8,
+    "sites": 21,
+    "failures": [
+      {
+        "site": 15,
+        "year": 2014,
+        "error": "todas as cenas ficaram invalidas apos a mascara de nuvem"
+      },
+      {
+        "site": 17,
+        "year": 2014,
+        "error": "todas as cenas ficaram invalidas apos a mascara de nuvem"
+      }
+    ],
+    "skipped": 0,
+    "out_dir": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat"
+  },
+  "license": "USGS Landsat Collection 2 (aberto)",
+  "account": "nenhuma (MPC assina o acesso)",
+  "source": null,
+  "notes": "um GeoTIFF por sitio (mediana de cenas em +-45 dias do inventario)",
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_001\\landsat_2014.tif",
+      "bytes": 22832
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_002\\landsat_2014.tif",
+      "bytes": 23564
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_003\\landsat_2014.tif",
+      "bytes": 21984
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_004\\landsat_2014.tif",
+      "bytes": 25316
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_005\\landsat_2014.tif",
+      "bytes": 13096
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_006\\landsat_2014.tif",
+      "bytes": 21866
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_007\\landsat_2014.tif",
+      "bytes": 19020
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_008\\landsat_2014.tif",
+      "bytes": 12392
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_009\\landsat_2014.tif",
+      "bytes": 22310
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_010\\landsat_2014.tif",
+      "bytes": 12428
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_011\\landsat_2014.tif",
+      "bytes": 15576
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_012\\landsat_2014.tif",
+      "bytes": 20850
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_013\\landsat_2014.tif",
+      "bytes": 26360
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_014\\landsat_2014.tif",
+      "bytes": 14996
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_016\\landsat_2014.tif",
+      "bytes": 23060
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_018\\landsat_2014.tif",
+      "bytes": 25982
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_019\\landsat_2014.tif",
+      "bytes": 24394
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_020\\landsat_2014.tif",
+      "bytes": 26250
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_021\\landsat_2014.tif",
+      "bytes": 22912
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_022\\landsat_2014.tif",
+      "bytes": 20136
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ceda_manaus_landsat\\site_023\\landsat_2014.tif",
+      "bytes": 24540
+    }
+  ]
+}

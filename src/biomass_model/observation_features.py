@@ -30,6 +30,9 @@ DEFAULT_OPTICAL_NAMES = ("blue", "green", "red", "nir08", "swir16", "swir22", "n
 
 
 def _site_key(row: pd.Series) -> str:
+    site = row.get("site", "")
+    if site is not None and not pd.isna(site) and str(site).strip():
+        return str(site).strip()
     obs_id = str(row.get("observation_id", ""))
     return obs_id.split(":")[-1] if ":" in obs_id else obs_id
 
@@ -268,6 +271,7 @@ def build_observation_features(
         year = int(years[i]) if np.isfinite(years[i]) else None
         record: dict[str, Any] = {
             "observation_id": row["observation_id"],
+            "site": row.get("site", ""),
             "source": row["source"],
             "source_version": row["source_version"],
             "observation_type": row["observation_type"],

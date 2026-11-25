@@ -1,0 +1,56 @@
+{
+  "dataset": "era5_bbox",
+  "created_at": "2026-11-25T02:26:42+00:00",
+  "git_commit": "e343f1486dc0870d2d893fb7c1ef88a6321cfebd",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "era5-bbox",
+    "--west",
+    "-60.4",
+    "--south",
+    "-2.9",
+    "--east",
+    "-59.5",
+    "--north",
+    "-1.9",
+    "--start-year",
+    "2019",
+    "--end-year",
+    "2024",
+    "--out",
+    "E:\\Mapbiomas\\biomass\\era5\\manaus_era5land_2019_2024_bbox.nc"
+  ],
+  "params": {
+    "bbox": [
+      -60.4,
+      -2.9,
+      -59.5,
+      -1.9
+    ],
+    "start_year": 2019,
+    "end_year": 2024,
+    "variables": [
+      "2m_temperature",
+      "total_precipitation",
+      "potential_evaporation",
+      "surface_solar_radiation_downwards",
+      "volumetric_soil_water_layer_1",
+      "volumetric_soil_water_layer_2",
+      "volumetric_soil_water_layer_3",
+      "volumetric_soil_water_layer_4"
+    ]
+  },
+  "license": "Copernicus C3S",
+  "account": "conta CDS + chave em ~/.cdsapirc",
+  "source": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land-monthly-means",
+  "notes": null,
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\era5\\manaus_era5land_2019_2024_bbox.nc",
+      "bytes": 228742,
+      "sha256": "cc936b85b2f6150b7a17eb4bb4bfa02a08a716b50071735d84c44013a0a0fc05"
+    }
+  ]
+}

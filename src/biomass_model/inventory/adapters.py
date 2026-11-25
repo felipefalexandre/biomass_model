@@ -83,6 +83,7 @@ def load_plos2018(
         mapped = classify_fitofisionomia("Cerrado sensu stricto", biome="Cerrado")
         rows.append({
             "observation_id": f"plos2018:{int(row['site_number'])}",
+            "site": int(row["site_number"]),
             "source": "PLOS2018",
             "source_version": "Roitman2018",
             "observation_type": "field",
@@ -168,6 +169,7 @@ def load_ifn_panel(
             flags = _append_flag(flags, "uncertainty_unavailable")
         rows.append({
             "observation_id": f"ifn:{row['ua']}:{row['equacoes']}",
+            "site": str(row["ua"]),
             "source": "IFN_SFB",
             "source_version": "painel_biomassa_carbono",
             "observation_type": "field",
@@ -378,6 +380,7 @@ def load_ornl_site(
 
     row = {
         "observation_id": f"ornl:{p.stem}",
+        "site": str(site_name),
         "source": "ORNL_SLB",
         "source_version": "ORNLDAAC_2007",
         "observation_type": "field",
@@ -454,6 +457,7 @@ def load_ceda_manaus(
         fit = classify_fitofisionomia("tropical forest", biome="Amazônia")
         rows.append({
             "observation_id": f"ceda:{plot}",
+            "site": i + 1,
             "source": "CEDA_MANAUS",
             "source_version": "v1.0_2014",
             "observation_type": "field",

@@ -85,7 +85,7 @@ def _cmd_landsat_sites(args: argparse.Namespace) -> int:
     result = fetch_landsat_sites(args.sites, args.out_dir, bioma=args.bioma,
                                  years=(args.year_start, args.year_end),
                                  half_m=args.half_m, days=args.days,
-                                 max_items=args.max_items)
+                                 max_items=args.max_items, dem_half=args.dem_half)
     print(json.dumps({k: v for k, v in result.items() if k != "failures"}, indent=2))
     return 0
 
@@ -234,6 +234,14 @@ def _cmd_train_field(args: argparse.Namespace) -> int:
     print(json.dumps({k: v for k, v in result.items()
                       if k not in {"features", "importance", "by_fold"}},
                      indent=2, ensure_ascii=False))
+    return 0
+
+
+def _cmd_predict_field(args: argparse.Namespace) -> int:
+    from .training.inference import predict_field_model
+
+    result = predict_field_model(args.model, args.csv, args.out, target_col=args.target)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
 
 
@@ -621,6 +629,13 @@ def build_parser() -> argparse.ArgumentParser:
     inv.add_argument("--max-rows", type=int, default=None)
     inv.set_defaults(func=_cmd_inventory)
 
+    pfield = sub.add_parser("predict-field", help="prediz AGB com modelo campo-first")
+    pfield.add_argument("--model", required=True)
+    pfield.add_argument("--csv", required=True)
+    pfield.add_argument("--out", default=None)
+    pfield.add_argument("--target", default="agb_mg_ha")
+    pfield.set_defaults(func=_cmd_predict_field)
+
     mreg = sub.add_parser("model-register", help="registra um modelo no champion/challenger")
     mreg.add_argument("--metrics", required=True)
     mreg.add_argument("--registry", required=True)
@@ -753,6 +768,7 @@ def build_parser() -> argparse.ArgumentParser:
     lss.add_argument("--half-m", type=float, default=500.0)
     lss.add_argument("--days", type=int, default=45)
     lss.add_argument("--max-items", type=int, default=6)
+    lss.add_argument("--dem-half", type=float, default=0.02)
     lss.set_defaults(func=_cmd_landsat_sites)
 
     lft = sub.add_parser("landsat-field-table", help="tabela de campo com Landsat na data")

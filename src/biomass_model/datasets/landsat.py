@@ -20,6 +20,7 @@ from rasterio.transform import from_origin
 from rasterio.warp import reproject, transform_bounds
 
 from ..manifest import build_manifest, write_manifest
+from .dem import fetch_dem
 
 STAC_URL = "https://planetarycomputer.microsoft.com/api/stac/v1"
 COLLECTION = "landsat-c2-l2"
@@ -180,6 +181,7 @@ def fetch_landsat_sites(
     half_m: float = 500.0,
     days: int = 45,
     max_items: int = 6,
+    dem_half: float = 0.02,
     manifest: bool = True,
 ) -> dict[str, Any]:
     import pandas as pd
@@ -209,8 +211,11 @@ def fetch_landsat_sites(
                 site["lon"], site["lat"], iso,
                 folder / f"landsat_{year}.tif", half_m=half_m,
                 days=days, max_items=max_items, manifest=False)
+            d = fetch_dem(site["lon"], site["lat"], folder / "dem.tif",
+                          half=dem_half, manifest=False)
             results.append({"site": sid, "year": year, "path": r["path"],
-                            "n_items": r["n_items"], "items": r["items"]})
+                            "dem": d["path"], "n_items": r["n_items"],
+                            "items": r["items"]})
         except Exception as exc:
             failures.append({"site": sid, "year": year, "error": str(exc)})
 
