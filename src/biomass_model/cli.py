@@ -160,7 +160,7 @@ def _cmd_polygon_stats(args: argparse.Namespace) -> int:
     return 0
 
 
-def _cmd_inventory(args: argparse.Namespace) -> int:
+def _load_inventory_frame(args: argparse.Namespace):
     from .inventory.adapters import (
         load_ceda_manaus,
         load_gedi_l4a,
@@ -168,23 +168,26 @@ def _cmd_inventory(args: argparse.Namespace) -> int:
         load_ornl_directory,
         load_plos2018,
     )
-    from .inventory.schema import validate_observations, write_observations
 
     if args.source == "plos2018":
-        frame = load_plos2018(args.path, usage=args.usage)
-    elif args.source == "ifn":
-        frame = load_ifn_panel(args.path, equation=args.equation, usage=args.usage,
-                               max_rows=args.max_rows)
-    elif args.source == "ornl":
-        frame = load_ornl_directory(args.path, usage=args.usage, coords_path=args.coords,
-                                    limit=args.limit)
-    elif args.source == "gedi":
-        frame = load_gedi_l4a(args.path, usage=args.usage, max_rows=args.max_rows)
-    elif args.source == "ceda":
-        frame = load_ceda_manaus(args.path, usage=args.usage)
-    else:
-        raise ValueError(f"fonte desconhecida: {args.source}")
+        return load_plos2018(args.path, usage=args.usage)
+    if args.source == "ifn":
+        return load_ifn_panel(args.path, equation=args.equation, usage=args.usage,
+                              max_rows=args.max_rows)
+    if args.source == "ornl":
+        return load_ornl_directory(args.path, usage=args.usage, coords_path=args.coords,
+                                   limit=args.limit)
+    if args.source == "gedi":
+        return load_gedi_l4a(args.path, usage=args.usage, max_rows=args.max_rows)
+    if args.source == "ceda":
+        return load_ceda_manaus(args.path, usage=args.usage)
+    raise ValueError(f"fonte desconhecida: {args.source}")
 
+
+def _cmd_inventory(args: argparse.Namespace) -> int:
+    from .inventory.schema import validate_observations, write_observations
+
+    frame = _load_inventory_frame(args)
     report = validate_observations(frame)
     out = write_observations(frame, args.out)
     summary = {
@@ -195,6 +198,18 @@ def _cmd_inventory(args: argparse.Namespace) -> int:
         "warnings": report["warnings"],
     }
     print(json.dumps(summary, indent=2, ensure_ascii=False))
+    return 0
+
+
+def _cmd_inventory_store(args: argparse.Namespace) -> int:
+    from .inventory.store import ObservationStore
+
+    frame = _load_inventory_frame(args)
+    store = ObservationStore(args.store)
+    license = str(frame["license"].dropna().iloc[0]) if len(frame) and frame["license"].notna().any() else ""
+    result = store.ingest(frame, source_path=args.path, license=license,
+                          notes=args.notes, force=args.force)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
 
 
@@ -628,6 +643,21 @@ def build_parser() -> argparse.ArgumentParser:
     inv.add_argument("--limit", type=int, default=None)
     inv.add_argument("--max-rows", type=int, default=None)
     inv.set_defaults(func=_cmd_inventory)
+
+    invs = sub.add_parser("inventory-store", help="ingere no store canonico idempotente")
+    invs.add_argument("--source", choices=["plos2018", "ifn", "ornl", "gedi", "ceda"],
+                      required=True)
+    invs.add_argument("--path", required=True)
+    invs.add_argument("--store", required=True)
+    invs.add_argument("--usage", default="validation",
+                      choices=["training", "calibration", "validation", "benchmark", "excluded"])
+    invs.add_argument("--equation", default="AGB_Chave")
+    invs.add_argument("--coords", default=None)
+    invs.add_argument("--limit", type=int, default=None)
+    invs.add_argument("--max-rows", type=int, default=None)
+    invs.add_argument("--notes", default="")
+    invs.add_argument("--force", action="store_true")
+    invs.set_defaults(func=_cmd_inventory_store)
 
     pfield = sub.add_parser("predict-field", help="prediz AGB com modelo campo-first")
     pfield.add_argument("--model", required=True)

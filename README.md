@@ -101,6 +101,7 @@ sempre identificado como tal.
 | 49 | [Governança de modelos](docs/49_governanca_modelos.md) | Registro e champion/challenger |
 | 50 | [Comparação de algoritmos](docs/50_comparacao_algoritmos.md) | RF vs ExtraTrees vs boosting vs Ridge |
 | 51 | [Validação CEDA Manaus](docs/51_validacao_ceda.md) | Transferência Cerrado→Amazônia falhou |
+| 52 | [Store canônico](docs/52_store_canonico.md) | Ingestão idempotente e manifesto |
 
 ## 4. Estrutura do repositório
 
