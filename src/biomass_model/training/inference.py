@@ -9,6 +9,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from ..applicability import score_aoa
 from .field import _metrics
 
 
@@ -41,11 +42,18 @@ def predict_field_model(
     if not np.isfinite(X).all():
         raise ValueError("features de inferência contêm NaN/inf")
     pred = np.clip(model.predict(X), 0, None)
+    aoa = bundle.get("aoa")
+    aoa_distance = aoa_inside = None
+    if aoa:
+        aoa_distance, aoa_inside = score_aoa(aoa, X)
 
     cols = [c for c in ("observation_id", "site", "source", "lon", "lat", "biome",
                         "fitofisionomia", "fitofisionomia_group") if c in df.columns]
     result = df[cols].copy()
     result["pred"] = pred
+    if aoa_distance is not None:
+        result["aoa_distance"] = aoa_distance
+        result["aoa_inside"] = aoa_inside
     if target_col in df.columns:
         result["observed"] = df[target_col].to_numpy(dtype="float64")
         result["residual"] = result["pred"] - result["observed"]
@@ -61,6 +69,9 @@ def predict_field_model(
         "pred_min": float(np.min(pred)),
         "pred_max": float(np.max(pred)),
     }
+    if aoa_inside is not None:
+        summary["aoa_fraction"] = float(np.mean(aoa_inside))
+        summary["aoa_threshold"] = float(aoa["threshold"])
     if target_col in df.columns:
         summary["metrics"] = _metrics(df[target_col].to_numpy(dtype="float64"), pred)
     if out:

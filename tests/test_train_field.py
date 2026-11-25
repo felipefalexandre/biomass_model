@@ -82,4 +82,7 @@ def test_predict_field_model(tmp_path):
     assert summary["n"] == 30
     assert "metrics" in summary
     assert np.isfinite(summary["metrics"]["rmse"])
+    assert "aoa_fraction" in summary
+    predictions = pd.read_csv(tmp_path / "predictions.csv")
+    assert {"aoa_distance", "aoa_inside"} <= set(predictions.columns)
     assert (tmp_path / "predictions.csv").exists()

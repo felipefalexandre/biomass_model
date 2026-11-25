@@ -30,6 +30,8 @@ independente de campo na Amazônia: as 23 parcelas de 100 × 60 m do CEDA/NCEO M
 | MAE | 104,2 Mg ha⁻¹ |
 | Viés | −104,2 Mg ha⁻¹ |
 | Correlação observado–predito | 0,03 |
+| Fração dentro da AOA | 0,00 (0 de 21) |
+| Limiar AOA (q95) | 7,44 |
 
 O modelo praticamente ignora a variação da AGB amazônica e colapsa a predição em torno de
 28 Mg ha⁻¹.
@@ -52,6 +54,9 @@ esses pontos como fora do domínio.
 ## 5. Conclusão
 
 - O modelo F0 é **específico do Cerrado** e **não transfere** para a Amazônia.
+- A AOA calculada no treino (q95) **flagrou 100% dos pontos CEDA como fora do domínio**: o
+  modelo não deve ser aplicado neles. Isso valida a AOA como mecanismo de segurança, mas não
+  corrige a falta de dados amazônicos.
 - CEDA é uma fonte independente valiosa, mas não pode ser usada para "validar" um modelo
   treinado apenas no Cerrado; o resultado é de extrapolação.
 - Nenhum modelo foi promovido.

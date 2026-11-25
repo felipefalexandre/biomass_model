@@ -9,6 +9,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from ..applicability import fit_aoa
 from ..observation_features import FEATURE_PREFIXES
 from ..uncertainty.conformal import cross_conformal
 from ..validation.spatial import assign_spatial_blocks, spatial_block_folds
@@ -208,6 +209,7 @@ def train_field_model(
     y = df[target].to_numpy(dtype="float64")
     if not np.isfinite(X).all():
         raise ValueError("features contêm NaN/inf; remova via feature_na ou impute explicitamente")
+    aoa = fit_aoa(X)
 
     cv_warning = None
     try:
@@ -290,6 +292,7 @@ def train_field_model(
         "model": final_model,
         "features": features,
         "categorical_levels": categorical_levels,
+        "aoa": aoa,
         "target": target,
         "metadata": {
             "csv": str(csv_path),
@@ -349,6 +352,12 @@ def train_field_model(
         "by_fold": fold_rows,
         "by_group": by_group,
         "algorithm": algorithm,
+        "aoa": {
+            "threshold": aoa["threshold"],
+            "quantile": aoa["quantile"],
+            "n_reference": aoa["n_reference"],
+            "fraction_in_training": float(aoa["quantile"]),
+        },
         "importance": _importance(final_model, features),
         "limitations": [
             "Validação espacial por blocos com buffer; não substitui validação de campo independente.",
