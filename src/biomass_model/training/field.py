@@ -52,7 +52,7 @@ def _feature_columns(df: pd.DataFrame) -> list[str]:
 
 def _encode_categoricals(
     df: pd.DataFrame,
-    columns: tuple[str, ...] = ("fitofisionomia_group", "biome"),
+    columns: tuple[str, ...] = ("fitofisionomia_group", "biome", "ibge_group"),
 ) -> tuple[pd.DataFrame, dict[str, list[str]]]:
     out = df.copy()
     levels: dict[str, list[str]] = {}

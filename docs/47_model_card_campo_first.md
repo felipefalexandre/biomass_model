@@ -95,7 +95,8 @@ python -m biomass_model.cli train-field `
 4. Clima histórico usa fallback de climatologia recente.
 5. Sem incerteza de referência, alometria ou modelo; sem intervalo de predição.
 6. Sem Amazônia, sem vegetação secundária, sem pós-fogo e sem gradiente de borda.
-7. A fitofisionomia disponível é apenas `savanna`; ainda não há estratificação fina.
+7. A fitofisionomia disponível é apenas `savanna`; a variante com IBGE `legenda_2` foi testada
+   em `docs/48` e não trouxe ganho consistente (30 `savanna` + 10 `unknown`).
 8. As features são Landsat; o mapa operacional em 30 m usa S2, então este modelo **não** é
    diretamente aplicável ao pipeline de mapa atual.
 9. O modelo não foi promovido; é baseline F0 para comparação.

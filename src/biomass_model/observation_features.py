@@ -225,6 +225,8 @@ def build_observation_features(
     history_end: int = 2018,
     fallback_year: int | None = None,
     max_rows: int | None = None,
+    fitofisionomia_vector: str | Path | None = None,
+    fitofisionomia_attribute: str = "legenda_2",
 ) -> dict[str, Any]:
     """Monta uma tabela de features para observações canônicas.
 
@@ -247,6 +249,14 @@ def build_observation_features(
 
     years = np.array([_year_from_row(row, fallback_year) for _, row in table.iterrows()],
                      dtype="float64")
+    ibge = None
+    if fitofisionomia_vector is not None:
+        from .stratification import sample_fitofisionomia_vector
+
+        ibge = sample_fitofisionomia_vector(
+            fitofisionomia_vector, table["lon"].to_numpy(), table["lat"].to_numpy(),
+            attribute=fitofisionomia_attribute,
+        )
     era5 = load_era5(era5_path) if era5_path is not None else None
     mb = _mapbiomas_features(
         mapbiomas_dir, table["lon"].to_numpy(), table["lat"].to_numpy(), years,
@@ -273,6 +283,10 @@ def build_observation_features(
             "fitofisionomia_group": row["fitofisionomia_group"],
             "model_status": row["model_status"],
         }
+        if ibge is not None:
+            for col in ("ibge_fitofisionomia", "ibge_group", "ibge_mapbiomas_class",
+                        "ibge_area_km2"):
+                record[col] = ibge.loc[i, col]
         opt_path = _format_path(optical_pattern, optical_dir, row, year)
         if opt_path is None and optical_path is not None:
             opt_path = Path(optical_path)
@@ -319,6 +333,8 @@ def build_observation_features(
         "n_features": len(feat_cols),
         "rows_feature_na": int(out["feature_na"].sum()),
         "years": {int(y): int((years == y).sum()) for y in np.unique(years[np.isfinite(years)])},
+        "ibge_fitofisionomia": (out["ibge_fitofisionomia"].value_counts().to_dict()
+                                if "ibge_fitofisionomia" in out else {}),
         "path": str(out_path),
     }
     out_path.with_suffix(".summary.json").write_text(

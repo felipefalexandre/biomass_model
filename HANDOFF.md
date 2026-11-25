@@ -2,7 +2,7 @@
 
 **Atualizado:** 2026-11-24 · **Último commit:** `4427545` (reimplementação local não commitada) · **Branch:** `main`
 **Repo:** `C:\Users\Felipe\Documents\biomass_model` · **Remote:** `github.com/felipefalexandre/biomass_model`
-**Testes:** `python -m pytest` → 50 passed.
+**Testes:** `python -m pytest` → 51 passed.
 
 Leia este arquivo antes de qualquer ação. Ele resume o que foi feito, onde estão os dados, o
 que está validado e qual é o próximo passo. Não reinicie o projeto nem sobrescreva resultados.
@@ -201,7 +201,7 @@ Docs-chave: `docs/35` auditoria, `36` base científica, `37` plano, `38` valida�
 
 ## 10. Reimplementação 2026-11-24
 
-Implementado e testado (50 testes):
+Implementado e testado (51 testes):
 
 - `src/biomass_model/inventory/`: esquema canônico, validação, escrita CSV/Parquet/GeoPackage e
   adaptadores PLOS 2018, IFN/SFB, ORNL e GEDI L4A.
@@ -240,6 +240,11 @@ Estado dos dados canônicos (2026-11-24):
   - artefatos: `derived\field_plos2018_rf_block200.*` e `derived\field_plos2018_rf.*`.
   - status: **não promovido**; amostra antiga/pequena, sem holdout independente e IC otimista
     no cenário de blocos.
+- Fitofisionomia IBGE como feature (`docs/48`): amostragem pontual do IBGE 2026 `legenda_2`;
+  40 sítios → 30 `savanna` e 10 `unknown` (pastagem/agricultura/água/contato), sem `forest`.
+  Resultado: sem ganho consistente (bloco 200 km R² 0,256 vs 0,262; LOO R² 0,200 vs 0,197).
+  Hipótese H1 não suportada; **não promover** a variável como feature. Artefatos:
+  `derived\plos2018_features_landsat_ibge.csv`, `derived\field_plos2018_ibge_rf*`.
 
 Próximos passos recomendados:
 

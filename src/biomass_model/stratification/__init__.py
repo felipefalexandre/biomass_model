@@ -8,6 +8,18 @@ from typing import Any, Iterable
 import numpy as np
 import pandas as pd
 
+from .sampling import sample_fitofisionomia_vector
+
+__all__ = [
+    "normalize_name",
+    "parse_agb_range",
+    "load_crosswalk",
+    "classify_fitofisionomia",
+    "apply_crosswalk",
+    "rasterize_fitofisionomia",
+    "sample_fitofisionomia_vector",
+]
+
 DEFAULT_CROSSWALK = Path("data/reference/fitofisionomias_crosswalk.csv")
 
 GROUP_BY_MAPBIOMAS = {

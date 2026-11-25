@@ -207,6 +207,8 @@ def _cmd_features_observations(args: argparse.Namespace) -> int:
         half_m=args.half_m, history=not args.no_history,
         history_start=args.history_start, history_end=args.history_end,
         fallback_year=args.fallback_year, max_rows=args.max_rows,
+        fitofisionomia_vector=args.fitofisionomia_vector,
+        fitofisionomia_attribute=args.fitofisionomia_attribute,
     )
     print(json.dumps({k: v for k, v in result.items() if k != "features"},
                      indent=2, ensure_ascii=False))
@@ -593,6 +595,8 @@ def build_parser() -> argparse.ArgumentParser:
     fobs.add_argument("--history-end", type=int, default=2018)
     fobs.add_argument("--fallback-year", type=int, default=None)
     fobs.add_argument("--max-rows", type=int, default=None)
+    fobs.add_argument("--fitofisionomia-vector", default=None)
+    fobs.add_argument("--fitofisionomia-attribute", default="legenda_2")
     fobs.set_defaults(func=_cmd_features_observations)
 
     tfield = sub.add_parser("train-field", help="RandomForest campo-first com bloco+buffer")
