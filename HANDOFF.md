@@ -1,6 +1,6 @@
 # HANDOFF — estado do projeto e como retomar
 
-**Atualizado:** 2026-11-24 - **Ultimo commit:** ae0f76c - **Branch:** main
+**Atualizado:** 2026-11-24 - **Ultimo commit:** consulte git log -1 - **Branch:** main
 **Repo:** https://github.com/felipefalexandre/biomass_model · **Clone local:** ajuste ao seu caminho
 **Testes:** `python -m pytest` → 60 passed.
 
