@@ -107,3 +107,22 @@ DOI: `10.1371/journal.pone.0196742`.
 
 Nenhuma fonte entra no treino e na validação ao mesmo tempo. Se uma fonte for usada no treino,
 ela sai da validação independente e isso é registrado.
+
+## 7. LiDAR e dados abertos da Embrapa (2026-11-25)
+
+Estudo de consulta em [`docs/58_lidar_e_embrapa_abertos.md`](../../docs/58_lidar_e_embrapa_abertos.md)
+(leitura; nada baixado). Resumo:
+
+- **Embrapa:** sem banco de parcelas de campo aberto equivalente ao IFN (INV01). O que há é o
+  WebGIS **Paisagens Sustentáveis** (LiDAR ALS de Amazônia/Cerrado/Mata Atlântica, cadastro
+  gratuito, no ar) e o repositório **Redape** (coleção temática de biomassa, conteúdo não
+  inspecionado).
+- **LiDAR aberto com maior sinergia:** ORNL DAAC `10.3334/ORNLDAAC/1644` (nuvens ~10 pts/m² em
+  tiles de 1 km² sobre sítios da Amazônia, 2008–2018) — mesmos sítios do inventário Sustainable
+  Landscapes (INV03), que já estão geolocalizados em `ornl_sites_coords.csv`.
+- **Auxiliares globais:** ICESat-2 ATL08 (novo) e GEDI (já em uso), sempre como camada
+  auxiliar conforme ADR-0027/ADR-0022.
+- **Não encontrado:** dataset aberto de LiDAR de drone; nuvens EBA/INPE com download confirmado.
+
+Pendências: consultar Redape/catálogo Embrapa; testar download ORNL `1644`; verificar nuvens
+EBA.
