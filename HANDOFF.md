@@ -2,7 +2,7 @@
 
 **Atualizado:** 2026-11-24 · **Último commit:** `4427545` (reimplementação local não commitada) · **Branch:** `main`
 **Repo:** `C:\Users\Felipe\Documents\biomass_model` · **Remote:** `github.com/felipefalexandre/biomass_model`
-**Testes:** `python -m pytest` → 48 passed.
+**Testes:** `python -m pytest` → 50 passed.
 
 Leia este arquivo antes de qualquer ação. Ele resume o que foi feito, onde estão os dados, o
 que está validado e qual é o próximo passo. Não reinicie o projeto nem sobrescreva resultados.
@@ -201,7 +201,7 @@ Docs-chave: `docs/35` auditoria, `36` base científica, `37` plano, `38` valida�
 
 ## 10. Reimplementação 2026-11-24
 
-Implementado e testado (48 testes):
+Implementado e testado (50 testes):
 
 - `src/biomass_model/inventory/`: esquema canônico, validação, escrita CSV/Parquet/GeoPackage e
   adaptadores PLOS 2018, IFN/SFB, ORNL e GEDI L4A.
@@ -234,11 +234,12 @@ Estado dos dados canônicos (2026-11-24):
 - Baseline campo-first F0 (PLOS 2018, Cerrado, `docs/47`):
   - features: `derived\plos2018_features_landsat.csv` (77 sítios; 40 usados no domínio; 36 features).
   - validação primária 200 km/buffer 25 km: n=16, R²=0,262, RMSE=10,81, viés=−3,59;
-    baseline R²=−0,130.
+    baseline R²=−0,130; IC90 cross-conformal cobertura 0,813, largura 33,8 Mg ha⁻¹.
   - sensibilidade 100 km/buffer 25 km: n=40, R²=0,197, RMSE=9,54, viés=+0,15;
-    baseline R²=−0,063.
+    baseline R²=−0,063; IC90 cobertura 0,900, largura 28,5 Mg ha⁻¹.
   - artefatos: `derived\field_plos2018_rf_block200.*` e `derived\field_plos2018_rf.*`.
-  - status: **não promovido**; amostra antiga/pequena e sem holdout independente.
+  - status: **não promovido**; amostra antiga/pequena, sem holdout independente e IC otimista
+    no cenário de blocos.
 
 Próximos passos recomendados:
 

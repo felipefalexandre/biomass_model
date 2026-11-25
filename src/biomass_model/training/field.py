@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 
 from ..observation_features import FEATURE_PREFIXES
+from ..uncertainty.conformal import cross_conformal
 from ..validation.spatial import assign_spatial_blocks, spatial_block_folds
 
 
@@ -121,6 +122,7 @@ def train_field_model(
     seed: int = 42,
     use_categoricals: bool = True,
     domain_classes: tuple[int, ...] | None = (3, 4),
+    conformal_coverage: float = 0.90,
 ) -> dict[str, Any]:
     """Treina RandomForest campo-first com validação espacial em blocos e buffer."""
     from sklearn.ensemble import RandomForestRegressor
@@ -188,6 +190,7 @@ def train_field_model(
 
     oof = np.full(len(df), np.nan)
     baseline_oof = np.full(len(df), np.nan)
+    fold_ids = np.full(len(df), -1, dtype=int)
     fold_rows = []
     for fold in folds:
         train_idx = np.asarray(fold["train_idx"], dtype=int)
@@ -199,6 +202,7 @@ def train_field_model(
         model.fit(X[train_idx], y[train_idx])
         pred = model.predict(X[test_idx])
         oof[test_idx] = pred
+        fold_ids[test_idx] = int(fold["fold"])
         baseline_oof[test_idx] = _baseline_predictions(
             df.iloc[train_idx], df.iloc[test_idx], target,
         )
@@ -247,6 +251,7 @@ def train_field_model(
             "dropped_feature_na": dropped_na,
             "dropped_outside_domain": dropped_domain,
             "domain_classes": list(domain_classes) if domain_classes else None,
+            "conformal_coverage": conformal_coverage,
             "field_first": True,
         },
     }
@@ -257,6 +262,19 @@ def train_field_model(
     pred["pred"] = oof
     pred["baseline"] = baseline_oof
     pred["residual"] = pred["pred"] - pred[target]
+    pred["fold"] = fold_ids
+    pred["lo"] = np.nan
+    pred["hi"] = np.nan
+    pred["conformal_q"] = np.nan
+    tested = pred["fold"] >= 0
+    pred_eval, uncertainty = cross_conformal(
+        pred.loc[tested].copy(), target_col=target, pred_col="pred", fold_col="fold",
+        coverage=conformal_coverage,
+    )
+    if tested.any():
+        pred.loc[tested, ["lo", "hi", "conformal_q"]] = pred_eval[
+            ["lo", "hi", "conformal_q"]
+        ].to_numpy()
     pred.to_csv(out.with_suffix(".predictions.csv"), index=False, encoding="utf-8")
 
     result = {
@@ -275,6 +293,7 @@ def train_field_model(
         "max_folds": max_folds,
         "overall": overall,
         "baseline": baseline,
+        "uncertainty": uncertainty,
         "by_fold": fold_rows,
         "by_group": by_group,
         "importance": sorted(

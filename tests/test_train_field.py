@@ -44,6 +44,8 @@ def test_train_field_model_spatial_buffer(tmp_path):
     assert result["cv_mode"] in {"spatial_block_buffer", "groupkfold_no_buffer"}
     assert "ls_ndvi" in result["features"]
     assert result["overall"]["n"] == 30
+    assert "uncertainty" in result
+    assert result["uncertainty"]["overall"]["n"] == 30
     assert np.isfinite(result["overall"]["rmse"])
     assert (tmp_path / "model.joblib").exists()
     assert (tmp_path / "model.metrics.json").exists()

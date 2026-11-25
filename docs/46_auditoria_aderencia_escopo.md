@@ -762,7 +762,7 @@ O usuário aprovou as decisões da seção 11, com dois ajustes:
 - **Inventários:** autorizada a aquisição de dados abertos de 2000 em diante, antigos e novos
   (ADR-0031), com ingestão canônica (ADR-0032).
 
-Implementado nesta etapa (48 testes passando):
+Implementado nesta etapa (50 testes passando):
 
 - `inventory/`: esquema canônico, validação, escrita e adaptadores PLOS, IFN, ORNL e GEDI L4A.
 - `allometry/`: Chave 2005, palmeira e liana.
@@ -778,8 +778,9 @@ Implementado nesta etapa (48 testes passando):
 - `validation/spatial.py`: blocos espaciais com buffer.
 - `training/field.py`: RandomForest campo-first com validação por bloco+buffer.
 - Baseline campo-first F0 (PLOS 2018, Cerrado; `docs/47`): 40 sítios no domínio; validação
-  primária 200 km/buffer 25 km, n=16, R²=0,262, RMSE=10,81; sensibilidade 100 km, n=40,
-  R²=0,197, RMSE=9,54. Não promovido: amostra antiga/pequena e sem holdout independente.
+  primária 200 km/buffer 25 km, n=16, R²=0,262, RMSE=10,81, IC90 cobertura 0,813; sensibilidade
+  100 km, n=40, R²=0,197, RMSE=9,54, cobertura 0,900. Não promovido: amostra antiga/pequena,
+  sem holdout independente e IC otimista no cenário de blocos.
 
 O diagnóstico original permanece como registro histórico. A próxima etapa é completar a ingestão
 de IFN/ORNL, resolver coordenadas, obter IBGE 1:250k e migrar o treinamento para a tabela canônica.

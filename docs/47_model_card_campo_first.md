@@ -42,12 +42,23 @@ para a tabela canônica. Substitui, como experimento, o hábito de treinar apena
 - R² = 0,197; RMSE = 9,54; MAE = 7,15; viés = +0,15; MedAE = 5,35.
 - Baseline: R² = −0,063; RMSE = 10,98; viés = −0,03.
 
-### 3.3 Leitura
+### 3.3 Incerteza (cross-conformal por fold)
+
+- Blocos de 200 km: cobertura empírica do IC90 = 0,813; largura média = 33,8 Mg ha⁻¹ (n=16).
+- Sensibilidade 100 km: cobertura = 0,900; largura média = 28,5 Mg ha⁻¹ (n=40).
+- Os intervalos são calculados com resíduos absolutos dos outros folds. No cenário de blocos,
+  a cobertura ficou abaixo do nominal (0,813 < 0,90), indicando intervalos otimistas.
+- A incerteza cobre apenas erro de modelo OOF; não inclui erro de referência, alometria,
+  amostragem de campo ou representatividade.
+
+### 3.4 Leitura
 
 O modelo supera o baseline, mas o ganho é modesto e a amostra é pequena, antiga e restrita ao
 Cerrado. O resultado **não** demonstra acurácia operacional. A validação primária cobre apenas
 16 sítios; a sensibilidade cobre 40, mas com folds de um sítio. Nenhuma das duas é validação
 independente: os sítios PLOS são a única fonte de campo e foram usados para treinar e testar.
+A cobertura conformal abaixo do nominal no cenário de blocos reforça que o produto não está
+pronto para uso operacional.
 
 ## 4. Artefatos
 
