@@ -2,7 +2,7 @@
 
 **Atualizado:** 2026-11-24 · **Último commit:** `4427545` (reimplementação local não commitada) · **Branch:** `main`
 **Repo:** `C:\Users\Felipe\Documents\biomass_model` · **Remote:** `github.com/felipefalexandre/biomass_model`
-**Testes:** `python -m pytest` → 44 passed.
+**Testes:** `python -m pytest` → 48 passed.
 
 Leia este arquivo antes de qualquer ação. Ele resume o que foi feito, onde estão os dados, o
 que está validado e qual é o próximo passo. Não reinicie o projeto nem sobrescreva resultados.
@@ -201,7 +201,7 @@ Docs-chave: `docs/35` auditoria, `36` base científica, `37` plano, `38` valida�
 
 ## 10. Reimplementação 2026-11-24
 
-Implementado e testado (44 testes):
+Implementado e testado (48 testes):
 
 - `src/biomass_model/inventory/`: esquema canônico, validação, escrita CSV/Parquet/GeoPackage e
   adaptadores PLOS 2018, IFN/SFB, ORNL e GEDI L4A.
@@ -227,6 +227,18 @@ Estado dos dados canônicos (2026-11-24):
   `derived\fitofisionomia_amazonia_central_2021.tif` (3 classes; 67.041 água, 324.519 FOD aluvial,
   2.168.440 FOD submontana) e `derived\fitofisionomia_cerrado_central_2021.tif` (319.200 pastagem,
   1.800.418 savana arborizada, 440.382 savana parque). JSON com grupos e classe MapBiomas ao lado.
+- `observation_features.py`: features Landsat/S2, DEM, ERA5 e histórico MapBiomas para a tabela
+  canônica, sem vazamento temporal no histórico.
+- `validation/spatial.py`: blocos espaciais com buffer para reduzir vazamento.
+- `training/field.py`: RandomForest campo-first com validação por bloco+buffer, baseline e métricas.
+- Baseline campo-first F0 (PLOS 2018, Cerrado, `docs/47`):
+  - features: `derived\plos2018_features_landsat.csv` (77 sítios; 40 usados no domínio; 36 features).
+  - validação primária 200 km/buffer 25 km: n=16, R²=0,262, RMSE=10,81, viés=−3,59;
+    baseline R²=−0,130.
+  - sensibilidade 100 km/buffer 25 km: n=40, R²=0,197, RMSE=9,54, viés=+0,15;
+    baseline R²=−0,063.
+  - artefatos: `derived\field_plos2018_rf_block200.*` e `derived\field_plos2018_rf.*`.
+  - status: **não promovido**; amostra antiga/pequena e sem holdout independente.
 
 Próximos passos recomendados:
 

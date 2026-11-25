@@ -1,7 +1,7 @@
 # Sistema de Estimativa de Biomassa Vegetal — Amazônia e Cerrado
 
 **Retomada:** leia HANDOFF.md e `docs/46_auditoria_aderencia_escopo.md` antes de continuar.
-**Status:** reimplementação iniciada em 2026-11-24. O modelo/mapa GEDI L4A anterior é **baseline A0 experimental**, não produto de AGB real. A base agora inclui esquema canônico de observações, adaptadores de inventário, alometria, crosswalk fitofisionômico e agregação por polígono com área real. O produto operacional ainda depende de validação de campo independente.
+**Status:** reimplementação iniciada em 2026-11-24. O modelo/mapa GEDI L4A anterior é **baseline A0 experimental**, não produto de AGB real. A base agora inclui esquema canônico de observações, adaptadores de inventário, alometria, crosswalk fitofisionômico, agregação por polígono com área real e o **baseline campo-first F0** (PLOS 2018, Cerrado; `docs/47`). O produto operacional ainda depende de validação de campo independente.
 **Escopo:** AGB (Mg ha⁻¹ e Mg), anual, com incerteza e rastreabilidade. BGB, carbono, CO₂e, desmatamento/reflorestamento, adicionalidade, vazamento, permanência e créditos ficam fora da prioridade até consolidação da AGB (ADR-0031).
 **Domínio:** classes 3 (Formação Florestal) e 4 (Formação Savânica) do MapBiomas Coleção 11, Amazônia e Cerrado. Classes 2 e 6 fora até decisão explícita.
 **Resolução:** 30 m oficial e 1 km experimental/diagnóstico (ADR-0030).
@@ -96,6 +96,7 @@ sempre identificado como tal.
 | 44 | [Requisitos REDD+/ARR](docs/44_requisitos_redd_arr.md) | O que o modelo entrega |
 | 45 | [Protótipo do mapa anual](docs/45_prototipo_mapa_anual.md) | Mapa por pixel 1 km |
 | 46 | [Auditoria de aderência ao escopo](docs/46_auditoria_aderencia_escopo.md) | Diagnóstico e plano de reimplementação |
+| 47 | [Model card campo-first F0](docs/47_model_card_campo_first.md) | PLOS 2018, validação espacial com buffer |
 
 ## 4. Estrutura do repositório
 

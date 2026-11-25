@@ -195,6 +195,41 @@ def _cmd_inventory(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_features_observations(args: argparse.Namespace) -> int:
+    from .observation_features import build_observation_features
+
+    result = build_observation_features(
+        args.observations, args.out,
+        optical_dir=args.optical_dir, optical_pattern=args.optical_pattern,
+        optical_path=args.optical_path, dem_dir=args.dem_dir,
+        dem_pattern=args.dem_pattern, dem_path=args.dem_path,
+        era5_path=args.era5, mapbiomas_dir=args.mapbiomas_dir,
+        half_m=args.half_m, history=not args.no_history,
+        history_start=args.history_start, history_end=args.history_end,
+        fallback_year=args.fallback_year, max_rows=args.max_rows,
+    )
+    print(json.dumps({k: v for k, v in result.items() if k != "features"},
+                     indent=2, ensure_ascii=False))
+    return 0
+
+
+def _cmd_train_field(args: argparse.Namespace) -> int:
+    from .training.field import train_field_model
+
+    result = train_field_model(
+        args.csv, args.out_dir, target=args.target,
+        block_size_m=args.block_size_m, buffer_m=args.buffer_m,
+        n_estimators=args.trees, min_samples_leaf=args.min_samples_leaf,
+        min_test=args.min_test, max_folds=args.max_folds, seed=args.seed,
+        use_categoricals=not args.no_categoricals,
+        domain_classes=tuple(int(x.strip()) for x in args.domain_classes.split(",") if x.strip()),
+    )
+    print(json.dumps({k: v for k, v in result.items()
+                      if k not in {"features", "importance", "by_fold"}},
+                     indent=2, ensure_ascii=False))
+    return 0
+
+
 def _cmd_fitofisionomia(args: argparse.Namespace) -> int:
     from .stratification import rasterize_fitofisionomia
 
@@ -539,6 +574,40 @@ def build_parser() -> argparse.ArgumentParser:
     fit.add_argument("--attribute", default="legenda_2")
     fit.add_argument("--all-touched", action="store_true")
     fit.set_defaults(func=_cmd_fitofisionomia)
+
+    fobs = sub.add_parser("features-observations", help="features para observacoes canonicas")
+    fobs.add_argument("--observations", required=True)
+    fobs.add_argument("--out", required=True)
+    fobs.add_argument("--optical-dir", default=None)
+    fobs.add_argument("--optical-pattern", default=None)
+    fobs.add_argument("--optical-path", default=None)
+    fobs.add_argument("--dem-dir", default=None)
+    fobs.add_argument("--dem-pattern", default=None)
+    fobs.add_argument("--dem-path", default=None)
+    fobs.add_argument("--era5", default=None)
+    fobs.add_argument("--mapbiomas-dir", default=None)
+    fobs.add_argument("--half-m", type=float, default=500.0)
+    fobs.add_argument("--no-history", action="store_true")
+    fobs.add_argument("--history-start", type=int, default=2004)
+    fobs.add_argument("--history-end", type=int, default=2018)
+    fobs.add_argument("--fallback-year", type=int, default=None)
+    fobs.add_argument("--max-rows", type=int, default=None)
+    fobs.set_defaults(func=_cmd_features_observations)
+
+    tfield = sub.add_parser("train-field", help="RandomForest campo-first com bloco+buffer")
+    tfield.add_argument("--csv", required=True)
+    tfield.add_argument("--out-dir", required=True)
+    tfield.add_argument("--target", default="agb_mg_ha")
+    tfield.add_argument("--block-size-m", type=float, default=100000.0)
+    tfield.add_argument("--buffer-m", type=float, default=25000.0)
+    tfield.add_argument("--trees", type=int, default=400)
+    tfield.add_argument("--min-samples-leaf", type=int, default=3)
+    tfield.add_argument("--min-test", type=int, default=3)
+    tfield.add_argument("--max-folds", type=int, default=50)
+    tfield.add_argument("--seed", type=int, default=42)
+    tfield.add_argument("--no-categoricals", action="store_true")
+    tfield.add_argument("--domain-classes", default="3,4")
+    tfield.set_defaults(func=_cmd_train_field)
 
     poly = sub.add_parser("polygon", help="estoque e incerteza por poligono (Produto C)")
     poly.add_argument("--input", required=True, help="GeoJSON/GPKG/SHP")
