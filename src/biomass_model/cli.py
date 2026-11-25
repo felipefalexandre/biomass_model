@@ -224,6 +224,7 @@ def _cmd_train_field(args: argparse.Namespace) -> int:
         n_estimators=args.trees, min_samples_leaf=args.min_samples_leaf,
         min_test=args.min_test, max_folds=args.max_folds, seed=args.seed,
         conformal_coverage=args.conformal_coverage,
+        algorithm=args.algorithm,
         use_categoricals=not args.no_categoricals,
         domain_classes=tuple(int(x.strip()) for x in args.domain_classes.split(",") if x.strip()),
     )
@@ -670,6 +671,9 @@ def build_parser() -> argparse.ArgumentParser:
     tfield.add_argument("--min-test", type=int, default=3)
     tfield.add_argument("--max-folds", type=int, default=50)
     tfield.add_argument("--conformal-coverage", type=float, default=0.90)
+    tfield.add_argument("--algorithm", default="rf",
+                        choices=["rf", "extra_trees", "gradient_boosting",
+                                 "hist_gradient_boosting", "ridge"])
     tfield.add_argument("--seed", type=int, default=42)
     tfield.add_argument("--no-categoricals", action="store_true")
     tfield.add_argument("--domain-classes", default="3,4")

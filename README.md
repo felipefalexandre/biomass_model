@@ -99,6 +99,7 @@ sempre identificado como tal.
 | 47 | [Model card campo-first F0](docs/47_model_card_campo_first.md) | PLOS 2018, validação espacial com buffer |
 | 48 | [Experimento fitofisionomia](docs/48_experimento_fitofisionomia.md) | IBGE como feature: hipótese não suportada |
 | 49 | [Governança de modelos](docs/49_governanca_modelos.md) | Registro e champion/challenger |
+| 50 | [Comparação de algoritmos](docs/50_comparacao_algoritmos.md) | RF vs ExtraTrees vs boosting vs Ridge |
 
 ## 4. Estrutura do repositório
 

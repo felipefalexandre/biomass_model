@@ -82,6 +82,58 @@ def _baseline_predictions(
     return pred.fillna(global_mean).to_numpy()
 
 
+def _make_model(
+    algorithm: str,
+    *,
+    n_estimators: int,
+    min_samples_leaf: int,
+    seed: int,
+):
+    from sklearn.ensemble import (
+        ExtraTreesRegressor,
+        GradientBoostingRegressor,
+        HistGradientBoostingRegressor,
+        RandomForestRegressor,
+    )
+    from sklearn.linear_model import Ridge
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler
+
+    if algorithm == "rf":
+        return RandomForestRegressor(
+            n_estimators=n_estimators, min_samples_leaf=min_samples_leaf,
+            n_jobs=-1, random_state=seed,
+        )
+    if algorithm == "extra_trees":
+        return ExtraTreesRegressor(
+            n_estimators=n_estimators, min_samples_leaf=min_samples_leaf,
+            n_jobs=-1, random_state=seed,
+        )
+    if algorithm == "gradient_boosting":
+        return GradientBoostingRegressor(
+            n_estimators=n_estimators, min_samples_leaf=min_samples_leaf,
+            random_state=seed,
+        )
+    if algorithm == "hist_gradient_boosting":
+        return HistGradientBoostingRegressor(
+            max_iter=n_estimators, min_samples_leaf=min_samples_leaf,
+            random_state=seed,
+        )
+    if algorithm == "ridge":
+        return Pipeline([("scale", StandardScaler()), ("ridge", Ridge(alpha=1.0))])
+    raise ValueError(f"algoritmo desconhecido: {algorithm}")
+
+
+def _importance(model, features: list[str]) -> list[tuple[str, float]]:
+    if hasattr(model, "feature_importances_"):
+        values = np.asarray(model.feature_importances_, dtype="float64")
+    elif hasattr(model, "named_steps") and "ridge" in model.named_steps:
+        values = np.abs(np.asarray(model.named_steps["ridge"].coef_, dtype="float64"))
+    else:
+        return []
+    return sorted(zip(features, (float(v) for v in values)), key=lambda kv: kv[1], reverse=True)
+
+
 def _group_folds(
     df: pd.DataFrame,
     X: np.ndarray,
@@ -123,10 +175,9 @@ def train_field_model(
     use_categoricals: bool = True,
     domain_classes: tuple[int, ...] | None = (3, 4),
     conformal_coverage: float = 0.90,
+    algorithm: str = "rf",
 ) -> dict[str, Any]:
-    """Treina RandomForest campo-first com validação espacial em blocos e buffer."""
-    from sklearn.ensemble import RandomForestRegressor
-
+    """Treina um modelo campo-first com validação espacial em blocos e buffer."""
     df = pd.read_csv(csv_path).reset_index(drop=True)
     if target not in df.columns and "agbd" in df.columns:
         target = "agbd"
@@ -195,9 +246,9 @@ def train_field_model(
     for fold in folds:
         train_idx = np.asarray(fold["train_idx"], dtype=int)
         test_idx = np.asarray(fold["test_idx"], dtype=int)
-        model = RandomForestRegressor(
-            n_estimators=n_estimators, min_samples_leaf=min_samples_leaf,
-            n_jobs=-1, random_state=seed,
+        model = _make_model(
+            algorithm, n_estimators=n_estimators,
+            min_samples_leaf=min_samples_leaf, seed=seed,
         )
         model.fit(X[train_idx], y[train_idx])
         pred = model.predict(X[test_idx])
@@ -225,9 +276,9 @@ def train_field_model(
                 row[col] = value
                 by_group.append(row)
 
-    final_model = RandomForestRegressor(
-        n_estimators=n_estimators, min_samples_leaf=min_samples_leaf,
-        n_jobs=-1, random_state=seed,
+    final_model = _make_model(
+        algorithm, n_estimators=n_estimators,
+        min_samples_leaf=min_samples_leaf, seed=seed,
     )
     final_model.fit(X, y)
 
@@ -252,6 +303,7 @@ def train_field_model(
             "dropped_outside_domain": dropped_domain,
             "domain_classes": list(domain_classes) if domain_classes else None,
             "conformal_coverage": conformal_coverage,
+            "algorithm": algorithm,
             "field_first": True,
         },
     }
@@ -296,10 +348,8 @@ def train_field_model(
         "uncertainty": uncertainty,
         "by_fold": fold_rows,
         "by_group": by_group,
-        "importance": sorted(
-            zip(features, (float(v) for v in final_model.feature_importances_)),
-            key=lambda kv: kv[1], reverse=True,
-        ),
+        "algorithm": algorithm,
+        "importance": _importance(final_model, features),
         "limitations": [
             "Validação espacial por blocos com buffer; não substitui validação de campo independente.",
             "Campo disponível pode ser antigo, esparso e com coordenadas imprecisas.",

@@ -54,3 +54,16 @@ def test_train_field_model_spatial_buffer(tmp_path):
     assert "pred" in predictions.columns
     payload = json.loads((tmp_path / "model.metrics.json").read_text(encoding="utf-8"))
     assert payload["target"] == "agb_mg_ha"
+
+
+def test_train_field_model_ridge(tmp_path):
+    csv = tmp_path / "features.csv"
+    _feature_table().to_csv(csv, index=False)
+    result = train_field_model(
+        csv, tmp_path / "ridge", block_size_m=100_000, buffer_m=20_000,
+        n_estimators=50, min_samples_leaf=1, min_test=3,
+        use_categoricals=False, algorithm="ridge",
+    )
+    assert result["algorithm"] == "ridge"
+    assert result["overall"]["n"] == 30
+    assert (tmp_path / "ridge.joblib").exists()

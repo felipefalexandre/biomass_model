@@ -2,7 +2,7 @@
 
 **Atualizado:** 2026-11-24 · **Último commit:** `4427545` (reimplementação local não commitada) · **Branch:** `main`
 **Repo:** `C:\Users\Felipe\Documents\biomass_model` · **Remote:** `github.com/felipefalexandre/biomass_model`
-**Testes:** `python -m pytest` → 52 passed.
+**Testes:** `python -m pytest` → 53 passed.
 
 Leia este arquivo antes de qualquer ação. Ele resume o que foi feito, onde estão os dados, o
 que está validado e qual é o próximo passo. Não reinicie o projeto nem sobrescreva resultados.
@@ -201,7 +201,7 @@ Docs-chave: `docs/35` auditoria, `36` base científica, `37` plano, `38` valida�
 
 ## 10. Reimplementação 2026-11-24
 
-Implementado e testado (52 testes):
+Implementado e testado (53 testes):
 
 - `src/biomass_model/inventory/`: esquema canônico, validação, escrita CSV/Parquet/GeoPackage e
   adaptadores PLOS 2018, IFN/SFB, ORNL e GEDI L4A.
