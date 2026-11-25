@@ -315,6 +315,9 @@ def _cmd_polygon(args: argparse.Namespace) -> int:
         class_band=args.class_band,
         fitofisionomia_band=args.fitofisionomia_band,
         aoa_band=args.aoa_band,
+        class_raster=args.class_raster,
+        fitofisionomia_raster=args.fitofisionomia_raster,
+        aoa_raster=args.aoa_raster,
         domain_classes=domain,
         require_domain=not args.allow_outside_domain,
         require_aoa=args.require_aoa,
@@ -747,8 +750,11 @@ def build_parser() -> argparse.ArgumentParser:
     poly.add_argument("--year", type=int, default=None)
     poly.add_argument("--value-band", type=int, default=1)
     poly.add_argument("--class-band", type=int, default=None)
+    poly.add_argument("--class-raster", default=None)
     poly.add_argument("--fitofisionomia-band", type=int, default=None)
+    poly.add_argument("--fitofisionomia-raster", default=None)
     poly.add_argument("--fitofisionomia-codes", default=None)
+    poly.add_argument("--aoa-raster", default=None)
     poly.add_argument("--aoa-band", type=int, default=None)
     poly.add_argument("--domain-classes", default="3,4")
     poly.add_argument("--allow-outside-domain", action="store_true")

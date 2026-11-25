@@ -102,6 +102,7 @@ sempre identificado como tal.
 | 50 | [Comparação de algoritmos](docs/50_comparacao_algoritmos.md) | RF vs ExtraTrees vs boosting vs Ridge |
 | 51 | [Validação CEDA Manaus](docs/51_validacao_ceda.md) | Transferência Cerrado→Amazônia falhou |
 | 52 | [Store canônico](docs/52_store_canonico.md) | Ingestão idempotente e manifesto |
+| 53 | [Piloto Produto C](docs/53_produto_c_piloto.md) | Polígono 30 m com AOA e fitofisionomia |
 
 ## 4. Estrutura do repositório
 

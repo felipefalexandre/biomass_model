@@ -181,6 +181,9 @@ def polygon_raster_stats(
     class_band: int | None = None,
     fitofisionomia_band: int | None = None,
     aoa_band: int | None = None,
+    class_raster: str | Path | None = None,
+    fitofisionomia_raster: str | Path | None = None,
+    aoa_raster: str | Path | None = None,
     domain_classes: Iterable[int] = (3, 4),
     require_domain: bool = True,
     require_aoa: bool = False,
@@ -205,6 +208,17 @@ def polygon_raster_stats(
         if not (src.transform.b == 0 and src.transform.d == 0):
             raise ValueError("raster rotacionado não suportado")
         raster_crs = src.crs
+        aux = {}
+        for name, path in (("class", class_raster), ("fitofisionomia", fitofisionomia_raster),
+                           ("aoa", aoa_raster)):
+            if path is None:
+                continue
+            ds = rasterio.open(path)
+            if (ds.crs != src.crs or ds.transform != src.transform
+                    or ds.width != src.width or ds.height != src.height):
+                ds.close()
+                raise ValueError(f"raster auxiliar {name} não está alinhado ao raster de AGB")
+            aux[name] = ds
         geom_r = geom
         if geom_crs != raster_crs:
             import geopandas as gpd
@@ -236,8 +250,10 @@ def polygon_raster_stats(
             width = col_end - col_off
             win = Window(col_off, start_row, width, height)
             bands = [value_band]
-            for band in (class_band, fitofisionomia_band, aoa_band):
-                if band is not None and band not in bands:
+            for band, raster in ((class_band, class_raster),
+                                 (fitofisionomia_band, fitofisionomia_raster),
+                                 (aoa_band, aoa_raster)):
+                if band is not None and raster is None and band not in bands:
                     bands.append(band)
             array = src.read(bands, window=win, masked=True).astype("float64")
             data = {band: array[i].filled(np.nan) for i, band in enumerate(bands)}
@@ -249,18 +265,21 @@ def polygon_raster_stats(
             boundary = geometry_mask([geom_r.boundary], out_shape=shape, transform=transform,
                                      invert=True, all_touched=True)
             valid = inside & np.isfinite(value)
-            if class_band is not None:
-                klass = data[class_band]
-                if require_domain:
-                    valid &= np.isin(klass, list(domain_classes))
-            else:
-                klass = np.full(shape, np.nan)
-            if aoa_band is not None:
-                aoa = data[aoa_band]
-                if require_aoa:
-                    valid &= aoa > 0.5
-            else:
-                aoa = np.full(shape, np.nan)
+
+            def aux_array(name, band):
+                if name in aux:
+                    return aux[name].read(1, window=win, masked=True).astype("float64").filled(np.nan)
+                if band is not None:
+                    return data[band]
+                return np.full(shape, np.nan)
+
+            klass = aux_array("class", class_band)
+            if (class_band is not None or class_raster is not None) and require_domain:
+                valid &= np.isin(klass, list(domain_classes))
+            fitofisionomia = aux_array("fitofisionomia", fitofisionomia_band)
+            aoa = aux_array("aoa", aoa_band)
+            if (aoa_band is not None or aoa_raster is not None) and require_aoa:
+                valid &= aoa > 0.5
 
             rows, cols = np.nonzero(valid & ~boundary)
             if len(rows):
@@ -273,9 +292,9 @@ def polygon_raster_stats(
                 areas_parts.append(np.full(len(rows), cell_area_ha, dtype="float64"))
                 blocks_parts.append(block_ids)
                 class_parts.append(klass[rows, cols])
-                if fitofisionomia_band is not None:
-                    fit_parts.append(data[fitofisionomia_band][rows, cols])
-                if aoa_band is not None:
+                if fitofisionomia_band is not None or fitofisionomia_raster is not None:
+                    fit_parts.append(fitofisionomia[rows, cols])
+                if aoa_band is not None or aoa_raster is not None:
                     aoa_parts.append(aoa[rows, cols])
 
             rows, cols = np.nonzero(valid & boundary)
@@ -294,10 +313,13 @@ def polygon_raster_stats(
                 areas_parts.append(np.array([area_ha], dtype="float64"))
                 blocks_parts.append(np.array([block_id], dtype="int64"))
                 class_parts.append(np.array([klass[r, c]], dtype="float64"))
-                if fitofisionomia_band is not None:
-                    fit_parts.append(np.array([data[fitofisionomia_band][r, c]], dtype="float64"))
-                if aoa_band is not None:
+                if fitofisionomia_band is not None or fitofisionomia_raster is not None:
+                    fit_parts.append(np.array([fitofisionomia[r, c]], dtype="float64"))
+                if aoa_band is not None or aoa_raster is not None:
                     aoa_parts.append(np.array([aoa[r, c]], dtype="float64"))
+
+    for ds in aux.values():
+        ds.close()
 
     if not values_parts:
         raise ValueError("nenhuma célula válida no polígono após os filtros")
@@ -311,15 +333,17 @@ def polygon_raster_stats(
 
     overall = _summarize(values, areas_ha, block_ids, n_boot=n_boot, seed=seed)
     aoa_fraction = float(
-        (areas_ha[aoa > 0.5].sum() / areas_ha.sum()) if aoa_band is not None and areas_ha.sum() > 0
+        (areas_ha[aoa > 0.5].sum() / areas_ha.sum())
+        if (aoa_band is not None or aoa_raster is not None) and areas_ha.sum() > 0
         else np.nan
     )
     by_class = _group_stats(values, areas_ha, block_ids, classes,
-                            n_boot=n_boot, seed=seed) if class_band is not None else []
+                            n_boot=n_boot, seed=seed) \
+        if (class_band is not None or class_raster is not None) else []
     fit_labels = _load_code_table(fitofisionomia_codes)
     by_fit = _group_stats(values, areas_ha, block_ids, fits,
                           n_boot=n_boot, seed=seed, labels=fit_labels) \
-        if fitofisionomia_band is not None else []
+        if (fitofisionomia_band is not None or fitofisionomia_raster is not None) else []
 
     result = {
         "raster": str(raster_path),
