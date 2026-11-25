@@ -52,6 +52,19 @@ python -m biomass_model.cli polygon `
 | Pecuária (pastagens) | 869,0 | 11,83 | 8,98 | 10.284 |
 | Savana Arborizada | 1.348,6 | 15,43 | 10,57 | 20.805 |
 
+### Filtro de grupos fitofisionômicos elegíveis
+
+Para excluir classes não vegetacionais (pastagem, agricultura, água), o CLI aceita:
+
+```powershell
+python -m biomass_model.cli polygon ... --fitofisionomia-groups forest,savanna,campestre
+```
+
+Com o filtro, a área analisada cai para **1.348,6 ha** (Savana Arborizada), a AGB média é
+**15,43 Mg ha⁻¹**, o estoque é **20.805 Mg** (IC90 19.189–30.348) e a fração na AOA sobe para
+**90,2%**. Os 869,0 ha de “Pecuária” ficam explicitamente fora da estimativa vegetacional,
+embora permaneçam no mapa A0 por causa da máscara MapBiomas 3/4.
+
 ## 5. Leitura
 
 - O Produto C está funcional: lê geometria, calcula área real de interseção, agrega AGB,
@@ -63,6 +76,7 @@ python -m biomass_model.cli polygon `
   fitofisionomia como filtro de produto.
 - O mapa A0 é o baseline GEDI experimental, não o modelo campo-first; o resultado serve para
   validar o **mecanismo do Produto C**, não a acurácia da AGB.
+- O filtro por grupo é necessário: sem ele, 39,2% da área seria rotulada como pastagem pelo IBGE.
 - Nenhum produto foi promovido; não usar para MRV/créditos.
 
 ## 6. Artefatos

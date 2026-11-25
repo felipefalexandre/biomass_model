@@ -82,9 +82,10 @@ def test_polygon_with_separate_class_and_fitofisionomia_rasters(tmp_path):
     with rasterio.open(fit_raster, "w", **profile) as dst:
         dst.write(np.array([[1, 1, 2], [1, 1, 2], [1, 1, 2]], dtype="float32"), 1)
     codes = tmp_path / "fit.json"
-    codes.write_text(json.dumps({"codes": [{"code": 1, "label": "Savana Arborizada"},
-                                             {"code": 2, "label": "Savana Parque"}]}),
-                     encoding="utf-8")
+    codes.write_text(json.dumps({"codes": [
+        {"code": 1, "label": "Savana Arborizada", "group": "savanna"},
+        {"code": 2, "label": "Pecuária (pastagens)", "group": "unknown"},
+    ]}), encoding="utf-8")
     vector = tmp_path / "poly.geojson"
     _polygon(vector, box(0, 0, 90, 90))
     result = polygon_raster_stats(
@@ -94,4 +95,10 @@ def test_polygon_with_separate_class_and_fitofisionomia_rasters(tmp_path):
     assert np.isclose(result["area_analyzed_ha"], 0.81)
     assert {int(c["code"]) for c in result["by_class"]} == {3, 4}
     labels = {c["label"] for c in result["by_fitofisionomia"]}
-    assert labels == {"Savana Arborizada", "Savana Parque"}
+    assert labels == {"Savana Arborizada", "Pecuária (pastagens)"}
+    filtered = polygon_raster_stats(
+        raster, vector, class_raster=class_raster, fitofisionomia_raster=fit_raster,
+        fitofisionomia_codes=codes, fitofisionomia_groups=("savanna",), n_boot=20,
+    )
+    assert np.isclose(filtered["area_analyzed_ha"], 0.54)
+    assert {c["label"] for c in filtered["by_fitofisionomia"]} == {"Savana Arborizada"}

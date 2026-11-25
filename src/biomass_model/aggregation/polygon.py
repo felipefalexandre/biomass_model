@@ -173,6 +173,13 @@ def _load_code_table(path: str | Path | None) -> dict[int, str]:
     return {int(item["code"]): str(item["label"]) for item in data.get("codes", [])}
 
 
+def _load_code_groups(path: str | Path | None) -> dict[int, str]:
+    if path is None:
+        return {}
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    return {int(item["code"]): str(item.get("group", "")) for item in data.get("codes", [])}
+
+
 def polygon_raster_stats(
     raster_path: str | Path,
     polygon: str | Path | Any,
@@ -192,6 +199,7 @@ def polygon_raster_stats(
     n_boot: int = 400,
     seed: int = 42,
     fitofisionomia_codes: str | Path | None = None,
+    fitofisionomia_groups: Iterable[str] | None = None,
     year: int | None = None,
     out: str | Path | None = None,
 ) -> dict[str, Any]:
@@ -331,6 +339,17 @@ def polygon_raster_stats(
     fits = np.concatenate(fit_parts) if fit_parts else np.full(len(values), np.nan)
     aoa = np.concatenate(aoa_parts) if aoa_parts else np.full(len(values), np.nan)
 
+    if fitofisionomia_groups and (fitofisionomia_band is not None or fitofisionomia_raster is not None):
+        groups_map = _load_code_groups(fitofisionomia_codes)
+        fit_groups = np.array([
+            groups_map.get(int(code), "") if np.isfinite(code) else "" for code in fits
+        ])
+        keep = np.isin(fit_groups, list(fitofisionomia_groups))
+        values, areas_ha, block_ids = values[keep], areas_ha[keep], block_ids[keep]
+        classes, fits, aoa = classes[keep], fits[keep], aoa[keep]
+        if len(values) == 0:
+            raise ValueError("nenhuma célula válida após o filtro de grupos fitofisionômicos")
+
     overall = _summarize(values, areas_ha, block_ids, n_boot=n_boot, seed=seed)
     aoa_fraction = float(
         (areas_ha[aoa > 0.5].sum() / areas_ha.sum())
@@ -368,6 +387,7 @@ def polygon_raster_stats(
         "class_band": class_band,
         "fitofisionomia_band": fitofisionomia_band,
         "aoa_band": aoa_band,
+        "fitofisionomia_groups": list(fitofisionomia_groups) if fitofisionomia_groups else None,
         "domain_classes": list(domain_classes),
         "block_size_m": block_size_m,
         "n_boot": n_boot,

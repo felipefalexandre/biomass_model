@@ -325,6 +325,9 @@ def _cmd_polygon(args: argparse.Namespace) -> int:
         chunk_rows=args.chunk_rows,
         n_boot=args.n_boot,
         fitofisionomia_codes=args.fitofisionomia_codes,
+        fitofisionomia_groups=(tuple(x.strip() for x in args.fitofisionomia_groups.split(",")
+                                     if x.strip())
+                               if args.fitofisionomia_groups else None),
         year=args.year,
         out=args.out,
     )
@@ -754,6 +757,8 @@ def build_parser() -> argparse.ArgumentParser:
     poly.add_argument("--fitofisionomia-band", type=int, default=None)
     poly.add_argument("--fitofisionomia-raster", default=None)
     poly.add_argument("--fitofisionomia-codes", default=None)
+    poly.add_argument("--fitofisionomia-groups", default=None,
+                      help="grupos elegiveis, ex.: forest,savanna,campestre")
     poly.add_argument("--aoa-raster", default=None)
     poly.add_argument("--aoa-band", type=int, default=None)
     poly.add_argument("--domain-classes", default="3,4")
