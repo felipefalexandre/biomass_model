@@ -392,6 +392,23 @@ def _cmd_ceda(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_ornl_plots(args: argparse.Namespace) -> int:
+    from .datasets.ornl import fetch_ornl_plot_companions
+
+    result = fetch_ornl_plot_companions(args.out_dir)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
+def _cmd_ornl_coords(args: argparse.Namespace) -> int:
+    from .datasets.ornl import build_ornl_site_coords
+
+    result = build_ornl_site_coords(args.plots_dir, args.out)
+    print(json.dumps({k: v for k, v in result.items() if k != "rows"},
+                     indent=2, ensure_ascii=False))
+    return 0
+
+
 def _cmd_ibge(args: argparse.Namespace) -> int:
     from .datasets.ibge import fetch_ibge_vegetacao
 
@@ -516,6 +533,15 @@ def build_parser() -> argparse.ArgumentParser:
     ceda.add_argument("--out-dir", required=True)
     ceda.add_argument("--no-download", action="store_true")
     ceda.set_defaults(func=_cmd_ceda)
+
+    oplots = sub.add_parser("ornl-plots", help="baixa shapefiles de transectos do ORNL")
+    oplots.add_argument("--out-dir", required=True)
+    oplots.set_defaults(func=_cmd_ornl_plots)
+
+    ocoords = sub.add_parser("ornl-coords", help="extrai centroides de sitios ORNL")
+    ocoords.add_argument("--plots-dir", required=True)
+    ocoords.add_argument("--out", required=True)
+    ocoords.set_defaults(func=_cmd_ornl_coords)
 
     ibge = sub.add_parser("ibge-vegetacao", help="vegetacao IBGE 1:250.000 (areas/tabelas)")
     ibge.add_argument("--out-dir", required=True)

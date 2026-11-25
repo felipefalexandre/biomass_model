@@ -1,0 +1,323 @@
+{
+  "dataset": "ornl_plot_companions",
+  "created_at": "2026-11-25T11:43:11+00:00",
+  "git_commit": "0c413beb515b8e99af99fb4cd2b0ef5373724182",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "ornl-plots",
+    "--out-dir",
+    "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots"
+  ],
+  "params": {
+    "short_name": "Forest_Inventory_Brazil_2007",
+    "granules": 30
+  },
+  "license": "NASA open data",
+  "account": "Earthdata token",
+  "source": "https://doi.org/10.3334/ORNLDAAC/2007",
+  "notes": "shapefiles de transectos por sitio/ano",
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\DUC_A01_2009_2011_inventory_plots.zip",
+      "bytes": 7285,
+      "sha256": "18429e2636736f75e400dd3eb6de9a408ccc28d5ac104f1a7a5d885df74ca651"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\DUC_A01_2009_2011_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "48962f20f867ca2156e38fd7eab2d12702ee4ec7b72d911aa7860fc3778f9d62"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAP_A01_2009_2011_inventory_plots.zip",
+      "bytes": 6280,
+      "sha256": "6d1bcc6a5b4e5ee80c2365d263c82eb62f04366edf657f6ed4bdd99ed51a104d"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAP_A01_2009_2011_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "762a86975eb8f51a51d2b86d5aa00166a70d8190e1ebe5d8177fb66f79a1165a"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAP_A05_2010_2011_inventory_plots.zip",
+      "bytes": 6228,
+      "sha256": "a52fec0f706ed1996c6c10fbbc7f333269bcc082b2342450b50fd9dc37af59cf"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAP_A05_2010_2011_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "587e198294a366776d90391d666a7223cf25401c4153549b6b4bf1f6445ecb25"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAP_A04_2010_2011_inventory_plots.zip",
+      "bytes": 6387,
+      "sha256": "1a2176fb32e4b16fc3b9e24e8c83e9fab972c20847bea60c7668b04670438119"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAP_A04_2010_2011_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "9dd9adbd48fc560d81f40f14b7e02416486a86ad8b9095d57941d1d21811740c"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\JAM_A01_2011_inventory_plots.zip",
+      "bytes": 6109,
+      "sha256": "290849967427bc3a80c006513dd8577aa715a7fd4f540c47ff53ffd19b738bdc"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\JAM_A01_2011_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "1d71a0dece93da44671e10c05e94a50681d3c569c337156f02de10813f745a98"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\JAM_A02_2011_inventory_plots.zip",
+      "bytes": 6604,
+      "sha256": "d0467cc16fd1e941e3a89855e425e78dcede8acdd3d30f00a0903fe67c9fa502"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\JAM_A02_2011_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "5c6cf3e8d91626b91d6443b874c9f774202e1d7477207f322a29f90f66221c7c"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SFX_A01_2011_inventory_plots.zip",
+      "bytes": 6369,
+      "sha256": "8730f167ccc6a56ad0fac70da050fc477d92226265691561eb80ddf8fba149d3"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SFX_A01_2011_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "0b04a4ef787958bf14bad031940d402ec3e2fa1302fcec60fcea17b3b2e9951c"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAN_A01_2012_inventory_plots.zip",
+      "bytes": 9103,
+      "sha256": "aca865b627d5f14d4c26673b86da2b413b360e5cfcc312dc41f8b42cdea9fb66"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAN_A01_2012_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "34289c4a076ddf4a7a8d8cd074948b28bfbb8cb8a485be6297a827003590ce86"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SFX_A02_2012_inventory_plots.zip",
+      "bytes": 7027,
+      "sha256": "2340bf40191278974fae6ed1cfe80aea92afd1dc9c1c31f8c5289becaf624db2"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SFX_A02_2012_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "a9d4287e9d9e793b520b2b755e52ea7dfeba91d1426d64ec17ec14c7066297d9"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SFX_A03_2012_inventory_plots.zip",
+      "bytes": 6314,
+      "sha256": "539b2435e0ca9e54d68014ce03ff8cd6fc167e40610c474f7ec5ee5f2ac86e5a"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SFX_A03_2012_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "71e755dd6d4db146977509b4f2af76bc56fbd33ffa3e1e1095dec89c9c065e5e"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\JAM_A02_2013_inventory_plots.zip",
+      "bytes": 9553,
+      "sha256": "465e982989f99958f6e9266546ac70ba3a06de3db462f33ace279d8a91bc5048"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\JAM_A02_2013_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "00290f639555e520a4929bc52e95a7f4ca64a3c468cb0f57ec2b6e8e1a348fee"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\FST_A01_2013_inventory_plots.zip",
+      "bytes": 9144,
+      "sha256": "ae2b48ef5b23bd56a87a8d7d302561e40af633676f4504dac313e19c6bca06f8"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\FST_A01_2013_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "5034a938fb0b63c4e335a0dd7e8c989225f082556a27f4485a43772fad39f05e"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\AND_A01_2013_2018_inventory_plots.zip",
+      "bytes": 7559,
+      "sha256": "d4b58b74c29f73538324a3e55ec4af80d36f9f5bccb3dc8b5ebb27e860e26cdc"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\AND_A01_2013_2018_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "6ec94c5907086bdc1350b1c0bbbfa157cf732348d81b11c93e5447dacc60facb"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\PAR_A01_2013_2018_inventory_plots.zip",
+      "bytes": 9031,
+      "sha256": "da4cb7da54f0b2cf568764e0e09984585e104a2188d9bb7ab3a798d4b6776d82"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\PAR_A01_2013_2018_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "747e5f695ddd4ca059996fe2767de05a2c114e9c04e771dba53ef7ebcc969900"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\FNA_A01_2013_inventory_plots.zip",
+      "bytes": 7595,
+      "sha256": "19721ee8b90ad95d932c1cd6a710fc323c2d4e038ea0e7d14324f0f74555c835"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\FNA_A01_2013_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "8cdaf8d72d36fce348aa3877158785c58e6dbcbe85357e04b55d9408e5ddfdd9"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\JAM_A03_2013_inventory_plots.zip",
+      "bytes": 6970,
+      "sha256": "63bc4707e937ca585b1de8078304cdacb4fbc2d7c1f9ac82a4393814847e93ca"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\JAM_A03_2013_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "70241afa3c20acf8b1a6e192a856c443ff2fe85986c353b6f53300ec887bc896"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\HUM_A01_2014_inventory_plots.zip",
+      "bytes": 7367,
+      "sha256": "298be264389134172c1b3d0c7e1a1c7284b6a360a4c24578afa8481eea470b71"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\HUM_A01_2014_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "6874ab34f773a59352ef6dbce59b5aadaae2d924e93e16e0ccec69ba4d039a6e"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SAN_A02_2014_inventory_plots.shp.zip",
+      "bytes": 6872,
+      "sha256": "9a2b2f1dd0c3d8bd60f83a505c534a76ba2bb6fc4d7078d75edd53bb8b38c8f5"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SAN_A02_2014_inventory_plots.shp.zip.sha256",
+      "bytes": 64,
+      "sha256": "69eac9f31b514a745f8fcd112d4d8b9c855c52ed5b51275e42bba41db854e1ed"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\BON_A01_2014_inventory_plots.zip",
+      "bytes": 7287,
+      "sha256": "762f029605086719ddf837d414ca35733c06789db21e89c25e074f1ec86ea0d3"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\BON_A01_2014_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "434c9e2605341975de987a68bc91cf1ca022225223decdf9ad5f73e25bafd079"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAC_A01_2014_inventory_plots.zip",
+      "bytes": 7871,
+      "sha256": "7c67d09171416e22a321c4b2ac179cfacd345323afe0ba428a3fcfdd0d2c8b66"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAC_A01_2014_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "a3da25bc9e2f7bf857a91ccfaf28da6d1a7ff9c900e745274b41d613bda46e80"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAL_A01_2014_inventory_plots.zip",
+      "bytes": 6682,
+      "sha256": "567b64e52a07f38f369fb8adbc65549ec1471abfcaa933a675fabe05212b8774"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAL_A01_2014_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "516fa96f484bd1106e44033aa8d2a448d8ebcf863f6ac2c3432062fbbbf75c46"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SAN_A01_2014_2016_inventory_plots.zip",
+      "bytes": 7100,
+      "sha256": "c688280fcd38a76c4b161508994ba0a51917ee02fcc9fe19f015fcc3a9c2b3a4"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SAN_A01_2014_2016_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "be74ef834dd1a7fc629309c092a3abdaf1c309c3db157b18ece892441d0f0e81"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAP_A01_2015_2018_inventory_plots.zip",
+      "bytes": 6725,
+      "sha256": "1274c43c1a4e93eb3cc609c687734d94686d17397d10a12bd9714bc453988ad5"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAP_A01_2015_2018_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "6c8858df24affd59464edaa994a36de41375b39c63e36b5eb9150974b8a736bb"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAP_A03_2015_2018_inventory_plots.zip",
+      "bytes": 7000,
+      "sha256": "28206b6189c0c9eb9d19a8aabf91705eabbdd51f0c3bb25dbe7612891fa97574"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAP_A03_2015_2018_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "bf95b4ed1482ca761d7453e7de4dd702895ab80f2139254020750e27a0565bb2"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\ANA_A01_2015_2018_inventory_plots.zip",
+      "bytes": 8481,
+      "sha256": "804e1da431acbb671162c63e7a33f215d04660523d8bb6d98f908ad8d576aed9"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\ANA_A01_2015_2018_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "e6272a18f236e60351cb5fac97c4e5df51dce79adbd13ee9915a7b55e8326cdc"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\FN_A01_2015_inventory_plots.zip",
+      "bytes": 5954,
+      "sha256": "0755aebcec06bc346e926e9a8e08286391b13196c7736ed187ddec2ff6b8372e"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\FN_A01_2015_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "b6a8b7011c545f4fc26be79a6ff617b9ac5526c8148f93441e9212d8184d9fd2"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAC_A01_2015_inventory_plots.zip",
+      "bytes": 7754,
+      "sha256": "977c5a30c7bc7c700c1136064422daf9af278c9f0bcf880b7840b60386acdd3b"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\TAC_A01_2015_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "e4c92aa427dfa68bfb543b443033ba8bf15d3ebcac6b4065e46462668401ea02"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SAN_A01b_2016_2018_inventory_plots.zip",
+      "bytes": 6571,
+      "sha256": "4a7b59a955ca8c52893125c198c9d7a2d122386871cd979b24b27a29469902c6"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\SAN_A01b_2016_2018_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "57842178521337d7c65f88d16dc89da7df469545403dcf4bc5c08eb4124fc335"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\DUC_A01_2016_inventory_plots.zip",
+      "bytes": 7243,
+      "sha256": "c5e14c56562485c9c5158631720615126c8fd6e86fc0e810cf018520cb01ebd8"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\DUC_A01_2016_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "9547afe45742a735024bbf6882c77d5c7b7ecaab4755a2a942279a0121146808"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\PAR_A01_2018_inventory_plots.zip",
+      "bytes": 8965,
+      "sha256": "35431265c761d9c3c8d9d9b8804719d96752e6e0307c380c9fd1ed749f4ae760"
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_brazil\\plots\\PAR_A01_2018_inventory_plots.zip.sha256",
+      "bytes": 64,
+      "sha256": "d8a0c9e94ae88c074c39bff51b0d232fb6915d5021d74f0f2b630cdb6a1255cd"
+    }
+  ]
+}

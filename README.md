@@ -104,6 +104,7 @@ sempre identificado como tal.
 | 52 | [Store canônico](docs/52_store_canonico.md) | Ingestão idempotente e manifesto |
 | 53 | [Piloto Produto C](docs/53_produto_c_piloto.md) | Polígono 30 m com AOA e fitofisionomia |
 | 54 | [Reconciliação IBGE–MapBiomas](docs/54_reconciliacao_ibge_mapbiomas.md) | 12,3% de pastagem dentro de 3/4 |
+| 55 | [Coordenadas ORNL](docs/55_ornl_coordenadas.md) | 25 sítios geolocalizados |
 
 ## 4. Estrutura do repositório
 

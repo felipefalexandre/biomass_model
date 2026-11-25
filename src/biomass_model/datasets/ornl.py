@@ -7,6 +7,8 @@ entre transectos; a incerteza é o erro padrão entre transectos (não entre ár
 
 from __future__ import annotations
 
+import re
+import zipfile
 from pathlib import Path
 from typing import Any
 
@@ -97,3 +99,105 @@ def site_density(path: str | Path, *, line_m: float = 500.0) -> dict[str, Any] |
         return None
     out["site"] = p.stem
     return out
+
+
+SHORT_NAME = "Forest_Inventory_Brazil_2007"
+SOURCE = "https://doi.org/10.3334/ORNLDAAC/2007"
+LICENSE = "NASA open data"
+
+
+def fetch_ornl_plot_companions(
+    out_dir: str | Path,
+    *,
+    manifest: bool = True,
+) -> dict[str, Any]:
+    """Baixa os shapefiles/plot companions do ORNL (coordenadas dos transectos)."""
+    import earthaccess
+
+    from ..credentials import require_earthdata
+    from ..manifest import build_manifest, write_manifest
+
+    require_earthdata()
+    earthaccess.login(strategy="environment")
+    results = earthaccess.search_data(short_name=SHORT_NAME, count=-1)
+    selected = [
+        g for g in results
+        if any(link.endswith(".zip") and "inventory_plots" in link for link in g.data_links())
+    ]
+    root = Path(out_dir)
+    root.mkdir(parents=True, exist_ok=True)
+    files = earthaccess.download(selected, str(root))
+    summary = {
+        "out_dir": str(root),
+        "granules": len(selected),
+        "files": len(files),
+        "source": SOURCE,
+        "license": LICENSE,
+    }
+    if manifest:
+        write_manifest(build_manifest(
+            "ornl_plot_companions",
+            {"short_name": SHORT_NAME, "granules": len(selected)},
+            [Path(f) for f in files], license=LICENSE, account="Earthdata token",
+            source=SOURCE, notes="shapefiles de transectos por sitio/ano",
+        ))
+    return summary
+
+
+def build_ornl_site_coords(
+    plots_dir: str | Path,
+    out_csv: str | Path,
+) -> dict[str, Any]:
+    """Extrai centroides de sitios a partir dos zips de transectos do ORNL."""
+    import geopandas as gpd
+
+    root = Path(plots_dir)
+    out_dir = root / "extracted"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for z in sorted(root.glob("*.zip")):
+        if z.name.endswith(".sha256"):
+            continue
+        match = re.match(r"^(.*?)_(\d{4})(?:_\d{4})?_inventory_plots", z.stem)
+        if not match:
+            continue
+        site = match.group(1)
+        target = out_dir / z.stem
+        target.mkdir(parents=True, exist_ok=True)
+        with zipfile.ZipFile(z) as archive:
+            archive.extractall(target)
+        shapefiles = list(target.rglob("*.shp"))
+        if not shapefiles:
+            continue
+        try:
+            gdf = gpd.read_file(shapefiles[0])
+        except Exception:
+            continue
+        if gdf.empty or gdf.crs is None:
+            continue
+        geo = gdf.to_crs("EPSG:4326")
+        centroid = geo.geometry.union_all().centroid
+        bounds = geo.total_bounds
+        rows.append({
+            "site": site,
+            "lon": float(centroid.x),
+            "lat": float(centroid.y),
+            "lon_min": float(bounds[0]),
+            "lon_max": float(bounds[2]),
+            "lat_min": float(bounds[1]),
+            "lat_max": float(bounds[3]),
+            "n_vertices": 0,
+            "source_file": z.name,
+        })
+    table = pd.DataFrame(rows)
+    if table.empty:
+        raise ValueError("nenhum shapefile valido nos zips ORNL")
+    table = table.groupby("site", as_index=False).agg({
+        "lon": "mean", "lat": "mean", "lon_min": "min", "lon_max": "max",
+        "lat_min": "min", "lat_max": "max", "n_vertices": "sum",
+        "source_file": "first",
+    })
+    out = Path(out_csv)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    table.to_csv(out, index=False, encoding="utf-8")
+    return {"out": str(out), "sites": int(len(table)), "rows": table.to_dict(orient="records")}

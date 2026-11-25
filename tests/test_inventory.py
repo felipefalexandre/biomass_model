@@ -8,6 +8,7 @@ from biomass_model.inventory.adapters import (
     load_ornl_site,
     load_plos2018,
 )
+from biomass_model.datasets.ornl import build_ornl_site_coords
 from biomass_model.inventory.schema import (
     normalize_observations,
     read_observations,
@@ -143,3 +144,29 @@ def test_ceda_adapter(tmp_path):
     assert np.isclose(row["agb_mg_ha"], 120.0)
     assert np.isclose(row["support_area_ha"], 0.6)
     assert row["biome"] == "Amazônia"
+
+
+def test_build_ornl_site_coords(tmp_path):
+    import zipfile
+
+    import geopandas as gpd
+    from shapely.geometry import LineString
+
+    shp_dir = tmp_path / "shp"
+    shp_dir.mkdir()
+    gpd.GeoDataFrame(
+        {"Transect": ["M1"]},
+        geometry=[LineString([(0, 0), (500, 0)])],
+        crs="EPSG:32721",
+    ).to_file(shp_dir / "TST_A01_2011_inventory_plots.shp")
+    zip_path = tmp_path / "TST_A01_2011_inventory_plots.zip"
+    with zipfile.ZipFile(zip_path, "w") as archive:
+        for item in shp_dir.iterdir():
+            archive.write(item, arcname=item.name)
+    out = tmp_path / "coords.csv"
+    result = build_ornl_site_coords(tmp_path, out)
+    assert result["sites"] == 1
+    table = pd.read_csv(out)
+    assert table.loc[0, "site"] == "TST_A01"
+    assert np.isfinite(table.loc[0, "lon"])
+    assert np.isfinite(table.loc[0, "lat"])
