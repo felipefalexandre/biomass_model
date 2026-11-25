@@ -160,6 +160,77 @@ def _cmd_polygon_stats(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_inventory(args: argparse.Namespace) -> int:
+    from .inventory.adapters import (
+        load_gedi_l4a,
+        load_ifn_panel,
+        load_ornl_directory,
+        load_plos2018,
+    )
+    from .inventory.schema import validate_observations, write_observations
+
+    if args.source == "plos2018":
+        frame = load_plos2018(args.path, usage=args.usage)
+    elif args.source == "ifn":
+        frame = load_ifn_panel(args.path, equation=args.equation, usage=args.usage,
+                               max_rows=args.max_rows)
+    elif args.source == "ornl":
+        frame = load_ornl_directory(args.path, usage=args.usage, coords_path=args.coords,
+                                    limit=args.limit)
+    elif args.source == "gedi":
+        frame = load_gedi_l4a(args.path, usage=args.usage, max_rows=args.max_rows)
+    else:
+        raise ValueError(f"fonte desconhecida: {args.source}")
+
+    report = validate_observations(frame)
+    out = write_observations(frame, args.out)
+    summary = {
+        "source": args.source,
+        "rows": int(len(frame)),
+        "out": str(out),
+        "errors": report["errors"],
+        "warnings": report["warnings"],
+    }
+    print(json.dumps(summary, indent=2, ensure_ascii=False))
+    return 0
+
+
+def _cmd_fitofisionomia(args: argparse.Namespace) -> int:
+    from .stratification import rasterize_fitofisionomia
+
+    result = rasterize_fitofisionomia(
+        args.vector, args.template, args.out, attribute=args.attribute,
+        all_touched=args.all_touched,
+    )
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
+def _cmd_polygon(args: argparse.Namespace) -> int:
+    from .aggregation.polygon import polygon_raster_stats
+
+    domain = tuple(int(x.strip()) for x in args.domain_classes.split(",") if x.strip())
+    result = polygon_raster_stats(
+        args.raster,
+        args.input,
+        value_band=args.value_band,
+        class_band=args.class_band,
+        fitofisionomia_band=args.fitofisionomia_band,
+        aoa_band=args.aoa_band,
+        domain_classes=domain,
+        require_domain=not args.allow_outside_domain,
+        require_aoa=args.require_aoa,
+        block_size_m=args.block_size_m,
+        chunk_rows=args.chunk_rows,
+        n_boot=args.n_boot,
+        fitofisionomia_codes=args.fitofisionomia_codes,
+        year=args.year,
+        out=args.out,
+    )
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
 def _cmd_region_aoa(args: argparse.Namespace) -> int:
     from .modeling import run_region_aoa
 
@@ -185,6 +256,20 @@ def _cmd_s2_annual(args: argparse.Namespace) -> int:
                           size=args.size, max_items=args.max_items,
                           max_cloud=args.max_cloud)
     print(json.dumps({k: v for k, v in result.items() if k != "items"}, indent=2))
+    return 0
+
+
+def _cmd_ibge(args: argparse.Namespace) -> int:
+    from .datasets.ibge import fetch_ibge_vegetacao
+
+    result = fetch_ibge_vegetacao(
+        args.out_dir,
+        version=args.version,
+        include_points=args.include_points,
+        include_tables=not args.no_tables,
+        download=not args.no_download,
+    )
+    print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0
 
 
@@ -293,6 +378,14 @@ def build_parser() -> argparse.ArgumentParser:
     s2a.add_argument("--max-items", type=int, default=30)
     s2a.add_argument("--max-cloud", type=float, default=40.0)
     s2a.set_defaults(func=_cmd_s2_annual)
+
+    ibge = sub.add_parser("ibge-vegetacao", help="vegetacao IBGE 1:250.000 (areas/tabelas)")
+    ibge.add_argument("--out-dir", required=True)
+    ibge.add_argument("--version", default="2026")
+    ibge.add_argument("--include-points", action="store_true")
+    ibge.add_argument("--no-tables", action="store_true")
+    ibge.add_argument("--no-download", action="store_true")
+    ibge.set_defaults(func=_cmd_ibge)
 
     dem = sub.add_parser("dem", help="DEM Copernicus GLO-30")
     dem.add_argument("--lon", type=float, required=True)
@@ -427,6 +520,44 @@ def build_parser() -> argparse.ArgumentParser:
     mrv.add_argument("--aoa-col", default="aoa_inside")
     mrv.set_defaults(func=_cmd_mrv_check)
 
+    inv = sub.add_parser("inventory", help="ingere inventario/observacao no esquema canonico")
+    inv.add_argument("--source", choices=["plos2018", "ifn", "ornl", "gedi"], required=True)
+    inv.add_argument("--path", required=True)
+    inv.add_argument("--out", required=True)
+    inv.add_argument("--usage", default="validation",
+                     choices=["training", "calibration", "validation", "benchmark", "excluded"])
+    inv.add_argument("--equation", default="AGB_Chave")
+    inv.add_argument("--coords", default=None, help="CSV de coordenadas por sitio (ORNL)")
+    inv.add_argument("--limit", type=int, default=None)
+    inv.add_argument("--max-rows", type=int, default=None)
+    inv.set_defaults(func=_cmd_inventory)
+
+    fit = sub.add_parser("fitofisionomia", help="rasteriza fitofisionomia na grade de um raster")
+    fit.add_argument("--vector", required=True)
+    fit.add_argument("--template", required=True)
+    fit.add_argument("--out", required=True)
+    fit.add_argument("--attribute", default="legenda_2")
+    fit.add_argument("--all-touched", action="store_true")
+    fit.set_defaults(func=_cmd_fitofisionomia)
+
+    poly = sub.add_parser("polygon", help="estoque e incerteza por poligono (Produto C)")
+    poly.add_argument("--input", required=True, help="GeoJSON/GPKG/SHP")
+    poly.add_argument("--raster", required=True, help="mapa de AGB em CRS projetado")
+    poly.add_argument("--year", type=int, default=None)
+    poly.add_argument("--value-band", type=int, default=1)
+    poly.add_argument("--class-band", type=int, default=None)
+    poly.add_argument("--fitofisionomia-band", type=int, default=None)
+    poly.add_argument("--fitofisionomia-codes", default=None)
+    poly.add_argument("--aoa-band", type=int, default=None)
+    poly.add_argument("--domain-classes", default="3,4")
+    poly.add_argument("--allow-outside-domain", action="store_true")
+    poly.add_argument("--require-aoa", action="store_true")
+    poly.add_argument("--block-size-m", type=float, default=5000.0)
+    poly.add_argument("--chunk-rows", type=int, default=2048)
+    poly.add_argument("--n-boot", type=int, default=400)
+    poly.add_argument("--out", default=None)
+    poly.set_defaults(func=_cmd_polygon)
+
     amap = sub.add_parser("annual-map", help="mapa anual de AGB por pixel (prototipo)")
     amap.add_argument("--model", required=True)
     amap.add_argument("--s2", required=True)
@@ -436,7 +567,7 @@ def build_parser() -> argparse.ArgumentParser:
     amap.add_argument("--year", type=int, required=True)
     amap.add_argument("--out", required=True)
     amap.add_argument("--block", type=int, default=100)
-    amap.add_argument("--resolution", type=int, default=1000)
+    amap.add_argument("--resolution", type=int, default=30)
     amap.add_argument("--training-csv", default=None)
     amap.add_argument("--residuals", default=None)
     amap.set_defaults(func=_cmd_annual_map)

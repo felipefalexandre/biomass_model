@@ -1,7 +1,7 @@
 # ADR-0022 — GEDI apenas como calibração e avaliação
 
 - **Data:** 2026-11-18
-- **Status:** proposto (aguarda aprovação)
+- **Status:** aceito (2026-11-24); complementado por ADR-0027
 - **Contexto:** o objetivo é estimar biomassa sem depender de outro produto no momento da estimativa. GEDI L4A é modelado e tem cobertura temporal limitada (2019–2023/24).
 - **Decisão:**
   1. Nenhum produto de biomassa (GEDI L4A/L4B, CCI, EBA, mapas nacionais) entra como feature, prior ou ajuste no inference.

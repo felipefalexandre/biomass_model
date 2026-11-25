@@ -1,6 +1,6 @@
 # ADR-0003 — GEDI L4A como referência principal
 
-**Status:** aceito com ressalva
+**Status:** aceito com ressalva; substituído parcialmente por ADR-0027 (campo primário, GEDI auxiliar)
 **Data:** 2026-11-17
 
 ## Contexto

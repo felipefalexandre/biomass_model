@@ -1,6 +1,7 @@
 # 39 — Arquitetura Python, sequência de implementação e riscos
 
-**Data:** 2026-11-18 · **Status:** proposta; não implementar antes de aprovação.
+**Data:** 2026-11-18 · **Status:** plano; implementação iniciada em 2026-11-24 (ver `docs/46`).
+Este documento permanece como referência conceitual, não como descrição do estado atual.
 
 ## 1. Princípios de engenharia
 

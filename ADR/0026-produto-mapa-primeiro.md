@@ -1,7 +1,7 @@
 # ADR-0026 — Produto mapa-first com tabela por polígono
 
 - **Data:** 2026-11-18
-- **Status:** aceito (produto = mapa por pixel; soma pelo usuário)
+- **Status:** aceito; resolução substituída por ADR-0030; polígono expandido por ADR-0028
 - **Contexto:** o usuário quer estoque por estrato/polígono e também mapa para comparar com
   desmatamento. O teste de viabilidade mostrou que estimar por estrato com médias transferidas de
   outra região erra de −41% a +43%, enquanto o mapa mantém padrão espacial e permite recorte.

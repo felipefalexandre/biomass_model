@@ -1,6 +1,8 @@
 # 45 — Protótipo do mapa anual de AGB por pixel
 
 **Data:** 2026-11-18 · **Status:** protótipo; não é produto MRV.
+**Atualização 2026-11-24:** a decisão de resolução foi revista: 30 m é oficial e 1 km é
+experimental (ADR-0030). Este documento descreve o protótipo anterior e suas limitações.
 
 ## 1. Requisito
 

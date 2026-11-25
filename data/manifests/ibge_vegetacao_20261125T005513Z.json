@@ -1,0 +1,46 @@
+{
+  "dataset": "ibge_vegetacao",
+  "created_at": "2026-11-25T00:55:12+00:00",
+  "git_commit": "442754507515829e0a0743dbdeeb3809c54a34b7",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "ibge-vegetacao",
+    "--out-dir",
+    "E:\\Mapbiomas\\ibge\\versao_2026",
+    "--version",
+    "2026"
+  ],
+  "params": {
+    "version": "2026",
+    "include_points": false,
+    "include_tables": true
+  },
+  "license": "IBGE — dados públicos (verificar termos de uso e citação)",
+  "account": "nenhuma",
+  "source": "https://geoftp.ibge.gov.br/informacoes_ambientais/vegetacao/vetores/escala_250_mil/versao_2026/",
+  "notes": "Dados públicos IBGE 1:250.000; usar legenda_1/legenda_2/legenda conforme ADR-0029",
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\ibge\\versao_2026\\vege_area.zip",
+      "bytes": 371806036,
+      "sha256": "bcacc74011c86ba11ef4f4826bed38836340191208c9e98e821d52f0d68a5fb7"
+    },
+    {
+      "path": "E:\\Mapbiomas\\ibge\\versao_2026\\vege_tabelas.zip",
+      "bytes": 14188091,
+      "sha256": "cafc4fc8a909a13405a496818f63f1ddaa5419a968d029c7d04d89eb2115008c"
+    },
+    {
+      "path": "E:\\Mapbiomas\\ibge\\versao_2026\\atributos_vege.pdf",
+      "bytes": 296891,
+      "sha256": "12489d47ba87087a77323951f22ebd4ad53c5b6b442109259c1c00ab3364d613"
+    },
+    {
+      "path": "E:\\Mapbiomas\\ibge\\versao_2026\\areas\\vege_area.shp",
+      "bytes": 461530600,
+      "sha256": "d581dc1b723fca3f5cd733471c75be11534b5136140d38525704268959840eb2"
+    }
+  ]
+}

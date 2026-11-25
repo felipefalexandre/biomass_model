@@ -1,11 +1,20 @@
 # HANDOFF — estado do projeto e como retomar
 
-**Atualizado:** 2026-11-18 · **Último commit:** `d97d6c8` · **Branch:** `main`
+**Atualizado:** 2026-11-24 · **Último commit:** `4427545` (reimplementação local não commitada) · **Branch:** `main`
 **Repo:** `C:\Users\Felipe\Documents\biomass_model` · **Remote:** `github.com/felipefalexandre/biomass_model`
-**Testes:** `python -m pytest` → 30 passed.
+**Testes:** `python -m pytest` → 44 passed.
 
 Leia este arquivo antes de qualquer ação. Ele resume o que foi feito, onde estão os dados, o
 que está validado e qual é o próximo passo. Não reinicie o projeto nem sobrescreva resultados.
+
+> **Atualização 2026-11-24 — revisão de escopo e reimplementação:** auditoria de aderência em
+> [`docs/46_auditoria_aderencia_escopo.md`](docs/46_auditoria_aderencia_escopo.md). Decisões
+> aprovadas: campo é referência primária (ADR-0027); produto por polígono é de primeira classe
+> (ADR-0028); fitofisionomia IBGE (ADR-0029); 30 m oficial e 1 km experimental (ADR-0030); foco em
+> AGB e inventários 2000+ (ADR-0031); ingestão canônica (ADR-0032). O estado anterior é **baseline
+> A0 experimental**, não produto de AGB real. Foram adicionados `inventory/`, `allometry/`,
+> `stratification/` e `aggregation/`, além dos comandos `inventory` e `polygon`. As recomendações
+> antigas de expandir mapas/features ficam subordinadas à base observacional e à validação.
 
 ---
 
@@ -20,7 +29,7 @@ que está validado e qual é o próximo passo. Não reinicie o projeto nem sobre
 - **MRV:** requisitos **do produto de biomassa** são obrigatórios (G0–G7 em `docs/44`):
   escopo, proveniência, validação, incerteza, estratificação, reprodutibilidade, QA/QC, auditoria.
   Atividade, adicionalidade, leakage e permanência continuam externas.
-- **Escala:** 1 km oficial; 30 m diagnóstico (ADR-0026 revisado). Classes 3/4 do MapBiomas são
+- **Escala:** 30 m oficial; 1 km experimental/diagnóstico (ADR-0030, 2026-11-24). Classes 3/4 do MapBiomas são
   filtro espacial; fitofisionomia é camada separada (ADR-0025).
 - **Classes 2 (campestre) e 6 (floresta alagável):** fora do domínio atual; decisão pendente.
 
@@ -139,6 +148,9 @@ Docs-chave: `docs/35` auditoria, `36` base científica, `37` plano, `38` valida�
 
 ## 7. O que está pronto vs. o que falta
 
+> **Nota:** esta seção é o plano de 2026-11-18. A prioridade atual está na seção 10
+> (reimplementação 2026-11-24: campo, inventários, fitofisionomia, validação).
+
 **Pronto:**
 - Aquisição e tabelas dos 11 boxes; histórico; validação LOO; calibração local; conformal; AOA;
   mapa 1 km e 30 m (protótipo) com IC/AOA; ORNL recuperado (3 sítios); PLOS validado; MRV-check.
@@ -174,6 +186,8 @@ Docs-chave: `docs/35` auditoria, `36` base científica, `37` plano, `38` valida�
 
 ## 9. Como retomar em 5 minutos
 
+> **Nota:** o passo 5 abaixo é o plano anterior. Use a seção 10 para a prioridade vigente.
+
 1. `cd C:\Users\Felipe\Documents\biomass_model` e `git pull`.
 2. `$env:PYTHONPATH="src"; python -m pytest` (deve dar 30 passed).
 3. Ler este arquivo + `docs/37`, `docs/44`, `docs/45`.
@@ -182,3 +196,43 @@ Docs-chave: `docs/35` auditoria, `36` base científica, `37` plano, `38` valida�
    rodar mapas com AOA/IC (7.2); em paralelo, validação PLOS/ORNL (7.4).
 
 **Nada foi commitado com credenciais.** Último estado: árvore limpa, `main` sincronizado.
+
+---
+
+## 10. Reimplementação 2026-11-24
+
+Implementado e testado (44 testes):
+
+- `src/biomass_model/inventory/`: esquema canônico, validação, escrita CSV/Parquet/GeoPackage e
+  adaptadores PLOS 2018, IFN/SFB, ORNL e GEDI L4A.
+- `src/biomass_model/allometry/`: Chave 2005, palmeira e liana.
+- `src/biomass_model/stratification/`: normalização, crosswalk IBGE–MapBiomas e rasterização de
+  fitofisionomia.
+- `src/biomass_model/aggregation/polygon.py`: Produto C com geometria, interseção real
+  célula–polígono, média, mediana, estoque, IC por block bootstrap e tabela por classe/fitofisionomia.
+- CLI: `inventory --source {plos2018,ifn,ornl,gedi}` e `polygon --input ... --raster ...`.
+- ADRs 0027–0032 e atualização de README/HANDOFF.
+
+Estado dos dados canônicos (2026-11-24):
+
+- PLOS 2018: 77 sítios, validação sem erros.
+- IFN/SFB: 439.970 registros → 7.466 UAs canônicas (Amazônia 1.937; Cerrado 2.537; demais biomas
+  preservados no catálogo). Equação padrão `AGB_Chave`, com fallback sinalizado.
+- ORNL: 10 sítios/sítio-ano recuperados; 7 sem geometria (UTM/KMZ a resolver).
+- GEDI L4A: adaptador pronto; ainda não usado no treino novo.
+- Tabela combinada: `E:\Mapbiomas\biomass\derived\observations_field.csv` (7.553 observações).
+- IBGE vegetação 1:250.000 versão 2026 baixada em `E:\Mapbiomas\ibge\versao_2026` (vege_area.zip,
+  371.806.036 bytes, sha256 `bcacc74011c86ba11ef4f4826bed38836340191208c9e98e821d52f0d68a5fb7`).
+- Fitofisionomia rasterizada (`legenda_2`) para os boxes centrais 2021:
+  `derived\fitofisionomia_amazonia_central_2021.tif` (3 classes; 67.041 água, 324.519 FOD aluvial,
+  2.168.440 FOD submontana) e `derived\fitofisionomia_cerrado_central_2021.tif` (319.200 pastagem,
+  1.800.418 savana arborizada, 440.382 savana parque). JSON com grupos e classe MapBiomas ao lado.
+
+Próximos passos recomendados:
+
+1. Processar IFN completo e ORNL completo; resolver coordenadas UTM/KMZ e duplicidades.
+2. Obter IBGE 1:250k e gerar a camada de fitofisionomia para os boxes.
+3. Migrar o treinamento para consumir a tabela canônica (campo como referência primária).
+4. Gerar features anuais em 30 m e mapas com IC/AOA; 1 km apenas experimental.
+5. Implementar validação espacial com buffer, temporal e por fitofisionomia.
+6. Só depois promover modelo candidato e completar G0–G7.

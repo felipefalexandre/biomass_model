@@ -6,7 +6,7 @@
 |---|---|---|
 | ADR-0001 | Python local em vez de GEE como trilha principal | aceito |
 | ADR-0002 | Dois modelos por bioma, escada de complexidade | aceito |
-| ADR-0003 | GEDI L4A como referência principal (produto de modelo) | aceito com ressalva |
+| ADR-0003 | GEDI L4A como referência principal (produto de modelo) | aceito com ressalva; substituído parcialmente por ADR-0027 |
 | ADR-0004 | Inferência híbrida com dois componentes de variância | aceito |
 | ADR-0005 | BGB derivada com cenários, nunca "medida" | substituído por ADR-0011 |
 | ADR-0006 | Validação por blocos espaciais e AOA | aceito |
@@ -25,11 +25,17 @@
 | ADR-0019 | Área de Aplicabilidade obrigatória no produto | aceito |
 | ADR-0020 | Validação em duas linhas + temporal | proposto |
 | ADR-0021 | Produto anual de biomassa (sem modelar desmatamento) | aceito |
-| ADR-0022 | GEDI apenas como calibração | proposto |
-| ADR-0023 | Taxonomia fitofisionômica | proposto |
+| ADR-0022 | GEDI apenas como calibração | aceito (2026-11-24) |
+| ADR-0023 | Taxonomia fitofisionômica | aceito (2026-11-24) |
 | ADR-0024 | Critérios de aceitação e promoção | proposto |
 | ADR-0025 | Domínio 3/4 vs estrato fitofisionômico | aceito |
-| ADR-0026 | Produto mapa-first + tabela por polígono | aceito |
+| ADR-0026 | Produto mapa-first + tabela por polígono | aceito, com ressalvas |
+| ADR-0027 | Hierarquia de referência: campo primário, GEDI auxiliar | aceito |
+| ADR-0028 | Produto C: estimativa por polígono arbitrário | aceito |
+| ADR-0029 | Fitofisionomia IBGE 1:250k como camada estrutural | aceito |
+| ADR-0030 | Resolução: 30 m oficial, 1 km experimental | aceito |
+| ADR-0031 | Escopo de AGB e aquisição de inventários | aceito |
+| ADR-0032 | Ingestão canônica e evolutiva de inventários | aceito |
 
 ## ADR-0001 — Python local em vez de GEE
 

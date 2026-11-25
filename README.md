@@ -1,30 +1,31 @@
 # Sistema de Estimativa de Biomassa Vegetal — Amazônia e Cerrado
 
-**Retomada:** leia HANDOFF.md antes de continuar.
-**Status:** piloto concluído (5 boxes na Amazônia, 6 no Cerrado) com calibração local, AOA e IC conformal. Cerrado calibrado R² 0,73 / RMSE 22,8 (1 km); Amazônia 0,39 / 44,9. Não é produto nacional: exige calibração por região e validação de campo independente. Ver `docs/33` (relatório) e `docs/34` (model card).
-**Escopo:** AGB (v1) e BGB (modelo separado), carbono e CO₂e, a partir de dados abertos e ferramentas gratuitas, em Python. O modelo estima biomassa/estoque; não estima desmatamento nem reflorestamento (atividade é externa).
-**Domínio:** classes 3 (Formação Florestal) e 4 (Formação Savânica) do MapBiomas Coleção 11, Amazônia e Cerrado.
-**Data de referência desta versão:** 2026-11-17
+**Retomada:** leia HANDOFF.md e `docs/46_auditoria_aderencia_escopo.md` antes de continuar.
+**Status:** reimplementação iniciada em 2026-11-24. O modelo/mapa GEDI L4A anterior é **baseline A0 experimental**, não produto de AGB real. A base agora inclui esquema canônico de observações, adaptadores de inventário, alometria, crosswalk fitofisionômico e agregação por polígono com área real. O produto operacional ainda depende de validação de campo independente.
+**Escopo:** AGB (Mg ha⁻¹ e Mg), anual, com incerteza e rastreabilidade. BGB, carbono, CO₂e, desmatamento/reflorestamento, adicionalidade, vazamento, permanência e créditos ficam fora da prioridade até consolidação da AGB (ADR-0031).
+**Domínio:** classes 3 (Formação Florestal) e 4 (Formação Savânica) do MapBiomas Coleção 11, Amazônia e Cerrado. Classes 2 e 6 fora até decisão explícita.
+**Resolução:** 30 m oficial e 1 km experimental/diagnóstico (ADR-0030).
+**Referência:** campo é a referência primária; GEDI L4A é auxiliar (ADR-0027).
+**Data de referência desta versão:** 2026-11-24
 **Autor:** Felipe Alexandre (registro de trabalho)
 
 ---
 
 ## 1. O que é este repositório
 
-Este repositório contém o **planejamento completo** de um sistema modular para estimar biomassa
-vegetal acima e abaixo do solo nos biomas Amazônia e Cerrado, com rastreabilidade de decisões,
-catálogo de dados, matriz de evidências, análise de incerteza, plano de validação e registro
-explícito de restrições (redflags) e perguntas abertas.
+Este repositório contém o código e a documentação de um sistema modular para estimar biomassa
+acima do solo (AGB) na Amazônia e no Cerrado, com rastreabilidade de decisões, catálogo de dados,
+análise de incerteza, validação espacial/temporal e registro explícito de limitações.
 
-Ele contém o **planejamento completo** de um sistema modular para estimar biomassa vegetal acima
-e abaixo do solo nos biomas Amazônia e Cerrado, com rastreabilidade de decisões, catálogo de
-dados, matriz de evidências, análise de incerteza, plano de validação e registro explícito de
-restrições (redflags) e perguntas abertas.
+O código já inclui aquisição de sensores, contrato de grade, tabelas de treino, modelos baseline,
+mapas protótipo, AOA, conformal e agregação por polígono. A reimplementação de 2026-11-24
+adicionou o esquema canônico de observações, adaptadores de inventário (PLOS, IFN, ORNL), alometria,
+crosswalk fitofisionômico e agregação geoespacial com área real de interseção.
 
-O código começa pelo contrato de grade e pelas ferramentas de seleção de pilotos. Ainda **não há
-modelo treinado nem mapa de biomassa**. Qualquer número aqui presente é: (a) proveniente de fontes
-publicadas e citadas, ou (b) resultado de contagem simples sobre dados abertos baixados, sempre
-identificado como tal.
+O modelo/mapa GEDI L4A anterior é preservado como **baseline A0 experimental**. Ele não é o
+produto de AGB real e não deve ser apresentado como tal. Qualquer número aqui presente é
+proveniente de fonte citada, de execução reprodutível ou de contagem simples sobre dados abertos,
+sempre identificado como tal.
 
 ## 2. Regras que governam este planejamento
 
@@ -37,8 +38,8 @@ identificado como tal.
    As conversões estão isoladas em `docs/11`.
 5. **Autocorrelação espacial** não é ignorada: validação, inferência e incerteza tratam
    dependência espacial explicitamente (`docs/12`, `docs/13`).
-6. **BGB no Cerrado** não é tratado como subproduto automático da AGB: BGB é um modelo separado,
-   com preditores de solo e clima (`docs/10`, ADR-0011).
+6. **BGB, carbono e CO₂e** ficam em fase futura; não são derivados automaticamente da AGB e não
+   entram na prioridade até consolidação da AGB (ADR-0031).
 7. **Somente dados abertos e ferramentas gratuitas** na trilha principal. Se algo só existir em
    versão paga, isso é registrado como **redflag** (`docs/22`), sem interromper o trabalho.
 8. **Perguntas que dependem do usuário** são registradas, não respondidas por suposição
@@ -94,6 +95,7 @@ identificado como tal.
 | 43 | [Estabilidade temporal](docs/43_resultado_mudanca_preliminar.md) | Pares anuais e ruído |
 | 44 | [Requisitos REDD+/ARR](docs/44_requisitos_redd_arr.md) | O que o modelo entrega |
 | 45 | [Protótipo do mapa anual](docs/45_prototipo_mapa_anual.md) | Mapa por pixel 1 km |
+| 46 | [Auditoria de aderência ao escopo](docs/46_auditoria_aderencia_escopo.md) | Diagnóstico e plano de reimplementação |
 
 ## 4. Estrutura do repositório
 
@@ -123,6 +125,12 @@ python -m biomass_model.cli s2 --lon -60.45 --lat -6.9 --start 2024-07-01 --end 
 python -m biomass_model.cli dem --lon -60.45 --lat -6.9 --out E:\Mapbiomas\biomass\pilots\amazonia_dem30.tif
 python -m biomass_model.cli era5 --lon -60.45 --lat -6.9 --start-year 2018 --end-year 2025 --out E:\Mapbiomas\biomass\pilots\amazonia_era5land_2018_2025.nc
 python -m biomass_model.cli gedi --west -60.53 --south -6.98 --east -60.37 --north -6.82 --start 2019-01-01 --end 2024-12-31 --out E:\Mapbiomas\biomass\gedi\piloto_amazonia.csv --work-dir E:\Mapbiomas\biomass\gedi\h5
+python -m biomass_model.cli inventory --source plos2018 --path data\raw\inventarios\plos2018\s003.xlsx --out E:\Mapbiomas\biomass\derived\obs_plos2018.csv
+python -m biomass_model.cli inventory --source ifn --path data\raw\inventarios\sfb\biomassa.csv --out E:\Mapbiomas\biomass\derived\obs_ifn.csv
+python -m biomass_model.cli inventory --source ornl --path E:\Mapbiomas\biomass\fields\ornl_brazil --coords data\reference\ornl_sites_coords.csv --out E:\Mapbiomas\biomass\derived\obs_ornl.csv
+python -m biomass_model.cli polygon --input area.geojson --raster mapa_30m_agb.tif --aoa-band 4 --out area_stats.json
+python -m biomass_model.cli ibge-vegetacao --out-dir E:\Mapbiomas\ibge\versao_2026 --version 2026
+python -m biomass_model.cli fitofisionomia --vector E:\Mapbiomas\ibge\versao_2026\areas\vege_area.shp --template <raster>.tif --attribute legenda_2 --out fitofisionomia.tif
 ```
 
 Detalhes de contas, comandos e manifestos em [`docs/32`](docs/32_aquisicao_de_dados.md).
