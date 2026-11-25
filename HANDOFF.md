@@ -1,7 +1,7 @@
 # HANDOFF — estado do projeto e como retomar
 
-**Atualizado:** 2026-11-24 · **Último commit:** `4427545` (reimplementação local não commitada) · **Branch:** `main`
-**Repo:** `C:\Users\Felipe\Documents\biomass_model` · **Remote:** `github.com/felipefalexandre/biomass_model`
+**Atualizado:** 2026-11-24 · **Último commit:** ver git log -1 · **Branch:** main
+**Repo:** https://github.com/felipefalexandre/biomass_model · **Clone local:** ajuste ao seu caminho
 **Testes:** `python -m pytest` → 60 passed.
 
 Leia este arquivo antes de qualquer ação. Ele resume o que foi feito, onde estão os dados, o
@@ -199,61 +199,70 @@ Docs-chave: `docs/35` auditoria, `36` base científica, `37` plano, `38` valida�
 
 ---
 
-## 10. Reimplementação 2026-11-24
+## 10. Reimplementação 2026-11-24 — estado atual
 
-Implementado e testado (60 testes):
+### 10.1 Código novo
 
-- `src/biomass_model/inventory/`: esquema canônico, validação, escrita CSV/Parquet/GeoPackage e
-  adaptadores PLOS 2018, IFN/SFB, ORNL e GEDI L4A.
-- `src/biomass_model/allometry/`: Chave 2005, palmeira e liana.
-- `src/biomass_model/stratification/`: normalização, crosswalk IBGE–MapBiomas e rasterização de
+- `inventory/`: esquema canônico, adaptadores PLOS/IFN/ORNL/CEDA/GEDI, validação e store
+  idempotente.
+- `inventory/store.py`: `E:\Mapbiomas\biomass\inventory_store` com lock e manifesto.
+- `observation_features.py`: features Landsat/S2, DEM, ERA5 e histórico MapBiomas.
+- `training/field.py` e `training/inference.py`: RF campo-first, blocos+buffer, IC conformal,
+  AOA e baseline por estrato.
+- `validation/spatial.py`: blocos espaciais com buffer.
+- `uncertainty/conformal.py`: cross-conformal por fold.
+- `applicability/aoa.py`: AOA e distância ao treino.
+- `model_registry/`: registro e champion/challenger.
+- `stratification/`: crosswalk, rasterização, amostragem pontual e reconciliação IBGE–MapBiomas.
+- `aggregation/polygon.py`: Produto C com geometria real, área de interseção, IC, AOA e
   fitofisionomia.
-- `src/biomass_model/aggregation/polygon.py`: Produto C com geometria, interseção real
-  célula–polígono, média, mediana, estoque, IC por block bootstrap e tabela por classe/fitofisionomia.
-- CLI: `inventory --source {plos2018,ifn,ornl,gedi}` e `polygon --input ... --raster ...`.
-- ADRs 0027–0032 e atualização de README/HANDOFF.
+- `datasets/ibge.py`, `datasets/ceda.py`, `datasets/ornl.py`: aquisição e coordenadas.
 
-Estado dos dados canônicos (2026-11-24):
+### 10.2 Dados canônicos
 
-- PLOS 2018: 77 sítios, validação sem erros.
-- IFN/SFB: 439.970 registros → 7.466 UAs canônicas (Amazônia 1.937; Cerrado 2.537; demais biomas
-  preservados no catálogo). Equação padrão `AGB_Chave`, com fallback sinalizado.
-- ORNL: 10 sítios/sítio-ano recuperados; 7 sem geometria (UTM/KMZ a resolver).
-- GEDI L4A: adaptador pronto; ainda não usado no treino novo.
-- Tabela combinada: `E:\Mapbiomas\biomass\derived\observations_field.csv` (7.553 observações).
-- IBGE vegetação 1:250.000 versão 2026 baixada em `E:\Mapbiomas\ibge\versao_2026` (vege_area.zip,
-  371.806.036 bytes, sha256 `bcacc74011c86ba11ef4f4826bed38836340191208c9e98e821d52f0d68a5fb7`).
-- Fitofisionomia rasterizada (`legenda_2`) para os boxes centrais 2021:
-  `derived\fitofisionomia_amazonia_central_2021.tif` (3 classes; 67.041 água, 324.519 FOD aluvial,
-  2.168.440 FOD submontana) e `derived\fitofisionomia_cerrado_central_2021.tif` (319.200 pastagem,
-  1.800.418 savana arborizada, 440.382 savana parque). JSON com grupos e classe MapBiomas ao lado.
-- `observation_features.py`: features Landsat/S2, DEM, ERA5 e histórico MapBiomas para a tabela
-  canônica, sem vazamento temporal no histórico.
-- `validation/spatial.py`: blocos espaciais com buffer para reduzir vazamento.
-- `training/field.py`: RandomForest campo-first com validação por bloco+buffer, baseline e métricas.
-- Baseline campo-first F0 (PLOS 2018, Cerrado, `docs/47`):
-  - features: `derived\plos2018_features_landsat.csv` (77 sítios; 40 usados no domínio; 36 features).
-  - validação primária 200 km/buffer 25 km: n=16, R²=0,262, RMSE=10,81, viés=−3,59;
-    baseline R²=−0,130; IC90 cross-conformal cobertura 0,813, largura 33,8 Mg ha⁻¹.
-  - sensibilidade 100 km/buffer 25 km: n=40, R²=0,197, RMSE=9,54, viés=+0,15;
-    baseline R²=−0,063; IC90 cobertura 0,900, largura 28,5 Mg ha⁻¹.
-  - artefatos: `derived\field_plos2018_rf_block200.*` e `derived\field_plos2018_rf.*`.
-  - status: **não promovido**; amostra antiga/pequena, sem holdout independente e IC otimista
-    no cenário de blocos.
-- Fitofisionomia IBGE como feature (`docs/48`): amostragem pontual do IBGE 2026 `legenda_2`;
-  40 sítios → 30 `savanna` e 10 `unknown` (pastagem/agricultura/água/contato), sem `forest`.
-  Resultado: sem ganho consistente (bloco 200 km R² 0,256 vs 0,262; LOO R² 0,200 vs 0,197).
-  Hipótese H1 não suportada; **não promover** a variável como feature. Artefatos:
-  `derived\plos2018_features_landsat_ibge.csv`, `derived\field_plos2018_ibge_rf*`.
-- Registro de modelos (`docs/49`, ADR-0033): `model-registry`/`model-list`/`model-compare`/
-  `model-promote`; registro em `E:\Mapbiomas\biomass\model_registry`. F0 registrado como
-  challenger, sem champion.
+Store: `E:\Mapbiomas\biomass\inventory_store\observations.csv` → **7.576 observações**:
 
-Próximos passos recomendados:
+| Fonte | Linhas |
+|---|---:|
+| IFN/SFB | 7.466 |
+| PLOS 2018 | 77 |
+| CEDA Manaus 2014 | 23 |
+| ORNL SLB | 10 |
 
-1. Processar IFN completo e ORNL completo; resolver coordenadas UTM/KMZ e duplicidades.
-2. Obter IBGE 1:250k e gerar a camada de fitofisionomia para os boxes.
-3. Migrar o treinamento para consumir a tabela canônica (campo como referência primária).
-4. Gerar features anuais em 30 m e mapas com IC/AOA; 1 km apenas experimental.
-5. Implementar validação espacial com buffer, temporal e por fitofisionomia.
-6. Só depois promover modelo candidato e completar G0–G7.
+- ORNL: **25 sítios geolocalizados** a partir de 30 zips de transectos; os 10 sítios-ano com AGB
+  têm geometria. `data/reference/ornl_sites_coords.csv`.
+- CEDA: 23 parcelas 100×60 m, OGL.
+- IBGE 1:250k 2026 baixado em `E:\Mapbiomas\ibge\versao_2026`.
+- Fitofisionomia `legenda_2` rasterizada para os boxes centrais 2021 (Amazônia e Cerrado).
+
+### 10.3 Resultados principais
+
+- **F0 PLOS 2018 (Cerrado)** — bloco 200 km/buffer 25 km: n=16, R²=0,262, RMSE=10,81,
+  viés=−3,59; baseline R²=−0,130; IC90 cobertura 0,813.
+- **Sensibilidade LOO 100 km**: n=40, R²=0,197, RMSE=9,54; cobertura 0,900.
+- **Fitofisionomia IBGE como feature**: sem ganho consistente; H1 não suportada (`docs/48`).
+- **Validação CEDA Manaus 2014** (`docs/51`): F0 Cerrado aplicado à Amazônia; n=21,
+  observado 132,3 vs predito 28,1; R²=−8,2; viés=−104,2; AOA 0/21.
+- **Validação ORNL** (`docs/56`): n=10; observado 209,9 vs predito 29,0; R²=−1,52;
+  RMSE=233,7; viés=−180,9; AOA 0/10.
+- **Produto C** (`docs/53`): polígono 5×5 km no mapa A0 30 m; 2.217,7 ha analisados,
+  AGB média 14,02, total 31.089 Mg, AOA 84,1%. Com filtro de grupos vegetacionais:
+  1.348,6 ha, AGB 15,43, total 20.805 Mg, AOA 90,2%.
+- **Reconciliação IBGE–MapBiomas** (`docs/54`): no Cerrado central 2021, 20.287,53 ha em 3/4;
+  87,73% savanna e 12,27% pastagem IBGE. Correspondência não é direta.
+
+### 10.4 Infra e governança
+
+- Model registry: `E:\Mapbiomas\biomass\model_registry`; F0 block200 e LOO como
+  **challengers**, nenhum champion.
+- `docs/57_setup_nova_maquina.md`: instalação, credenciais, dados, reconstrução e testes do zero.
+- Testes: `python -m pytest` → **60 passed**.
+- Nenhuma credencial ou dado bruto foi commitado.
+
+### 10.5 Próximos passos
+
+1. Modelo amazônico com CEDA + ORNL e validação leave-one-source/region-out.
+2. Buscar mais inventários amazônicos independentes (RAINFOR, novos campos).
+3. Alinhar features Landsat/S2 antes de gerar mapa 30 m campo-first.
+4. Definir regra explícita de elegibilidade fitofisionômica.
+5. Completar validação temporal e portões G0–G7; nada é MRV ainda.

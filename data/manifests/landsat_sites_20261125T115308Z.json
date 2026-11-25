@@ -1,0 +1,88 @@
+{
+  "dataset": "landsat_sites",
+  "created_at": "2026-11-25T11:53:08+00:00",
+  "git_commit": "e4765a020eead732adc6e91447f12f6826c58965",
+  "python": "3.15.0",
+  "argv": [
+    "C:\\Users\\Felipe\\Documents\\biomass_model\\src\\biomass_model\\cli.py",
+    "landsat-sites",
+    "--sites",
+    "E:\\Mapbiomas\\biomass\\derived\\ornl_sites_for_landsat.csv",
+    "--out-dir",
+    "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat",
+    "--bioma",
+    "Amazonia",
+    "--year-start",
+    "2009",
+    "--year-end",
+    "2013",
+    "--half-m",
+    "500",
+    "--days",
+    "60",
+    "--max-items",
+    "8"
+  ],
+  "params": {
+    "sites_csv": "E:\\Mapbiomas\\biomass\\derived\\ornl_sites_for_landsat.csv",
+    "bioma": "Amazonia",
+    "years": [
+      2009,
+      2013
+    ],
+    "half_m": 500.0,
+    "days": 60,
+    "max_items": 8,
+    "sites": 10,
+    "failures": [],
+    "skipped": 0,
+    "out_dir": "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat"
+  },
+  "license": "USGS Landsat Collection 2 (aberto)",
+  "account": "nenhuma (MPC assina o acesso)",
+  "source": null,
+  "notes": "um GeoTIFF por sitio (mediana de cenas em +-45 dias do inventario)",
+  "inputs": [],
+  "outputs": [
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat\\site_001\\landsat_2013.tif",
+      "bytes": 11222
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat\\site_002\\landsat_2013.tif",
+      "bytes": 25582
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat\\site_003\\landsat_2011.tif",
+      "bytes": 25528
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat\\site_004\\landsat_2011.tif",
+      "bytes": 25414
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat\\site_005\\landsat_2011.tif",
+      "bytes": 21740
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat\\site_006\\landsat_2012.tif",
+      "bytes": 21588
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat\\site_007\\landsat_2012.tif",
+      "bytes": 25016
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat\\site_008\\landsat_2009.tif",
+      "bytes": 25276
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat\\site_009\\landsat_2010.tif",
+      "bytes": 25942
+    },
+    {
+      "path": "E:\\Mapbiomas\\biomass\\fields\\ornl_landsat\\site_010\\landsat_2010.tif",
+      "bytes": 25942
+    }
+  ]
+}
