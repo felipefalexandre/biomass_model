@@ -103,6 +103,7 @@ sempre identificado como tal.
 | 51 | [Validação CEDA Manaus](docs/51_validacao_ceda.md) | Transferência Cerrado→Amazônia falhou |
 | 52 | [Store canônico](docs/52_store_canonico.md) | Ingestão idempotente e manifesto |
 | 53 | [Piloto Produto C](docs/53_produto_c_piloto.md) | Polígono 30 m com AOA e fitofisionomia |
+| 54 | [Reconciliação IBGE–MapBiomas](docs/54_reconciliacao_ibge_mapbiomas.md) | 12,3% de pastagem dentro de 3/4 |
 
 ## 4. Estrutura do repositório
 

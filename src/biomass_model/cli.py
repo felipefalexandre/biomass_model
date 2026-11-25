@@ -293,6 +293,27 @@ def _cmd_model_promote(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_fitofisionomia_reconcile(args: argparse.Namespace) -> int:
+    from .stratification import compare_fitofisionomia_mapbiomas
+
+    classes = tuple(int(x.strip()) for x in args.classes.split(",") if x.strip())
+    result = compare_fitofisionomia_mapbiomas(
+        args.fit_raster, args.mapbiomas_raster, args.codes,
+        mapbiomas_classes=classes, out_csv=args.out,
+    )
+    print(json.dumps({k: v for k, v in result.items() if k != "rows"},
+                     indent=2, ensure_ascii=False))
+    return 0
+
+
+def _cmd_fitofisionomia_reclassify(args: argparse.Namespace) -> int:
+    from .stratification import reclassify_code_table
+
+    result = reclassify_code_table(args.codes, args.out)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
 def _cmd_fitofisionomia(args: argparse.Namespace) -> int:
     from .stratification import rasterize_fitofisionomia
 
@@ -706,6 +727,21 @@ def build_parser() -> argparse.ArgumentParser:
     fit.add_argument("--attribute", default="legenda_2")
     fit.add_argument("--all-touched", action="store_true")
     fit.set_defaults(func=_cmd_fitofisionomia)
+
+    frec = sub.add_parser("fitofisionomia-reconcile",
+                          help="cruza fitofisionomia IBGE com classes MapBiomas")
+    frec.add_argument("--fit-raster", required=True)
+    frec.add_argument("--mapbiomas-raster", required=True)
+    frec.add_argument("--codes", required=True)
+    frec.add_argument("--classes", default="3,4")
+    frec.add_argument("--out", default=None)
+    frec.set_defaults(func=_cmd_fitofisionomia_reconcile)
+
+    frecl = sub.add_parser("fitofisionomia-reclassify",
+                           help="atualiza grupos do JSON de fitofisionomia")
+    frecl.add_argument("--codes", required=True)
+    frecl.add_argument("--out", default=None)
+    frecl.set_defaults(func=_cmd_fitofisionomia_reclassify)
 
     fobs = sub.add_parser("features-observations", help="features para observacoes canonicas")
     fobs.add_argument("--observations", required=True)

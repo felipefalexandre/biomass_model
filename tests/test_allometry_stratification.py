@@ -6,6 +6,7 @@ from biomass_model.stratification import (
     load_crosswalk,
     normalize_name,
     sample_fitofisionomia_vector,
+    compare_fitofisionomia_mapbiomas,
 )
 
 
@@ -56,3 +57,29 @@ def test_sample_fitofisionomia_vector(tmp_path):
     assert out.loc[0, "ibge_group"] == "savanna"
     assert out.loc[1, "ibge_group"] == "forest"
     assert out.loc[2, "ibge_fitofisionomia"] == ""
+
+
+def test_reconcile_fitofisionomia_mapbiomas(tmp_path):
+    import json
+
+    import rasterio
+    from rasterio.transform import from_origin
+
+    profile = dict(driver="GTiff", width=3, height=3, count=1, dtype="int32",
+                   crs="EPSG:3857", transform=from_origin(0, 90, 30, 30), nodata=0)
+    fit = tmp_path / "fit.tif"
+    mb = tmp_path / "mb.tif"
+    with rasterio.open(fit, "w", **profile) as dst:
+        dst.write(np.array([[1, 1, 2], [1, 1, 2], [1, 1, 2]], dtype="int32"), 1)
+    with rasterio.open(mb, "w", **profile) as dst:
+        dst.write(np.array([[3, 3, 4], [3, 3, 4], [3, 3, 4]], dtype="int32"), 1)
+    codes = tmp_path / "codes.json"
+    codes.write_text(json.dumps({"codes": [
+        {"code": 1, "label": "Savana Arborizada", "group": "savanna"},
+        {"code": 2, "label": "Pecuária (pastagens)", "group": "anthropogenic"},
+    ]}), encoding="utf-8")
+    result = compare_fitofisionomia_mapbiomas(fit, mb, codes)
+    assert np.isclose(result["total_area_ha"], 0.81)
+    groups = {row["fitofisionomia_group"]: row for row in result["by_group"]}
+    assert np.isclose(groups["savanna"]["area_ha"], 0.54)
+    assert np.isclose(result["non_vegetation_area_ha"], 0.27)

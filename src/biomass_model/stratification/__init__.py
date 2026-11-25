@@ -8,6 +8,7 @@ from typing import Any, Iterable
 import numpy as np
 import pandas as pd
 
+from .reconcile import compare_fitofisionomia_mapbiomas
 from .sampling import sample_fitofisionomia_vector
 
 __all__ = [
@@ -18,6 +19,8 @@ __all__ = [
     "apply_crosswalk",
     "rasterize_fitofisionomia",
     "sample_fitofisionomia_vector",
+    "compare_fitofisionomia_mapbiomas",
+    "reclassify_code_table",
 ]
 
 DEFAULT_CROSSWALK = Path("data/reference/fitofisionomias_crosswalk.csv")
@@ -67,6 +70,16 @@ def load_crosswalk(path: str | Path = DEFAULT_CROSSWALK) -> pd.DataFrame:
 
 def _fallback_group(name: str) -> str:
     key = normalize_name(name)
+    if any(token in key for token in ("pecuaria", "pastagem", "agricultura", "agropecuaria",
+                                      "silvicultura", "mineracao", "urbanizada", "infraestrutura")):
+        return "anthropogenic"
+    if any(token in key for token in ("corpo d agua", "agua", "rio ", "lago", "represa",
+                                      "oceano", "banhado")):
+        return "water"
+    if any(token in key for token in ("secundaria", "regeneracao")):
+        return "secondary"
+    if "contato" in key or "ecotono" in key or "encrave" in key:
+        return "ecotone"
     if any(token in key for token in ("campo", "vereda", "palmeiral", "estepe")):
         return "campestre"
     if any(token in key for token in ("savana", "cerrado")):
@@ -148,6 +161,24 @@ def apply_crosswalk(
     for col in ("fitofisionomia", "fitofisionomia_group", "mapbiomas_class"):
         out[col] = mapped[col]
     return out
+
+
+def reclassify_code_table(path: str | Path, out: str | Path | None = None) -> dict[str, Any]:
+    """Atualiza grupos e classes MapBiomas de um JSON de códigos já existente."""
+    import json
+
+    source = Path(path)
+    data = json.loads(source.read_text(encoding="utf-8"))
+    table = load_crosswalk()
+    for item in data.get("codes", []):
+        mapped = classify_fitofisionomia(item.get("label", ""), crosswalk=table)
+        item["group"] = mapped["fitofisionomia_group"]
+        item["mapbiomas_class"] = (
+            None if pd.isna(mapped["mapbiomas_class"]) else float(mapped["mapbiomas_class"])
+        )
+    target = Path(out) if out else source
+    target.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    return {"out": str(target), "n_codes": len(data.get("codes", []))}
 
 
 def rasterize_fitofisionomia(

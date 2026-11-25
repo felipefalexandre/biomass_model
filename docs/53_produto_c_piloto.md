@@ -77,6 +77,7 @@ embora permaneçam no mapa A0 por causa da máscara MapBiomas 3/4.
 - O mapa A0 é o baseline GEDI experimental, não o modelo campo-first; o resultado serve para
   validar o **mecanismo do Produto C**, não a acurácia da AGB.
 - O filtro por grupo é necessário: sem ele, 39,2% da área seria rotulada como pastagem pelo IBGE.
+  No box inteiro, a discordância é de 12,3% (`docs/54`).
 - Nenhum produto foi promovido; não usar para MRV/créditos.
 
 ## 6. Artefatos
