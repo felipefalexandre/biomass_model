@@ -46,3 +46,4 @@ canônico. Qualquer mudança de decisão deve:
 | [0030](0030-resolucao-30m-oficial.md) | 30 m oficial, 1 km experimental | aceito |
 | [0031](0031-escopo-agb-e-inventarios.md) | Escopo de AGB e inventários | aceito |
 | [0032](0032-ingestao-canonica-inventarios.md) | Ingestão canônica de inventários | aceito |
+| [0033](0033-champion-challenger.md) | Registro de modelos e champion/challenger | aceito |

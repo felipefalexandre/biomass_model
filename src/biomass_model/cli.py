@@ -233,6 +233,39 @@ def _cmd_train_field(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_model_register(args: argparse.Namespace) -> int:
+    from .model_registry import register_model
+
+    result = register_model(args.metrics, args.registry, model_id=args.model_id,
+                            family=args.family, status=args.status, notes=args.notes)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
+def _cmd_model_list(args: argparse.Namespace) -> int:
+    from .model_registry import list_models
+
+    table = list_models(args.registry, family=args.family)
+    print(table.to_json(orient="records", indent=2, force_ascii=False))
+    return 0
+
+
+def _cmd_model_compare(args: argparse.Namespace) -> int:
+    from .model_registry import compare_models
+
+    table = compare_models(args.registry, metric=args.metric, family=args.family)
+    print(table.to_json(orient="records", indent=2, force_ascii=False))
+    return 0
+
+
+def _cmd_model_promote(args: argparse.Namespace) -> int:
+    from .model_registry import promote_model
+
+    result = promote_model(args.registry, args.model_id, reason=args.reason)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
 def _cmd_fitofisionomia(args: argparse.Namespace) -> int:
     from .stratification import rasterize_fitofisionomia
 
@@ -569,6 +602,33 @@ def build_parser() -> argparse.ArgumentParser:
     inv.add_argument("--limit", type=int, default=None)
     inv.add_argument("--max-rows", type=int, default=None)
     inv.set_defaults(func=_cmd_inventory)
+
+    mreg = sub.add_parser("model-register", help="registra um modelo no champion/challenger")
+    mreg.add_argument("--metrics", required=True)
+    mreg.add_argument("--registry", required=True)
+    mreg.add_argument("--model-id", default=None)
+    mreg.add_argument("--family", default="field_first")
+    mreg.add_argument("--status", choices=["challenger", "champion", "retired"],
+                      default="challenger")
+    mreg.add_argument("--notes", default="")
+    mreg.set_defaults(func=_cmd_model_register)
+
+    mlist = sub.add_parser("model-list", help="lista modelos registrados")
+    mlist.add_argument("--registry", required=True)
+    mlist.add_argument("--family", default=None)
+    mlist.set_defaults(func=_cmd_model_list)
+
+    mcomp = sub.add_parser("model-compare", help="compara modelos por metrica")
+    mcomp.add_argument("--registry", required=True)
+    mcomp.add_argument("--metric", default="rmse")
+    mcomp.add_argument("--family", default=None)
+    mcomp.set_defaults(func=_cmd_model_compare)
+
+    mprom = sub.add_parser("model-promote", help="promove um challenger a champion")
+    mprom.add_argument("--registry", required=True)
+    mprom.add_argument("--model-id", required=True)
+    mprom.add_argument("--reason", default="")
+    mprom.set_defaults(func=_cmd_model_promote)
 
     fit = sub.add_parser("fitofisionomia", help="rasteriza fitofisionomia na grade de um raster")
     fit.add_argument("--vector", required=True)

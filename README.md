@@ -98,6 +98,7 @@ sempre identificado como tal.
 | 46 | [Auditoria de aderência ao escopo](docs/46_auditoria_aderencia_escopo.md) | Diagnóstico e plano de reimplementação |
 | 47 | [Model card campo-first F0](docs/47_model_card_campo_first.md) | PLOS 2018, validação espacial com buffer |
 | 48 | [Experimento fitofisionomia](docs/48_experimento_fitofisionomia.md) | IBGE como feature: hipótese não suportada |
+| 49 | [Governança de modelos](docs/49_governanca_modelos.md) | Registro e champion/challenger |
 
 ## 4. Estrutura do repositório
 

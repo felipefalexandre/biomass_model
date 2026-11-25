@@ -36,6 +36,7 @@
 | ADR-0030 | Resolução: 30 m oficial, 1 km experimental | aceito |
 | ADR-0031 | Escopo de AGB e aquisição de inventários | aceito |
 | ADR-0032 | Ingestão canônica e evolutiva de inventários | aceito |
+| ADR-0033 | Registro de modelos e champion/challenger | aceito |
 
 ## ADR-0001 — Python local em vez de GEE
 
