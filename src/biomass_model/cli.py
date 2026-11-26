@@ -213,6 +213,35 @@ def _cmd_inventory_store(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_ifn_enrich(args: argparse.Namespace) -> int:
+    from .enrich_ifn import build_ifn_enrichment
+
+    report = build_ifn_enrichment(
+        args.panel, args.uf_dir, args.correspondence, args.out_dir,
+        equation=args.equation, usage=args.usage,
+        spatial_support=args.spatial_support,
+        municipalities_path=args.municipalities,
+        ibge_vegetation_path=args.ibge_vegetation,
+        mapbiomas_pattern=args.mapbiomas_pattern,
+        mapbiomas_correspondence_path=args.mapbiomas_correspondence,
+        ibge_version=args.ibge_version,
+        max_units=args.max_units,
+    )
+    print(json.dumps(report, indent=2, ensure_ascii=False))
+    return 0
+
+
+def _cmd_ifn_validate(args: argparse.Namespace) -> int:
+    from .enrich_ifn import validate_correspondence
+
+    report = validate_correspondence(
+        args.points, args.ibge_vegetation, args.correspondence, args.out_dir,
+        tipologia_col=args.tipologia_col, source_col=args.source_col,
+    )
+    print(json.dumps(report, indent=2, ensure_ascii=False))
+    return 0
+
+
 def _cmd_features_observations(args: argparse.Namespace) -> int:
     from .observation_features import build_observation_features
 
@@ -711,6 +740,46 @@ def build_parser() -> argparse.ArgumentParser:
     invs.add_argument("--notes", default="")
     invs.add_argument("--force", action="store_true")
     invs.set_defaults(func=_cmd_inventory_store)
+
+    ien = sub.add_parser(
+        "ifn-enrich",
+        help="enriquece o painel IFN com correspondencia IBGE e territorio")
+    ien.add_argument("--panel", required=True,
+                     help="CSV/GPKG do Painel de Biomassa e Carbono")
+    ien.add_argument("--uf-dir", required=True,
+                     help="diretorio com os ua_<UF>.csv oficiais")
+    ien.add_argument("--correspondence", required=True,
+                     help="data/reference/ifn_correspondencia_ibge.csv")
+    ien.add_argument("--out-dir", required=True)
+    ien.add_argument("--equation", default="AGB_Chave")
+    ien.add_argument("--usage", default="validation",
+                     choices=["training", "calibration", "validation",
+                              "benchmark", "excluded"])
+    ien.add_argument("--spatial-support", default="footprint",
+                     choices=["footprint", "municipio"],
+                     help="pegada documentada do conglomerado (padrao) ou municipio")
+    ien.add_argument("--municipalities", default=None,
+                     help="malha municipal IBGE (shp/gpkg)")
+    ien.add_argument("--ibge-vegetation", default=None,
+                     help="vege_area.shp do IBGE 1:250.000")
+    ien.add_argument("--mapbiomas-pattern", default=None,
+                     help="padrao com {year}, ex.: .../mapbiomas_col11_{year}.tif")
+    ien.add_argument("--mapbiomas-correspondence", default=None,
+                     help="data/reference/ibge_legenda1_para_mapbiomas.csv")
+    ien.add_argument("--ibge-version", default="2025-01-01")
+    ien.add_argument("--max-units", type=int, default=None)
+    ien.set_defaults(func=_cmd_ifn_enrich)
+
+    iva = sub.add_parser(
+        "ifn-validate",
+        help="valida a correspondencia tematica contra o IBGE no ponto")
+    iva.add_argument("--points", required=True)
+    iva.add_argument("--ibge-vegetation", required=True)
+    iva.add_argument("--correspondence", required=True)
+    iva.add_argument("--out-dir", required=True)
+    iva.add_argument("--tipologia-col", default="tipologia")
+    iva.add_argument("--source-col", default="fonte")
+    iva.set_defaults(func=_cmd_ifn_validate)
 
     pfield = sub.add_parser("predict-field", help="prediz AGB com modelo campo-first")
     pfield.add_argument("--model", required=True)
