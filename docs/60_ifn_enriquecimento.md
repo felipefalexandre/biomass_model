@@ -1,4 +1,4 @@
-# 60 — Enriquecimento do IFN/SFB com IBGE e MapBiomas (suporte documentado)
+﻿# 60 — Enriquecimento do IFN/SFB com IBGE e MapBiomas (suporte documentado)
 
 **Data:** 2026-11-26 · **Status:** módulo implementado; execução com dados reais e validação
 independente registradas nas seções 7 e 8.
@@ -12,7 +12,7 @@ Artefatos:
 | Artefato | Caminho | Papel |
 |---|---|---|
 | Módulo | `src/biomass_model/enrich_ifn.py` | correspondência, suporte, elegibilidade, validação |
-| CLI | `biomass_model.cli ifn-enrich` / `ifn-validate` | execução configurável |
+| CLI | `biomass_model.cli ifn-enrich` / `ifn-validate` / `ifn-export` | execução e exportação configuráveis |
 | Correspondência IFN→IBGE | `data/reference/ifn_correspondencia_ibge.csv` | temática, com vínculo e fonte |
 | Correspondência IBGE→MapBiomas | `data/reference/ibge_legenda1_para_mapbiomas.csv` | por bioma, com evidência da legenda |
 | Desenho amostral | `data/reference/ifn_desenho_amostral.csv` | dimensões documentadas do conglomerado |
@@ -149,6 +149,22 @@ Dimensões derivadas (registradas em `ifn_desenho_amostral.csv`): área do congl
 - Resolução de análise declarada: MapBiomas 30 m; a área da pegada corresponde a ~4–9 pixels.
 - Alternativa `--spatial-support municipio` mantida para comparação, com a ressalva de que
   município é unidade administrativa mais grossa que a publicação oficial (estadual).
+
+### 5.3 Leitura correta do empilhamento
+
+- As “linhas empilhadas” do painel são a **mesma UA** relida por **classe de uso × equação**
+  (média 58,9 linhas/UA; máximo 231). **Não** são parcelas independentes nem uma nuvem de
+  pontos: tratá-las como amostras independentes infla o n.
+- As árvores/subparcelas medidas estão **espalhadas dentro da pegada** (Cruz de Malta); a
+  coordenada publicada é o centro, não a posição de cada árvore.
+- Para uma linha de classe específica, a área amostral é apenas o subconjunto de subparcelas
+  daquela classe (`area_amostral_ha`), cuja posição dentro da cruz **não é publicada**; por
+  isso a composição na pegada inteira é um suporte documentado da UA (superset conservador).
+- Há **duas incertezas distintas**: o tamanho da pegada (documentado, 60,8/110,5 m) e a
+  **colocação** da pegada pelo arredondamento da coordenada (`suporte_precisao_decimais`,
+  `suporte_incerteza_max_m`; mediana ±557 m).
+- `suporte_n_linhas_painel` registra o empilhamento; `area_amostral_ha` registra a área da
+  classe na linha; `suporte_area_ha`/`suporte_area_medida_ha` registram a pegada.
 
 ## 6. Elegibilidade para treino
 
@@ -306,8 +322,140 @@ O que ainda **não** é feito e está declarado: a composição IBGE/MapBiomas n
 descritiva (não comprova pixel 3/4); o percentual territorial não é feature de pixel; e os
 pesos de desenho do IFN não estão disponíveis.
 
-## 11. Limitações e pendências
+## 11. Exportação espacial (pontos e pegadas)
 
+```
+python -m biomass_model.cli ifn-export \
+  --enriched data/processed/ifn_enrich_footprint/ifn_enriquecido.csv \
+  --out data/processed/ifn_enrich_footprint/ifn_espacial.gpkg --crs EPSG:4326
+```
+
+O GeoPackage tem duas camadas, ambas com os atributos do enriquecido (AGB, fitofisionomia,
+status, elegibilidade, ano, suporte):
+
+| Camada | Geometria | Conteúdo |
+|---|---|---|
+| `pontos` | Point | **ponto publicado do conglomerado** (`lon_pc`/`lat_pc`), sem reconstrução |
+| `pegadas` | Polygon | **Cruz de Malta documentada** centrada no ponto (4 braços 20×50/20×100 m, 10 m de vão), com `area_pegada_ha` e `area_medida_ha` |
+
+A exportação é somente leitura sobre o enriquecido; não cria coordenadas novas. Geometrias
+são validadas e o CRS é declarado no arquivo. Para conferência visual em SIG, basta abrir o
+GeoPackage e usar `pontos` para os centros e `pegadas` para a área amostral documentada.
+
+**Resultado da execução:** `ifn_espacial.gpkg` (20,9 MB) com **7.466 pontos** e
+**7.466 pegadas** (EPSG:4326; geometrias 100% válidas, sem feições vazias). Área da pegada:
+0,4 ha (5.529 UAs) e 0,8 ha na Amazônia (1.937). Atributos: 66 colunas nos pontos e 68 nas
+pegadas (AGB, fitofisionomia, status, elegibilidade, ano, precisão da coordenada,
+empilhamento, composição territorial).
+
+## 12. Figuras explicativas
+
+Geradas por `tools/plot_ifn_methodology.py` (matplotlib; `--out-dir docs/figuras`).
+
+**Figura 1 — do ponto publicado à pegada.** À esquerda, o que o IFN publica: um ponto por
+UA, com ~59 registros empilhados (classe × equação). À direita, o que foi medido: a Cruz de
+Malta (4 braços, 20 × 50/100 m, 10 m de vão).
+
+![Ponto publicado e pegada](figuras/ifn_metodologia_1_ponto_pegada.png)
+
+**Figura 2 — dentro da cruz.** Subparcelas de 10 × 10 m, raio de solo de 5 m, transectos de
+necromassa de 10 m a 45° e regeneração 5 × 5 m. As cores de classe são **ilustrativas**: a
+posição das subparcelas de cada classe não é publicada.
+
+![Dentro da cruz](figuras/ifn_metodologia_2_dentro_da_cruz.png)
+
+**Figura 3 — escalas.** Pegada (30 m de pixel, raio 61/110 m) versus incerteza de colocação
+da coordenada arredondada (±557 m com 2 casas; ±5,6 km com 1 casa; ±55,7 km em grau inteiro).
+
+![Escalas](figuras/ifn_metodologia_3_escalas.png)
+
+**Figura 4 — como a composição é calculada.** A pegada (contorno) sobre os pixels de 30 m e
+o limite do IBGE (tracejado). Cada pixel tocado entra com o peso da área da pegada dentro
+dele; a classe do pixel não é atribuída à parcela.
+
+![Composição](figuras/ifn_metodologia_4_composicao.png)
+
+## 13. Candidatos espaciais com AGB atribuível (pixels e células)
+
+**Objetivo:** ir além do atributo compartilhado e identificar **unidades em que a classe é
+homogênea e compatível** com o que foi medido, para obter amostras espacializadas
+(pixels/células) com AGB e os três valores (mín · mediana · máx entre equações).
+
+**Ferramenta:** `tools/ifn_spatial_candidates.py` (reproduzível; lê o enriquecido, o painel
+e os mapas).
+
+### 13.1 Regras (por UA)
+
+1. **Dominância de tipologia**: área da tipologia dominante ≥ 95% da área total da UA.
+2. **Classe de uso única** para a tipologia (evita casos como Floresta Natural + Palmeiral
+   compartilhando a mesma tipologia).
+3. **Correspondência unívoca** IFN→IBGE e classes MapBiomas compatíveis documentadas.
+4. **Ano de campo** conhecido.
+5. **Precisão da coordenada** decide o nível de atribuição:
+   - **≥ 3 casas decimais** (incerteza ≤ ~56 m) → **pixel**: entram os pixels de 30 m cujo
+     **centro** está dentro da pegada e cuja classe pertence ao conjunto compatível;
+     homogeneidade na pegada ≥ 90%. A AGB (mín/mediana/máx) vem das equações da tipologia.
+   - **= 2 casas** (±557 m) → **célula**: a célula de arredondamento (~1,1 km) precisa ser
+     ≥ 95% homogênea nas classes compatíveis. A AGB é atribuída **à célula**, não a pixels,
+     porque a posição da pegada dentro dela é desconhecida.
+   - **< 2 casas** → não elegível (`precisao_insuficiente`).
+6. **IBGE** entra apenas como confirmação final: participação da classe IBGE compatível na
+   vegetação natural da unidade (`ibge_share_compativel`), com flag de defasagem.
+
+### 13.2 Premissas declaradas em cada feição
+
+- a classe é homogênea na unidade de atribuição;
+- a AGB medida em 0,4/0,8 ha representa a unidade atribuída (pixel ou célula);
+- a posição é compatível com a precisão da coordenada publicada;
+- composição e confirmação IBGE não provam o pixel de uma parcela individual.
+
+### 13.3 Saídas
+
+`data/processed/ifn_enrich_footprint/ifn_candidatos_espaciais.gpkg`:
+
+| Camada | Geometria | Conteúdo |
+|---|---|---|
+| `cruz_avaliada` | pegada da UA | todas as UAs, com métricas, `caso` (pixel/celula/nao), `motivo` e valores de AGB |
+| `pixels_confirmados` | pixel de 30 m | pixels com centro na pegada e classe compatível, com `agb_min_mg_ha`, `agb_mediana_mg_ha`, `agb_max_mg_ha`, `fracao_coberta`, `n_equacoes` |
+| `celulas_confirmadas` | célula ~1,1 km | células homogêneas compatíveis, com os três valores de AGB e `mb_share_compativel` |
+
+Resumo em `ifn_candidatos_espaciais_resumo.json`.
+
+### 13.4 Resultados (execução real, 7.466 UAs)
+
+| Resultado | N |
+|---|---:|
+| UAs avaliadas | 7.466 |
+| **Caso pixel** (precisão ≥3 casas) | **96 UAs → 604 pixels** |
+| **Caso célula** (precisão = 2 casas) | **1.088 células** |
+| Não elegíveis | 6.282 |
+
+Motivos de exclusão: `celula_nao_homogenea` 2.730; `precisao_insuficiente` 2.012;
+`tipologia_nao_dominante` 638; `sem_ano_de_campo` 457; `sem_classe_mapbiomas_compativel`
+228; `classe_de_uso_ambigua` 115; `mapbiomas_incompativel` (na pegada) 72;
+`sem_pixel_inteiro_compativel` 19; `agb_implausivel` 9; `sem_dado_mapbiomas` 2.
+
+**Pixels confirmados (604, 96 UAs):** Floresta Ombrófila Densa 251; Savana-Estépica 85;
+Floresta Ombrófila Mista 78; Floresta Estacional Semidecidual 64; Floresta Estacional
+Decidual 58; Savana 40; Floresta Ombrófila Aberta 20; Formação Pioneira 8. AGB mediana:
+p50 99,9 · p95 255,9 · máx 318,3 Mg/ha.
+
+**Células confirmadas (1.088):** Savana 330; Floresta Ombrófila Densa 302; Savana-Estépica
+250; Floresta Ombrófila Aberta 122; Floresta Estacional Decidual 34; Floresta Estacional
+Semidecidual 26; Floresta Estacional Sempre-Verde 10; Floresta Ombrófila Mista 8;
+Campinarana 4; Formação Pioneira 1; Estepe 1. AGB mediana: p50 31,7 · p95 ~263 · máx 415,6
+Mg/ha (após o filtro de plausibilidade).
+
+Cada feição confirmada carrega **três valores de AGB** (`agb_min_mg_ha`,
+`agb_mediana_mg_ha`, `agb_max_mg_ha`), `n_equacoes` e `spread_razao` (máx/mín entre
+equações), além de `mb_share_compativel` e `ibge_share_compativel`.
+
+**Leitura:** é um conjunto de **candidatos** para treino espacializado — não um produto
+validado. O filtro de precisão é deliberadamente severo (só 280 UAs têm ≥3 casas), e a
+célula de 1,1 km implica upscaling da AGB de 0,4/0,8 ha; ambos precisam ser testados em
+validação independente antes de uso.
+
+## 14. Limitações e pendências
 1. Coordenada publicada arredondada (0–8 casas) → incerteza de colocação da pegada
    registrada por registro; não é possível afirmar o polígono IBGE de cada parcela.
 2. IBGE 1:250k sem dimensão temporal; defasagem medida pelo indicador
@@ -318,3 +466,8 @@ pesos de desenho do IFN não estão disponíveis.
    IBGE→MapBiomas documenta quando a classe IBGE cai nelas.
 6. Pendente: portar a regra de seleção de equação e o suporte para `load_ifn_panel` com
    testes, e re-ingerir no store canônico com `reference_date` e `fitofisionomia`.
+7. **Fontes externas avaliadas** (`data/reference/inventarios_abertos.md`): **JCarbon/UFPR
+   não utilizável no estado atual** (sem área/data; 6 de 1.984 formulários utilizáveis).
+   Próximas fontes viáveis, em ordem: **RAINFOR (INV05)**, **Maracá (INV07)**,
+   **Vourlitis (INV06)** e **IFN dados botânicos (INV09, consistência de equações)**;
+   LBA-ECO (INV08) só histórico (pré-2000); EBA (INV10) apenas benchmark.

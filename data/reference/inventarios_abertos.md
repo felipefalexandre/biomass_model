@@ -23,6 +23,7 @@ Convenção de armazenamento:
 | INV08 | LBA-ECO LC-05 (ORNL) | 50 parcelas de 1 ha, biomassa e solo, BDFFP (Manaus) | 1997–2001 | aberto (NASA) | login Earthdata | não baixado |
 | INV09 | IFN — dados botânicos (SNIF) | Inventário árvore-a-árvore do IFN | 2018– | aberto (portal) | portal SNIF | não baixado |
 | INV10 | Zenodo — EBA (Ometto et al.) | Mapa de AGB da Amazônia brasileira + incerteza (benchmark) | ~2018 | aberto | Zenodo (DOI) | não baixado |
+| INV11 | **JCarbon consolidado (UFPR)** | 1.984 formulários de inventário com biomassa total (t), tipologia em texto e projeto de origem | RADAM-BR (1970–80) e outros sem data | indefinida | plataforma colaborativa (jcarbon.ufpr.br) | **avaliado — não utilizável no estado atual** (ver §2.3) |
 
 ## 2. O que já foi baixado
 
@@ -64,6 +65,34 @@ Arquivos em `data/raw/inventarios/plos2018/`:
 
 Uso: calibração/validação do modelo de Cerrado; referência de faixas por sítio.
 DOI: `10.1371/journal.pone.0196742`.
+
+### 2.3 JCarbon consolidado (UFPR) — avaliação
+
+Arquivo local: `Dados_Biomassa/UFPR/jcarbon_consolidado_atualizado_20261028_195510.gpkg`
+(camadas `jcarbon_pontos`, `jcarbon_formularios`, `jcarbon_arquivos`).
+
+**O que é:** plataforma colaborativa de inventários de carbono (JCarbon/UFPR) que consolida
+formulários de vários projetos; **não** é um inventário amostral probabilístico.
+
+| Item | Situação |
+|---|---|
+| Formulários | 1.984 |
+| Com biomassa total (t) | 1.960 |
+| Com área (coluna ou JSON) | 30 (área de parcela: 5) |
+| Com tipologia (texto do nome) | 1.954 |
+| Com data/ano | 0 |
+| **Utilizável (biomassa + área + tipologia)** | **6** |
+| Projetos de origem | RADAM-BR 1.624; Paisagens Sustentáveis–Embrapa 162; SISTM 100; PMACI 60; SIVAM 5; outros 3 |
+
+**Por que não é utilizável agora:** sem área em 99% dos casos (`biomassa_total_t` não vira
+Mg/ha), sem data (não cumpre 2000+ do ADR-0031 e não alinha ao MapBiomas do ano), tipologia
+apenas em texto livre, desenho não probabilístico e sobreposição de fonte com os pontos
+RADAM já usados na validação (`vege_ponto`). Licença da plataforma precisa ser confirmada.
+
+**Uso possível:** catálogo/contexto e checagem de plausibilidade de faixas por tipologia.
+**Pendência:** recuperar os `xlsx` originais referenciados em `jcarbon_arquivos`
+(área, data, medições por árvore) — prioridade para os **162 formulários de Paisagens
+Sustentáveis–Embrapa**, que pertencem ao mesmo programa do LiDAR mapeado no `docs/58`.
 
 ## 3. Fontes ainda não baixadas (links)
 
