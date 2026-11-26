@@ -242,6 +242,14 @@ def _cmd_ifn_validate(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_ifn_export(args: argparse.Namespace) -> int:
+    from .enrich_ifn import export_ifn_spatial
+
+    report = export_ifn_spatial(args.enriched, args.out, crs=args.crs)
+    print(json.dumps(report, indent=2, ensure_ascii=False))
+    return 0
+
+
 def _cmd_features_observations(args: argparse.Namespace) -> int:
     from .observation_features import build_observation_features
 
@@ -780,6 +788,15 @@ def build_parser() -> argparse.ArgumentParser:
     iva.add_argument("--tipologia-col", default="tipologia")
     iva.add_argument("--source-col", default="fonte")
     iva.set_defaults(func=_cmd_ifn_validate)
+
+    iex = sub.add_parser(
+        "ifn-export",
+        help="exporta pontos e pegadas do IFN enriquecido em GeoPackage")
+    iex.add_argument("--enriched", required=True,
+                     help="ifn_enriquecido.csv (com lon/lat)")
+    iex.add_argument("--out", required=True, help="arquivo .gpkg")
+    iex.add_argument("--crs", default="EPSG:4326")
+    iex.set_defaults(func=_cmd_ifn_export)
 
     pfield = sub.add_parser("predict-field", help="prediz AGB com modelo campo-first")
     pfield.add_argument("--model", required=True)

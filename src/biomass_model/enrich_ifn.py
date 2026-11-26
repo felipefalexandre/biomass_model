@@ -1021,7 +1021,8 @@ def build_ifn_enrichment(
               "allometric_equation": "agb_equacao"}
     df = df.rename(columns={k: v for k, v in rename.items() if k in df.columns})
     cols = ["observation_id", "ua", "bioma", "uf", "municipio",
-            "municipio_codigo", "data_campo", "ano", "tipologias_ifn",
+            "municipio_codigo", "data_campo", "ano", "lon", "lat",
+            "tipologias_ifn",
             USO, "tip_fitofisionomia_ibge", "tip_fitofisionomia_candidatas",
             "tip_status_correspondencia", "tip_regra_correspondencia",
             "tip_nivel_detalhe", "tip_fonte_correspondencia",
@@ -1171,6 +1172,70 @@ def build_ifn_enrichment(
 
 
 # --------------------------------------------------------------------- validação
+def export_ifn_spatial(
+    enriched_path: str | Path,
+    out_path: str | Path,
+    *,
+    crs: str = "EPSG:4326",
+) -> dict[str, Any]:
+    """Exporta pontos publicados e pegadas do conglomerado em GeoPackage.
+
+    Lê a tabela enriquecida (`ifn_enriquecido.csv`, com lon/lat) e grava duas
+    camadas: `pontos` (centro publicado) e `pegadas` (Cruz de Malta documentada).
+    Nenhuma coordenada é reconstruída: o ponto é o publicado; a pegada é a
+    geometria documentada centrada nele.
+    """
+    import geopandas as gpd
+    from shapely.geometry import Point
+
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    df = pd.read_csv(enriched_path)
+    for col in ("lon", "lat"):
+        if col not in df.columns:
+            raise ValueError(f"{enriched_path} sem coluna {col}; gere o "
+                             "enriquecido com a versão atual do módulo")
+    valid = df["lon"].notna() & df["lat"].notna()
+    df = df[valid].copy()
+
+    points = gpd.GeoDataFrame(
+        df.copy(),
+        geometry=[Point(x, y) for x, y in zip(df["lon"], df["lat"])],
+        crs="EPSG:4326",
+    )
+    footprints = []
+    for row in df.itertuples():
+        fp = ifn_footprint(float(row.lon), float(row.lat),
+                           str(getattr(row, "bioma", "")), None)
+        footprints.append(fp["geometry"])
+    pegadas = gpd.GeoDataFrame(df.copy(), geometry=footprints,
+                               crs="EPSG:4326")
+    # atributos de suporte já calculados no enriquecimento
+    pegadas["area_pegada_ha"] = df["suporte_area_ha"].to_numpy()
+    pegadas["area_medida_ha"] = df["suporte_area_medida_ha"].to_numpy()
+
+    if crs.upper() != "EPSG:4326":
+        points = points.to_crs(crs)
+        pegadas = pegadas.to_crs(crs)
+
+    if out.exists():
+        out.unlink()
+    points.to_file(out, layer="pontos", driver="GPKG")
+    pegadas.to_file(out, layer="pegadas", driver="GPKG")
+
+    return {
+        "out": str(out),
+        "crs": crs,
+        "camadas": ["pontos", "pegadas"],
+        "pontos": int(len(points)),
+        "pegadas": int(len(pegadas)),
+        "pontos_geometria_valida": bool(points.geometry.is_valid.all()),
+        "pegadas_geometria_valida": bool(pegadas.geometry.is_valid.all()),
+        "area_pegada_ha_p50": float(pd.to_numeric(
+            pegadas["area_pegada_ha"], errors="coerce").median()),
+    }
+
+
 def validate_correspondence(
     points_path: str | Path,
     ibge_vegetation_path: str | Path,

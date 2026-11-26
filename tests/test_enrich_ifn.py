@@ -279,6 +279,32 @@ def test_validacao_tematica(insumos):
     assert (out_dir / "validacao_por_classe.csv").exists()
 
 
+def test_export_espacial(insumos, tmp_path):
+    """Exporta pontos e pegadas em GeoPackage com CRS e geometria válidos."""
+    from biomass_model.enrich_ifn import export_ifn_spatial
+
+    out_dir = tmp_path / "out_exp"
+    build_ifn_enrichment(
+        insumos["panel"], insumos["uf_dir"], insumos["corr"], out_dir,
+        mapbiomas_correspondence_path=insumos["mb_corr"],
+    )
+    gpkg = tmp_path / "ifn.gpkg"
+    report = export_ifn_spatial(out_dir / "ifn_enriquecido.csv", gpkg)
+    assert report["pontos"] == 3 and report["pegadas"] == 3
+    assert report["pontos_geometria_valida"] is True
+    assert report["pegadas_geometria_valida"] is True
+
+    pts = gpd.read_file(gpkg, layer="pontos")
+    pol = gpd.read_file(gpkg, layer="pegadas")
+    assert str(pts.crs).upper() == "EPSG:4326"
+    assert str(pol.crs).upper() == "EPSG:4326"
+    assert pts.geometry.iloc[0].x == pytest.approx(-47.1)
+    assert pts.geometry.iloc[0].y == pytest.approx(-15.1)
+    assert pol.geometry.is_valid.all()
+    assert float(pol["area_pegada_ha"].iloc[0]) == pytest.approx(0.4)
+    assert "fitofisionomia" in " ".join(pol.columns)
+
+
 def test_pegada_documentada():
     """Dimensões da Cruz de Malta conforme a metodologia do IFN/SFB."""
     from biomass_model.enrich_ifn import ifn_footprint
