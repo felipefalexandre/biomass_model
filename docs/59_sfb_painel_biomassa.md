@@ -1,8 +1,8 @@
 # 59 — SFB: Painel de Biomassa e Carbono (leitura do arquivo `pontos_sfb.gpkg`)
 
 **Status:** diagnóstico somente leitura + seleção de equação implementada e executada
-(`tools/select_ifn_equation.py`), 2026-11-25. Resultados em
-`data/processed/ifn_selection/`.
+(`tools/select_ifn_equation.py`) + ano por UA (§9) + crosswalk tipologia (§10) +
+ingestão no store (§8), 2026-11-25. Resultados em `data/processed/ifn_selection/`.
 **Arquivo analisado:** `C:\Users\FerreiraF1\Documents\Dados_Biomassa\SFB\pontos_sfb.gpkg`
 (100 MB, 439.970 linhas).
 **Insumos oficiais baixados** (gitignored, `data/raw/inventarios/sfb/`):
@@ -175,20 +175,151 @@ instalar agora). Pendente: portar a regra para o adaptador com testes.
 2. **Portar a regra para `load_ifn_panel`** (`src/biomass_model/inventory/adapters.py`),
    hoje limitado a `equation="AGB_Chave"` + fallback arbitrário, com testes
    (`tests/`) — requer ambiente montado (`docs/57`).
-3. Obter o **ano por UA** no portal SFB (critério 2000+, ADR-0031).
-4. Cruzar `tipologia_da_vegetacao` com o crosswalk IBGE
-   (`data/reference/fitofisionomias_crosswalk.csv`).
-5. Ingerir o resultado selecionado no store canônico (`inventory-store --source ifn`),
-   respeitando o esquema e a rastreabilidade (ADR-0032).
+3. ~~Obter o **ano por UA** no portal SFB~~ **feito** — ver §9.
+4. ~~Cruzar `tipologia_da_vegetacao` com o crosswalk IBGE~~ **feito** — ver §10;
+   pendente: **integrar** o crosswalk no `classify_fitofisionomia` (junto com o
+   item 2) e decidir a inconsistência de código `2` vs `12` (§10.3).
+5. ~~Ingerir o resultado selecionado no store canônico~~ **feito para a versão
+   default** (`AGB_Chave`) — ver §8; pendente: re-ingestir após o item 2
+   (portar a seleção e o ano por UA, que hoje fica de fora do `reference_date`).
+
+## 8. Ingestão no store canônico (2026-11-25)
+
+**Ambiente:** `.venv` criado conforme `docs/57` (Python 3.12) com
+`pip install -e ".[dev,ml,data,inventory]"`. **Testes: `python -m pytest` →
+60 passed** (1 warning de depreciação do planetary-computer).
+
+**Correção de dependência:** `planetary-computer` é importado em
+`datasets/landsat.py` e citado no HANDOFF, mas **não estava declarado no
+`pyproject.toml`** — adicionado ao extra `data`. A coleta de testes falhava sem
+isso (`ModuleNotFoundError`).
+
+**Comando e resultado:**
+
+```
+python -m biomass_model.cli inventory-store --source ifn \
+  --path data/raw/inventarios/sfb/dadosbiomassa_painel.csv \
+  --store data/processed/inventory_store --usage validation --notes "..."
+```
+
+- `status: ingested` → **7.466 observações** (1:1 com as UAs do painel),
+  `rows_total: 7466`; fonte `IFN_SFB:painel_biomassa_carbono`, licença `CC BY`
+  (do painel), sha256 no manifesto, notas com referência ao `docs/59`.
+- `validate_observations`: **errors=[], warnings=[]**.
+- Conteúdo: 100% `observation_type=field`, `model_status=validation`,
+  `allometric_equation=AGB_Chave`; geometria completa; incerteza (SE de
+  variância entre subunidades) em 5.833; 1.633 com flag
+  `uncertainty_unavailable`; distribuição por bioma: Cerrado 2.537, Amazônia
+  1.937, Caatinga 1.744, Mata Atlântica 1.078, Pampa 170.
+- `reference_date` **vazio em todas** (esperado: a tabela de anos do §9 ainda
+  não é conectada ao adaptador — pendência do item 2).
+- **Idempotência verificada:** re-execução → `status: skipped`,
+  `reason: mesma assinatura de fonte`.
+- **Observação sobre o default:** `AGB_Chave` p50 = 23,8 Mg/ha no store vs 25,3
+  na comparação do §6.1 — a diferença vem de o adaptador escolher a **primeira
+  linha** da UA (classe depende da ordem do arquivo), não a média ponderada;
+  mais um argumento para portar a regra do item 2.
+
+**Limitação declarada:** este store é a versão **default** (equação fixa,
+sem ano); a versão com seleção de equação (§6) e ano (§9) será a re-ingestão
+após o port para `load_ifn_panel`.
 6. Sensibilidade da regra (limiar de consenso, alternativa r2-first) e comparação
    com `AGB_Chave` em validação de campo — só com ambiente + dados.
 7. Avaliar download dos CSVs de árvores mortas e necromassa (fora do escopo AGB atual).
 
-## 8. Método
+## 9. Ano de coleta por UA (2026-11-25)
+
+**Fonte:** dataset oficial *IFN — Unidades amostrais por UF* (CKAN SFB,
+`unidades-amostrais-por-uf-ifn`, 27 CSVs por UF; recursos rotulados XLSX mas são
+CSV UTF-8 com BOM). Coluna `data` = **"Data de coleta da informação em campo"**
+(definição confirmada no PDF de metadados, extraído para
+`data/raw/inventarios/sfb/metadados_ua_uf_texto.txt`).
+
+- **10.201 UAs** com data; **100% com data válida** (formato `AAAA/MM/DD`);
+  **nenhuma pré-2000** — a coerência com o critério 2000+ do ADR-0031 é total.
+  O painel declara oficialmente **ano-base 2011 a 2024** (metadados); as datas por
+  UA variam de **2012 a 2024**.
+- Cobertura das UAs do painel: **7.009/7.466 (93,9%)** com data.
+- **457 UAs sem data**, concentradas em **BA (253), PI (161), DF (43)** — UAs
+  provavelmente de campanhas posteriores ao corte do arquivo UF (disp-mai2024) ou
+  de códigos especiais (`BA_111_P43`, `BA_102_H`); ficam com a flag
+  `reference_date_unknown`.
+- Tabela gerada: `data/processed/ifn_selection/ifn_ua_collection_dates.csv`
+  (10.201 linhas: ua, uf, data_coleta, ano, presente_no_painel, fonte; gitignored).
+- **Licença:** o dataset UF **não tem licença declarada no portal**
+  (`license_id` vazio no CKAN); metadados oficiais em PDF. Uso como metadado
+  factual de data — registrar a lacuna se o dado for redistribuído.
+- Distribuição das UAs do painel com data: 2013 (287), 2014 (855), 2015 (1.014),
+  2016 (333), 2017 (1.270), 2018 (2.149), 2019 (22), 2020 (135), 2021 (156),
+  2022 (110), 2023 (608), 2024 (68); 2012 (2).
+
+## 10. Crosswalk tipologia IFN × IBGE/MapBiomas (2026-11-25; revisado 2026-11-26)
+
+> **Revisão 2026-11-26:** o arquivo original desta seção
+> (`ifn_tipologia_crosswalk.csv`) foi **substituído** por duas tabelas melhores,
+> porque a correspondência com o MapBiomas depende do bioma e deve citar a
+> evidência da legenda Col.11:
+> - `data/reference/ifn_correspondencia_ibge.csv` — IFN → IBGE (temática, por campo);
+> - `data/reference/ibge_legenda1_para_mapbiomas.csv` — IBGE legenda_1 → MapBiomas,
+>   por bioma, com citação da legenda (ver `docs/60` §3).
+> A análise abaixo é mantida como histórico da primeira rodada.
+
+**Arquivo original:** `ifn_tipologia_crosswalk.csv` — 15 linhas
+(13 tipologias do painel; `Savana` tem linha por bioma: Amazônia ≠ restante).
+**Preservado** `data/reference/fitofisionomias_crosswalk.csv` (ADR-0029), que
+continua sendo o crosswalk IBGE↔MapBiomas; o novo arquivo é a pontura
+painel↔IBGE.
+
+### 10.1 Correspondências (resumo)
+
+- **Mapeados (10 tipologias):** Campinarana→3; Florestas Estacionais
+  (Decidual/Semidecidual/Sempre-verde)→3; Ombrófilas (Aberta/Densa/Mista)→3;
+  Savana→4 (fora da Amazônia); Estepe→12 (hipótese);
+  Savana gramíneo-lenhosa→12 (hipótese, conforme legenda Col11).
+- **Sem correspondência (1):** Contato (Ecótono e Encrave) — mosaico, sem código.
+- **Conflito 1:N (1):** Formações Pioneiras — a legenda Col11 distribui por
+  Mangue (5), Floresta Alagável (6), Formação Florestal (3) e Campestre (11/12)
+  conforme subtipo.
+- **Conflito (1):** Savana-estépica — Arborizada→4 vs Parque/Gramíneo→12; o
+  painel não distingue subtipo. **Conflito bioma (1):** Savana na Amazônia →
+  12 (legenda) vs 4 (crosswalk atual por "Savana Arborizada").
+
+### 10.2 Comportamento atual do `classify_fitofisionomia` (simulado, sem código alterado)
+
+13 tipologias × 5 biomas = 65 combinações: **exato 20, contém 8, fallback 37
+(57%)**. Padrões:
+
+- O crosswalk atual só tem linhas Amazônia/Cerrado → no **Cerrado** as florestas
+  estacionais/ombrófilas caem em fallback (sem código); Caatinga/Mata
+  Atlântica/Pampa usam a tabela cheia e casam por nome.
+- `Floresta Ombrófila Mista` e `Estepe` **não existem** no crosswalk atual
+  (gaps) → sempre fallback.
+- Fallback de `Savana gramíneo-lenhosa` dá grupo **savanna** (token), mas a
+  legenda Col11 a coloca em **Formação Campestre** — conflito documentado.
+- `Formações Pioneiras` cai em grupo `unknown`.
+
+### 10.3 Inconsistência encontrada (precisa de decisão)
+
+O código e o crosswalk atual usam **`mapbiomas_codigo = 2` para campestre**
+(`GROUP_BY_MAPBIOMAS` em `stratification/__init__.py` linhas 28-33; linhas 19-21
+do crosswalk), mas **ADR-0010, docs/17, docs/22 e docs/26 dizem 11/12**, e a
+legenda oficial Col11 (verificada em `brasil.mapbiomas.org`) tem
+**12 = Formação Campestre** e **11 = Campo Alagado e Área Pantanosa** — não
+existe classe 2 no nível 2 da legenda. O novo crosswalk usa **12** (oficial).
+**Pendência:** alinhar código/crosswalk antigo para 11/12 com testes, ou
+justificar o `2`; não alterado nesta etapa para não mudar comportamento sem
+bateria de testes.
+
+## 11. Método
 
 - Leitura direta do GeoPackage via `sqlite3` (sem dependências); geometria validada com
   `rasterio`/PROJ (EPSG:4326 → EPSG:5880).
 - Texto do PDF de metadados extraído com stdlib (`zlib` + CMaps ToUnicode + strings hex
   de 2 bytes); trecho útil preservado em `data/raw/inventarios/sfb/`.
+- Ano por UA: 27 CSVs do CKAN SFB via `urllib` (§9); crosswalk montado a partir das
+  descrições oficiais das tipologias no PDF do painel + legenda Col11 do MapBiomas;
+  comportamento atual do `classify_fitofisionomia` reproduzido em simulador stdlib
+  (§10.2) — **nenhum código de `src/` foi alterado**.
 - Nenhum dado do arquivo original foi alterado; todos os diagnósticos foram somente
-  leitura. Nenhum pacote foi instalado (ambiente sem venv, conforme decisão do usuário).
+  leitura. O ambiente `.venv` foi montado nesta etapa (passo 4, §8) conforme
+  `docs/57`; nenhuma credencial foi usada.
