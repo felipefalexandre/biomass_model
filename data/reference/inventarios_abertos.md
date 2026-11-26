@@ -17,11 +17,11 @@ Convenção de armazenamento:
 | INV02 | Roitman et al. 2018 (PLOS ONE) — Cerrado s.s. | 77 sítios, 893 parcelas, 95.484 árvores; tabelas S1–S5 | décadas de levantamentos | CC BY | aberto (XLSX suplementar) | **baixado** (S3–S5) |
 | INV03 | ORNL DAAC — Sustainable Landscapes Brazil | Inventário árvore-a-árvore (DAP, altura, espécie, coordenadas, AGB em sítios selecionados) | 2009–2018 | aberto (NASA) | requer login Earthdata (gratuito) | não baixado |
 | INV04 | CEDA/NCEO — Manaus plots AGB 2014 | 22 parcelas com AGB, shapefile | 2014 | OGL | aberto | não baixado |
-| INV05 | NERC EIDC — RAINFOR Amazon census | 29 parcelas, 8.729 árvores (DAP), Acre/MT/PA | 2017–2019 | OGL | aberto | não baixado |
-| INV06 | Mendeley — Vourlitis (Cerrado MT) | Circunferência, DAP, altura, AGB e C por árvore; Pantanal e Cuiabá | 2011–2018 | aberto (Mendeley) | aberto | não baixado |
-| INV07 | Mendeley — Maracá (RR) ecotone forests | 129 parcelas, AGB/C por parcela e por classe | censo 4 | aberto | aberto | não baixado |
+| INV05 | NERC EIDC — RAINFOR Amazon census | 29 parcelas, 8.729 árvores (DAP), Acre/MT/PA | 2017–2019 | OGL | aberto | **baixado**; bloqueado para AGB (sem área por parcela/WD) |
+| INV06 | Mendeley — Vourlitis (Cerrado MT) | Circunferência, DAP, altura, AGB e C por árvore; Pantanal e Cuiabá | 2011–2018 | aberto (Mendeley) | aberto | não baixado (Mendeley inacessível nesta máquina) |
+| INV07 | Mendeley — Maracá (RR) ecotone forests | 129 parcelas, AGB/C por parcela e por classe | censo 4 | aberto | aberto | não baixado (Mendeley inacessível nesta máquina) |
 | INV08 | LBA-ECO LC-05 (ORNL) | 50 parcelas de 1 ha, biomassa e solo, BDFFP (Manaus) | 1997–2001 | aberto (NASA) | login Earthdata | não baixado |
-| INV09 | IFN — dados botânicos (SNIF) | Inventário árvore-a-árvore do IFN | 2018– | aberto (portal) | portal SNIF | não baixado |
+| INV09 | IFN — dados botânicos (SNIF) | Inventário árvore-a-árvore do IFN | 2018– | aberto (portal) | portal SNIF | **reclassificado: Darwin Core de espécies (não fornece DAP/AGB)** |
 | INV10 | Zenodo — EBA (Ometto et al.) | Mapa de AGB da Amazônia brasileira + incerteza (benchmark) | ~2018 | aberto | Zenodo (DOI) | não baixado |
 | INV11 | **JCarbon consolidado (UFPR)** | 1.984 formulários de inventário com biomassa total (t), tipologia em texto e projeto de origem | RADAM-BR (1970–80) e outros sem data | indefinida | plataforma colaborativa (jcarbon.ufpr.br) | **avaliado — não utilizável no estado atual** (ver §2.3) |
 
@@ -93,6 +93,27 @@ RADAM já usados na validação (`vege_ponto`). Licença da plataforma precisa s
 **Pendência:** recuperar os `xlsx` originais referenciados em `jcarbon_arquivos`
 (área, data, medições por árvore) — prioridade para os **162 formulários de Paisagens
 Sustentáveis–Embrapa**, que pertencem ao mesmo programa do LiDAR mapeado no `docs/58`.
+
+### 2.4 RAINFOR, Mendeley e IFN botânico — status de ingestão (2026-11-26)
+
+**RAINFOR (INV05) — baixado, bloqueado para AGB.** `tree_data.csv` (OGL, 8.729 árvores,
+29 parcelas, 2017–2019) traz `Plot_number`, `Tree_ID`, `Tag_No`, `DBH` (mm), `Latitude`,
+`Longitude` (2 casas ≈ 1 km). **Não traz área por parcela** — o manual informa que as
+parcelas têm **0,25 ou 1 ha, sem identificar qual** — nem altura, densidade da madeira ou
+espécie. Sem área, a densidade (Mg/ha) variaria 4×; não é ingestível como AGB sem premissa
+arbitrária. **Desbloqueio:** metadados de área por parcela no ForestPlots.net ou contato com
+os autores. O arquivo bruto está em `data/raw/inventarios/rainfor/`.
+
+**Mendeley — Maracá (INV07) e Vourlitis (INV06): inacessível desta máquina.** As páginas de
+metadados abrem (CC BY), mas o endpoint de download
+(`data.mendeley.com/public-files/...`) não responde aqui (curl/PowerShell sem conexão;
+requisição autenticada bloqueada). Maracá é diretamente utilizável quando baixado: 129
+parcelas de 50 × 10 m (500 m² → Mg/ha = valor × 20), com lat/long e UTM, AGB/C por classe.
+**Desbloqueio:** download manual pelo navegador ou de outra rede.
+
+**IFN dados botânicos (INV09): não é AGB.** O dataset oficial é **Darwin Core de coletas
+botânicas** (30 CSVs por UF; espécies, não DAP/altura). Serve para composição florística e
+priors de densidade da madeira, **não** como target nem como medição de biomassa.
 
 ## 3. Fontes ainda não baixadas (links)
 

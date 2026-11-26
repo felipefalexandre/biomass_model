@@ -61,13 +61,27 @@ contar a UA uma vez e manter os pixels no mesmo grupo de split.
 
 | Fonte | Conteúdo | Critério de aceite | Status |
 |---|---|---|---|
-| RAINFOR (INV05) | 29 parcelas / 8.729 árvores, 2017–2019, OGL | árvore-a-árvore, área, coordenada, data; recalcular AGB com alometria única | **prioridade 1** |
-| Maracá (INV07) | 129 parcelas, AGB/C, censo 4 | área e data por parcela; localização | prioridade 2 |
-| Vourlitis (INV06) | DAP/altura/AGB, Cerrado MT, 2011–2018 | árvore-a-árvore + área + data | prioridade 3 |
-| IFN dados botânicos (INV09) | árvore-a-árvore do IFN (2018+) | termos de uso; mesmas UAs (não independente) | prioridade 4 (consistência) |
+| RAINFOR (INV05) | 29 parcelas / 8.729 árvores, 2017–2019, OGL | árvore-a-árvore, área, coordenada, data; recalcular AGB com alometria única | **baixado; bloqueado para AGB** (sem área por parcela — 0,25 ou 1 ha — e sem altura/WD) |
+| Maracá (INV07) | 129 parcelas, AGB/C, censo 4 | área e data por parcela; localização | **download bloqueado** nesta máquina (endpoint Mendeley) |
+| Vourlitis (INV06) | DAP/altura/AGB, Cerrado MT, 2011–2018 | árvore-a-árvore + área + data | **download bloqueado** nesta máquina (endpoint Mendeley) |
+| IFN dados botânicos (INV09) | árvore-a-árvore do IFN (2018+) | termos de uso; mesmas UAs (não independente) | **reclassificado: Darwin Core de espécies** (não fornece DAP/AGB) |
 | LBA-ECO (INV08) | 50 parcelas 1 ha, 1997–2001 | pré-2000 | histórico apenas |
 | JCarbon (INV11) | 1.984 formulários | sem área/data | **não utilizável** (INV11) |
 | EBA / mapas globais | mapas modelados | — | benchmark |
+
+### 6.1 Status de ingestão (2026-11-26)
+
+- **RAINFOR:** `tree_data.csv` baixado (OGL; `data/raw/inventarios/rainfor/`). Tem DAP (mm),
+  `Plot_number` e lat/long (2 casas ≈ 1 km), mas **não identifica a área de cada parcela**
+  (0,25 ou 1 ha) e não traz altura, densidade da madeira ou espécie. Sem área, Mg/ha variaria
+  4×; **não ingerir como AGB** com premissa arbitrária. Desbloqueio: metadados de área por
+  parcela (ForestPlots.net) ou contato com os autores.
+- **Maracá e Vourlitis:** as páginas de metadados respondem (CC BY), mas o endpoint de
+  download não conecta desta máquina. Maracá é diretamente utilizável quando obtido
+  (129 parcelas de 500 m²; Mg/ha = valor × 20). Desbloqueio: download manual/navegador ou
+  outra rede.
+- **IFN botânico:** é **Darwin Core de espécies** (30 CSVs por UF), não DAP/altura; serve
+  para composição florística e priors de densidade da madeira, não como target.
 
 Cada adaptador: `inventory/adapters.py`, comando `inventory`/`inventory-store`, proveniência
 (licença, citação, versão), testes com fixture sintética e registro no catálogo
