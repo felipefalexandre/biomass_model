@@ -250,6 +250,45 @@ def _cmd_ifn_export(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_target_consolidate(args: argparse.Namespace) -> int:
+    from .targets import consolidate_target
+
+    biomes = (
+        [b.strip() for b in args.biomes.split(",") if b.strip()]
+        if args.biomes else None
+    )
+    report = consolidate_target(
+        args.gpkg, args.out_csv,
+        gpkg_path=args.out_gpkg, manifest_path=args.manifest,
+        source=args.source, source_version=args.source_version,
+        plausibility_max=args.max_plausible, biomes=biomes,
+    )
+    print(json.dumps(report, indent=2, ensure_ascii=False))
+    return 0
+
+
+def _cmd_features_catalog(args: argparse.Namespace) -> int:
+    from .feature_catalog import load_catalog, select_features, summarize
+
+    groups = (
+        [g.strip() for g in args.groups.split(",") if g.strip()]
+        if args.groups else None
+    )
+    catalog = load_catalog(args.catalog)
+    selected = select_features(
+        catalog, groups=groups, max_priority=args.max_priority,
+        include_experimental=args.include_experimental,
+    )
+    if args.out:
+        out = Path(args.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        selected.to_csv(out, index=False, encoding="utf-8")
+    print(json.dumps(summarize(
+        catalog, selected, include_experimental=args.include_experimental,
+    ), indent=2, ensure_ascii=False))
+    return 0
+
+
 def _cmd_features_observations(args: argparse.Namespace) -> int:
     from .observation_features import build_observation_features
 
@@ -797,6 +836,37 @@ def build_parser() -> argparse.ArgumentParser:
     iex.add_argument("--out", required=True, help="arquivo .gpkg")
     iex.add_argument("--crs", default="EPSG:4326")
     iex.set_defaults(func=_cmd_ifn_export)
+
+    tgt = sub.add_parser(
+        "target-consolidate",
+        help="consolida 1 target por UA (Tier A pixel + Tier B celula)")
+    tgt.add_argument("--gpkg", required=True,
+                     help="ifn_candidatos_espaciais.gpkg")
+    tgt.add_argument("--out-csv", required=True, help="tabela de target (.csv)")
+    tgt.add_argument("--out-gpkg", default=None,
+                     help="opcional: pontos do target (.gpkg)")
+    tgt.add_argument("--manifest", default=None,
+                     help="opcional: manifesto JSON com hashes e contagens")
+    tgt.add_argument("--source", default="IFN/SFB")
+    tgt.add_argument("--source-version", default="painel_biomassa_carbono_2025")
+    tgt.add_argument("--max-plausible", type=float, default=500.0,
+                     help="limite de plausibilidade da mediana (Mg/ha)")
+    tgt.add_argument("--biomes", default=None,
+                     help="filtro opcional, ex.: 'Amazonia,Cerrado'")
+    tgt.set_defaults(func=_cmd_target_consolidate)
+
+    fcat = sub.add_parser(
+        "features-catalog",
+        help="valida o catalogo de features e calcula o feature_set_hash")
+    fcat.add_argument("--catalog", default="data/reference/features_biomassa.csv")
+    fcat.add_argument("--groups", default=None,
+                      help="grupos separados por virgula, ex.: 'Optico S2,SAR S1'")
+    fcat.add_argument("--max-priority", type=int, default=None)
+    fcat.add_argument("--include-experimental", action="store_true",
+                      help="inclui permitida_experimental (SOC); exige ablacao")
+    fcat.add_argument("--out", default=None,
+                      help="opcional: CSV do conjunto selecionado")
+    fcat.set_defaults(func=_cmd_features_catalog)
 
     pfield = sub.add_parser("predict-field", help="prediz AGB com modelo campo-first")
     pfield.add_argument("--model", required=True)

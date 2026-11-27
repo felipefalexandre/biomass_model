@@ -47,3 +47,4 @@ canônico. Qualquer mudança de decisão deve:
 | [0031](0031-escopo-agb-e-inventarios.md) | Escopo de AGB e inventários | aceito |
 | [0032](0032-ingestao-canonica-inventarios.md) | Ingestão canônica de inventários | aceito |
 | [0033](0033-champion-challenger.md) | Registro de modelos e champion/challenger | aceito |
+| [0034](0034-evolucao-incremental.md) | Evolução incremental do repositório (sem big-bang) | aceito |

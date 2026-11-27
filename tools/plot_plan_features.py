@@ -3,11 +3,13 @@
 Gera:
   1. fluxograma do pipeline (campo -> target -> features -> modelo -> mapa);
   2. grupos de features e o que e vedado como feature;
-  3. histogramas reais do target (AGB por tier e contagem por fitofisionomia).
+  3. histogramas reais do target (AGB por tier e contagem por fitofisionomia);
+  4. target consolidado por UA (se o CSV existir).
 
 Uso:
   python tools/plot_plan_features.py --out-dir docs/figuras \
-    --gpkg data/processed/ifn_enrich_footprint/ifn_candidatos_espaciais.gpkg
+    --gpkg data/processed/ifn_enrich_footprint/ifn_candidatos_espaciais.gpkg \
+    --target-csv data/processed/target/target_uas.csv
 """
 from __future__ import annotations
 
@@ -205,17 +207,94 @@ def figura_target(out: Path, gpkg: Path) -> Path:
     return path
 
 
+def figura_target_consolidado(out: Path, target_csv: Path) -> Path:
+    """Target consolidado (1 linha por UA): AGB por tier, bioma e fitofisionomia."""
+    df = pd.read_csv(target_csv)
+    scoped = df[df["bioma"].isin(["Amazônia", "Cerrado"])]
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6),
+                             gridspec_kw={"width_ratios": [1.3, 1.1, 1.6]})
+
+    ax = axes[0]
+    bins = np.linspace(0, 420, 43)
+    tier_b = df.loc[df["tier"] == "B", "agb_mg_ha"]
+    tier_a = df.loc[df["tier"] == "A", "agb_mg_ha"]
+    ax.hist([tier_b, tier_a], bins=bins, stacked=True,
+            color=[PRODUCT, DATA], alpha=0.9, edgecolor="white",
+            label=[f"Tier B — célula ~1,1 km (n={len(tier_b)})",
+                   f"Tier A — pixel 30 m (n={len(tier_a)})"])
+    ax.set_yscale("log")
+    ax.set_xlabel("AGB mediana entre equações (Mg/ha)")
+    ax.set_ylabel("UAs (escala log)")
+    ax.set_title(f"Distribuição do target (n={len(df)} UAs)", fontsize=13)
+    ax.legend(fontsize=9.5)
+    ax.grid(alpha=0.2)
+
+    ax = axes[1]
+    counts = (df.groupby(["bioma", "tier"]).size().unstack(fill_value=0)
+              .reindex(columns=["A", "B"], fill_value=0))
+    counts = counts.loc[counts.sum(axis=1).sort_values().index]
+    y = np.arange(len(counts))
+    ax.barh(y, counts["A"], color=DATA, label="Tier A")
+    ax.barh(y, counts["B"], left=counts["A"], color=PRODUCT, label="Tier B")
+    labels = [
+        f"{name} *" if name not in {"Amazônia", "Cerrado"} else name
+        for name in counts.index
+    ]
+    ax.set_yticks(y)
+    ax.set_yticklabels(labels, fontsize=10)
+    for yi, (_, row) in enumerate(counts.iterrows()):
+        ax.text(row.sum() + 5, yi, f"n={int(row.sum())}", va="center",
+                fontsize=8.5, color=GRAY)
+    ax.set_xlabel("UAs")
+    ax.set_title("Target por bioma (* fora do escopo atual)", fontsize=13)
+    ax.grid(axis="x", alpha=0.2)
+
+    ax = axes[2]
+    stats = (scoped.groupby("fitofisionomia")["agb_mg_ha"]
+             .agg(n="size", p25=lambda s: s.quantile(0.25),
+                  p50="median", p75=lambda s: s.quantile(0.75)))
+    stats = stats[stats["n"] >= 10].sort_values("p50")
+    y = np.arange(len(stats))
+    ax.barh(y, stats["p50"], color=METHOD, alpha=0.85)
+    ax.errorbar(stats["p50"], y,
+                xerr=[stats["p50"] - stats["p25"], stats["p75"] - stats["p50"]],
+                fmt="none", ecolor=GRAY, elinewidth=1.4, capsize=3)
+    ax.set_yticks(y)
+    ax.set_yticklabels([s.replace("Floresta ", "F. ") for s in stats.index],
+                       fontsize=9.5)
+    for yi, (_, row) in enumerate(stats.iterrows()):
+        ax.text(row["p75"] + 5, yi, f"n={int(row['n'])}", va="center",
+                fontsize=8.5, color=GRAY)
+    ax.set_xlim(0, max(stats["p75"].max() * 1.15, 10))
+    ax.set_xlabel("AGB mediana (Mg/ha); barra = p25–p75")
+    ax.set_title("Escopo Amazônia + Cerrado, por fitofisionomia (n≥10)", fontsize=13)
+    ax.grid(axis="x", alpha=0.2)
+
+    fig.suptitle("Target consolidado: 1 linha por UA, com faixa de equações",
+                 fontsize=16, fontweight="bold")
+    fig.tight_layout(rect=(0, 0, 1, 0.93))
+    path = out / "plano_4_target_consolidado.png"
+    fig.savefig(path, dpi=200, facecolor="white")
+    plt.close(fig)
+    return path
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--out-dir", default="docs/figuras")
     ap.add_argument("--gpkg",
                     default="data/processed/ifn_enrich_footprint/"
                             "ifn_candidatos_espaciais.gpkg")
+    ap.add_argument("--target-csv",
+                    default="data/processed/target/target_uas.csv")
     args = ap.parse_args()
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=True)
     paths = [figura_fluxo(out), figura_features(out),
              figura_target(out, Path(args.gpkg))]
+    target_csv = Path(args.target_csv)
+    if target_csv.exists():
+        paths.append(figura_target_consolidado(out, target_csv))
     for p in paths:
         print(f"gerado: {p}")
     return 0

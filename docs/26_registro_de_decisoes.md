@@ -37,6 +37,7 @@
 | ADR-0031 | Escopo de AGB e aquisição de inventários | aceito |
 | ADR-0032 | Ingestão canônica e evolutiva de inventários | aceito |
 | ADR-0033 | Registro de modelos e champion/challenger | aceito |
+| ADR-0034 | Evolução incremental do repositório (sem big-bang) | aceito |
 
 ## ADR-0001 — Python local em vez de GEE
 
@@ -241,3 +242,17 @@ ADR-0020/0022/0023/0024 aprovados; ADR-0021/0025/0026 revisados e aceitos. Nenhu
   é estrato separado).
 - ADR-0026: ver `ADR/0026-produto-mapa-primeiro.md` (mapa-first; tabela por polígono derivada;
   sem produto polygon-only independente).
+
+## ADRs 0027–0034 (2026-11-24 a 2026-11-27)
+
+O texto completo dos ADRs recentes está nos arquivos de `ADR/`; este índice mantém apenas o
+registro. Resumo dos temas:
+
+- 0027: hierarquia de referência (campo primário; GEDI auxiliar).
+- 0028: Produto C (polígono arbitrário) como entrega de primeira classe.
+- 0029: fitofisionomia IBGE 1:250k como camada estrutural.
+- 0030: resolução oficial de 30 m; 1 km para experimentos/diagnóstico.
+- 0031: escopo de AGB e aquisição de inventários.
+- 0032: ingestão canônica e evolutiva de inventários.
+- 0033: registro de modelos e promoção champion/challenger.
+- 0034: evolução incremental do repositório, sem reestruturação integral.
