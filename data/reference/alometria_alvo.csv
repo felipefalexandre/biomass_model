@@ -1,0 +1,10 @@
+variavel,unidade,necessaria_para,equacoes_que_usam,disponibilidade_no_ifn,observacao
+DAP,diametro a 1.30 m (cm),variavel primaria de todas as equacoes,Chave 2014; Chave 2005; equacoes do painel SFB,sim (arvore-a-arvore interno; painel publica so o resultado por UA),DAP>=10 cm nas subunidades; 5-10 cm na subparcela 10
+Altura total (H),m,equacoes que usam H (Chave 2014; Chave 2005 com H; equacoes locais),Chave 2014; Chave 2005; varias equacoes do painel,sim (medida no campo; nao publicada por arvore),H medida no campo; quando ausente, estimar por H-DBH (Feldpausch 2012) e marcar
+Densidade da madeira (WD),g/cm3,equacoes que usam WD,Chave 2014 (obrigatoria),nao (nao publicada por arvore),usar banco global (GWDD/TRY) por genero/especie; documentar fonte e incerteza
+Especie/genero,texto,para WD e equacoes especificas,equacoes por especie/tipologia,parcial (IFN botanico e Darwin Core de especies),permite prior de WD; nao e feature de satelite
+Palmeiras,individuos/ha,equacao propria (Goodman 2013),Goodman et al. 2013,sim (contadas no campo; nao publicadas),nao usar equacao de dicotiledoneas
+Lianas,individuos/ha,equacao propria quando medida,literatura (Schnitzer et al.),parcial,registrar quando houver
+Area da parcela,ha,converter biomassa total em Mg/ha,todas,parcial (painel: area por tipologia; RAINFOR: 0,25 ou 1 ha nao identificado),bloqueio atual do RAINFOR
+Subunidades (n),numero,area amostral e erro padrao,painel SFB,sim,1-4; registrar
+Idade/sucessao,anos,estratificacao e covariavel,equacoes nao usam; modelo usa,parcial,idade secundaria via MapBiomas

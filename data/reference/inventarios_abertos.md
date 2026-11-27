@@ -106,10 +106,11 @@ os autores. O arquivo bruto está em `data/raw/inventarios/rainfor/`.
 
 **Mendeley — Maracá (INV07) e Vourlitis (INV06): inacessível desta máquina.** As páginas de
 metadados abrem (CC BY), mas o endpoint de download
-(`data.mendeley.com/public-files/...`) não responde aqui (curl/PowerShell sem conexão;
-requisição autenticada bloqueada). Maracá é diretamente utilizável quando baixado: 129
-parcelas de 50 × 10 m (500 m² → Mg/ha = valor × 20), com lat/long e UTM, AGB/C por classe.
-**Desbloqueio:** download manual pelo navegador ou de outra rede.
+(`data.mendeley.com/public-files/...`) não responde aqui. **Atenção:** o arquivo
+`dwca-maraca_comp_floristic-v1.25` (baixado em `Downloads`) é o **Darwin Core de composição
+florística** (ocorrências de espécies; sem DAP), não o dataset de biomassa. O dataset
+necessário é `10.17632/2j354jtddx.2` (`location_plot` + `biomass_carbon`): 129 parcelas de
+50 × 10 m (500 m² → Mg/ha = valor × 20). **Desbloqueio:** download manual pelo navegador.
 
 **IFN dados botânicos (INV09): não é AGB.** O dataset oficial é **Darwin Core de coletas
 botânicas** (30 CSVs por UF; espécies, não DAP/altura). Serve para composição florística e

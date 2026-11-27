@@ -1,0 +1,57 @@
+grupo,feature,descricao,fonte,calculo,uso_literatura,disponivel_inferencia,status_adr,prioridade,observacao
+Optico S2,B2 azul,reflectancia de superficie, Sentinel-2 L2A,banda/cena,alta,sim,permitida,1,
+Optico S2,B3 verde,reflectancia de superficie, Sentinel-2 L2A,banda/cena,alta,sim,permitida,1,
+Optico S2,B4 vermelho,reflectancia de superficie, Sentinel-2 L2A,banda/cena,alta,sim,permitida,1,
+Optico S2,B5 red-edge 1,reflectancia de superficie, Sentinel-2 L2A,banda/cena,alta,sim,permitida,1,
+Optico S2,B6 red-edge 2,reflectancia de superficie, Sentinel-2 L2A,banda/cena,media,sim,permitida,1,
+Optico S2,B7 red-edge 3,reflectancia de superficie, Sentinel-2 L2A,banda/cena,media,sim,permitida,1,
+Optico S2,B8 NIR,reflectancia de superficie, Sentinel-2 L2A,banda/cena,alta,sim,permitida,1,
+Optico S2,B8A NIR estreito,reflectancia de superficie, Sentinel-2 L2A,banda/cena,media,sim,permitida,1,
+Optico S2,B11 SWIR1,reflectancia de superficie, Sentinel-2 L2A,banda/cena,alta,sim,permitida,1,
+Optico S2,B12 SWIR2,reflectancia de superficie, Sentinel-2 L2A,banda/cena,alta,sim,permitida,1,
+Indice S2,NDVI,normalized difference vegetation index, S2 B8/B4,(B8-B4)/(B8+B4),alta,sim,permitida,1,satura em biomassa alta
+Indice S2,EVI,enhanced vegetation index, S2,2.5*(B8-B4)/(B8+6*B4-7.5*B2+1),alta,sim,permitida,1,
+Indice S2,SAVI,soil-adjusted vegetation index, S2,1.5*(B8-B4)/(B8+B4+0.5),alta,sim,permitida,1,
+Indice S2,MSAVI2,modified SAVI, S2,(2*B8+1-sqrt((2*B8+1)^2-8*(B8-B4)))/2,media,sim,permitida,2,
+Indice S2,NDRE,normalized difference red-edge, S2,(B8-B5)/(B8+B5),alta,sim,permitida,1,robusto em dossel denso
+Indice S2,CIgreen,chlorophyll index green, S2,(B8/B3)-1,media,sim,permitida,2,
+Indice S2,CIre,chlorophyll index red-edge, S2,(B8/B5)-1,media,sim,permitida,2,
+Indice S2,NBR,normalized burn ratio, S2,(B8-B12)/(B8+B12),media,sim,permitida,2,perturbacao/fogo
+Indice S2,NDFI,normalized difference fraction index, S2,indices de mistura/sombra,media,sim,permitida,2,precisa SMA
+Indice S2,PSRI,plant senescence reflectance index, S2,(B4-B3)/B2,baixa,sim,permitida,3,
+Indice S2,IRECI,inverted red-edge chlorophyll index, S2,(B7-B4)/(B5/B6),baixa,sim,permitida,3,
+Textura S2,GLCM media/variancia/entropia,textura de dossel, S2 indices,GLCM em janelas 3x3/5x5/9x9,alta,sim,permitida,2,multiplas escalas
+Fenologia S2,metricas temporais,amplitude/sazonalidade/harmonicos, serie S2,percentis e harmonicos anuais,alta,sim,permitida,2,S2 2015+
+Optico Landsat,Landsat bands/indices,serie historica 1984+, Landsat C2 L2,bandas e indices anuais,alta,sim,permitida,2,para features historicas e legado
+SAR S1,VV,single co-polarized backscatter, Sentinel-1 RTC,dB medio/anual,alta,sim,permitida,1,
+SAR S1,VH,single cross-polarized backscatter, Sentinel-1 RTC,dB medio/anual,alta,sim,permitida,1,
+SAR S1,VH/VV,razao de polarizacao, S1,VH-VV em dB,alta,sim,permitida,1,
+SAR S1,RVI,radar vegetation index, S1,4*VH/(VV+VH),media,sim,permitida,1,
+SAR S1,textura SAR,GLCM em VV/VH, S1,janelas 3x3/5x5,media,sim,permitida,2,estrutura vertical
+SAR S1,angulo de incidencia,geometria de aquisicao, S1,metadado,baixa,sim,permitida,3,correcao
+Terreno,elevacao,MDE Copernicus GLO-30, DEM,banda,alta,sim,permitida,1,
+Terreno,declividade,slope, DEM,derivada,alta,sim,permitida,1,
+Terreno,aspecto,orientacao, DEM,derivada,media,sim,permitida,2,
+Terreno,TPI,position index, DEM,derivada,media,sim,permitida,2,
+Terreno,curvatura,curvature, DEM,derivada,baixa,sim,permitida,3,
+Terreno,HAND,height above nearest drainage, DEM/hidrografia,derivada,media,sim,permitida,2,gradiente hidrico
+Clima,precipitacao anual,ERA5-Land, ERA5-Land,soma anual,alta,sim,permitida,1,
+Clima,sazonalidade de chuva,ERA5-Land, ERA5-Land,CV mensal,alta,sim,permitida,1,
+Clima,temperatura media,ERA5-Land, ERA5-Land,media anual,media,sim,permitida,2,
+Clima,deficit hidrico climatico,VPD/DEF, ERA5-Land,derivada,alta,sim,permitida,1,
+Solo,argila,textura, SoilGrids/Pronasolos,teor %,alta,sim,permitida,1,proxy de fertilidade/agua
+Solo,areia,textura, SoilGrids/Pronasolos,teor %,alta,sim,permitida,1,
+Solo,CTC,capacidade de troca cationica, SoilGrids,cmol/kg,media,sim,permitida,2,
+Solo,profundidade/drenagem,restricao de raiz, SoilGrids/Pronasolos,classes,media,sim,permitida,2,
+Solo,carbono organico do solo,SOC (produto MapBiomas), MapBiomas SOC,estoque g/m2,baixa,sim,permitida_experimental,3,risco de circularidade; so com ablacao
+Historico,classe MapBiomas do ano,uso e cobertura no ano t, MapBiomas Col.11,classe,alta,sim,permitida,1,dominio 3/4
+Historico,idade desde conversao,tempo desde antropizacao, MapBiomas serie,anos,alta,sim,permitida,1,
+Historico,estabilidade da classe,permanencia da vegetacao, MapBiomas serie,frequencia,media,sim,permitida,2,
+Historico,historico de fogo,area queimada, MapBiomas Fire,ocorrencia/anos,media,sim,permitida,2,
+Paisagem,distancia a borda,borda de vegetacao, MapBiomas,fragmentacao,media,sim,permitida,2,
+Paisagem,tamanho do fragmento,area do patch, MapBiomas,patch,media,sim,permitida,2,
+Paisagem,densidade de borda,edge density, MapBiomas,derivada,baixa,sim,permitida,3,
+Estrutura (vedada),GEDI L2A/L4A,altura/AGB GEDI, GEDI,produto modelado,alta,sim,vedada_como_feature,0,ADR-0022: so calibracao/avaliacao
+Estrutura (vedada),LiDAR aerotransportado,altura de dossel, LiDAR,metrica,alta,sim,vedada_como_feature,0,ADR-0027: referencia secundaria
+Estrutura (vedada),ICESat-2 ATL08,altura de copa, ICESat-2,metrica,media,sim,vedada_como_feature,0,observacao estrutural auxiliar
+Coordenadas,lon/lat,posicao, —,—,baixa,sim,vedada_como_feature,0,usar apenas em splits/blocos

@@ -76,10 +76,11 @@ contar a UA uma vez e manter os pixels no mesmo grupo de split.
   (0,25 ou 1 ha) e não traz altura, densidade da madeira ou espécie. Sem área, Mg/ha variaria
   4×; **não ingerir como AGB** com premissa arbitrária. Desbloqueio: metadados de área por
   parcela (ForestPlots.net) ou contato com os autores.
-- **Maracá e Vourlitis:** as páginas de metadados respondem (CC BY), mas o endpoint de
-  download não conecta desta máquina. Maracá é diretamente utilizável quando obtido
-  (129 parcelas de 500 m²; Mg/ha = valor × 20). Desbloqueio: download manual/navegador ou
-  outra rede.
+- **Maracá:** o arquivo baixado (`Downloads\dwca-maraca_comp_floristic-v1.25`) é o
+  **Darwin Core de composição florística** (ocorrências de espécies; sem DAP/biomassa).
+  O dataset de biomassa/carbono é o Mendeley `10.17632/2j354jtddx.2` (arquivos
+  `location_plot` e `biomass_carbon`), ainda pendente de download. Quando obtido, é
+  diretamente utilizável: 129 parcelas de 500 m² (Mg/ha = valor × 20), com lat/long e UTM.
 - **IFN botânico:** é **Darwin Core de espécies** (30 CSVs por UF), não DAP/altura; serve
   para composição florística e priors de densidade da madeira, não como target.
 
