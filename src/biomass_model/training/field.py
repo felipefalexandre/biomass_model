@@ -312,8 +312,9 @@ def train_field_model(
     }
     joblib.dump(bundle, out.with_suffix(".joblib"))
 
-    pred = df[["observation_id", "source", "lon", "lat", target,
-               "fitofisionomia_group", "biome"]].copy()
+    pred_cols = ["observation_id", "source", "lon", "lat", target]
+    pred_cols += [c for c in ("fitofisionomia_group", "biome") if c in df.columns]
+    pred = df[pred_cols].copy()
     pred["pred"] = oof
     pred["baseline"] = baseline_oof
     pred["residual"] = pred["pred"] - pred[target]

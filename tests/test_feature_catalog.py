@@ -10,6 +10,7 @@ import pytest
 from biomass_model.feature_catalog import (
     ALLOWED_STATUS,
     FORBIDDEN_STATUS,
+    feature_columns_hash,
     feature_set_hash,
     load_catalog,
     select_features,
@@ -118,6 +119,14 @@ def test_exclusion_reasons_are_specific():
         include_experimental=True,
     )
     assert experimental_with_filter["excluidas"]["carbono organico do solo"] == "fora_do_filtro"
+
+
+def test_feature_columns_hash_is_order_independent():
+    a = feature_columns_hash(["s2_ndvi", "elev", "cat_biome_Amazônia"])
+    b = feature_columns_hash(["cat_biome_Amazônia", "elev", "s2_ndvi"])
+    c = feature_columns_hash(["s2_ndvi", "elev"])
+    assert a == b
+    assert a != c
 
 
 def test_invalid_status_and_duplicates_raise(tmp_path):

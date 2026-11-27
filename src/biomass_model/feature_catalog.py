@@ -127,6 +127,13 @@ def feature_set_hash(features: pd.DataFrame) -> str:
     return hashlib.sha256(f"feature_set_v1\n{payload}".encode("utf-8")).hexdigest()
 
 
+def feature_columns_hash(columns: Iterable[str]) -> str:
+    """Hash das colunas efetivamente usadas por um modelo (nao do catalogo)."""
+    names = sorted({str(column).strip() for column in columns if str(column).strip()})
+    payload = "\n".join(names)
+    return hashlib.sha256(f"feature_columns_v1\n{payload}".encode("utf-8")).hexdigest()
+
+
 def summarize(
     catalog: pd.DataFrame,
     selected: pd.DataFrame,

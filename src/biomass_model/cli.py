@@ -289,6 +289,36 @@ def _cmd_features_catalog(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_target_observations(args: argparse.Namespace) -> int:
+    import pandas as pd
+
+    from .target_observations import (
+        sample_target, target_to_observations, write_observations,
+    )
+
+    target = pd.read_csv(args.target_csv)
+    if args.sample:
+        by = tuple(b.strip() for b in args.by.split(",") if b.strip())
+        target = sample_target(
+            target, args.sample, tier=args.tier, seed=args.seed,
+            min_per_stratum=args.min_per_stratum, by=by,
+        )
+    observations = target_to_observations(target)
+    report = write_observations(
+        observations, args.out, report_path=args.manifest,
+        params={
+            "target_csv": args.target_csv,
+            "sample": args.sample,
+            "tier": args.tier,
+            "seed": args.seed,
+            "min_per_stratum": args.min_per_stratum,
+            "by": args.by,
+        },
+    )
+    print(json.dumps(report, indent=2, ensure_ascii=False))
+    return 0
+
+
 def _cmd_features_observations(args: argparse.Namespace) -> int:
     from .observation_features import build_observation_features
 
@@ -867,6 +897,22 @@ def build_parser() -> argparse.ArgumentParser:
     fcat.add_argument("--out", default=None,
                       help="opcional: CSV do conjunto selecionado")
     fcat.set_defaults(func=_cmd_features_catalog)
+
+    tobs = sub.add_parser(
+        "target-observations",
+        help="converte o target por UA em observacoes canonicas (e amostra)")
+    tobs.add_argument("--target-csv", required=True)
+    tobs.add_argument("--out", required=True)
+    tobs.add_argument("--manifest", default=None)
+    tobs.add_argument("--tier", default=None,
+                      help="filtro de tier, ex.: B (Tier B = ~1,1 km)")
+    tobs.add_argument("--sample", type=int, default=None,
+                      help="tamanho da amostra estratificada")
+    tobs.add_argument("--seed", type=int, default=42)
+    tobs.add_argument("--min-per-stratum", type=int, default=1)
+    tobs.add_argument("--by", default="bioma,fitofisionomia_group",
+                      help="colunas de estrato para a amostra")
+    tobs.set_defaults(func=_cmd_target_observations)
 
     pfield = sub.add_parser("predict-field", help="prediz AGB com modelo campo-first")
     pfield.add_argument("--model", required=True)
