@@ -256,7 +256,7 @@ Store: `E:\Mapbiomas\biomass\inventory_store\observations.csv` → **7.576 obser
 - Model registry: `E:\Mapbiomas\biomass\model_registry`; F0 block200 e LOO como
   **challengers**, nenhum champion.
 - `docs/57_setup_nova_maquina.md`: instalação, credenciais, dados, reconstrução e testes do zero.
-- Testes: `python -m pytest` → **80 passed** (2026-11-27).
+- Testes: `python -m pytest` → **84 passed** (2026-11-27).
 - Nenhuma credencial ou dado bruto foi commitado.
 
 ### 10.5 Próximos passos
@@ -283,8 +283,15 @@ Store: `E:\Mapbiomas\biomass\inventory_store\observations.csv` → **7.576 obser
 - `src/biomass_model/feature_catalog.py`: valida `data/reference/features_biomassa.csv`,
   seleciona por grupo/prioridade, exclui sempre GEDI/LiDAR/ICESat-2/lon-lat e calcula
   `feature_set_hash` estável (ADR-0033).
-- CLI: `target-consolidate` e `features-catalog`.
-- Testes: `tests/test_targets.py`, `tests/test_feature_catalog.py` (12 novos).
+- `src/biomass_model/target_observations.py`: converte o target em observações canônicas,
+  amostra estratificada reproduzível e manifesto; comando `target-observations`.
+- `tools/fetch_target_features.py`: baixa janelas S2/DEM por sítio, com fallback temporal
+  e status durável.
+- `tools/gca_index_overlap.py`: mede sobreposição do Global Canopy Atlas (INV12) com as
+  pegadas IFN; GCA é validação estrutural, nunca feature (`docs/64`).
+- CLI: `target-consolidate`, `features-catalog` e `target-observations`.
+- Testes: `tests/test_targets.py`, `tests/test_feature_catalog.py`,
+  `tests/test_target_observations.py` (16 novos).
 
 ### 11.2 Execução real
 
@@ -305,4 +312,24 @@ não de pseudo-réplicas. Detalhes e limitações: `docs/63`.
 2. E3 (baseline por estrato vs RF) com blocos espaciais + buffer e curva de aprendizado.
 3. E4 (ablação SAR/textura/fenologia) e E5 (dois estágios 1 km→30 m).
 4. Ingestão de Maracá (dataset de biomassa `10.17632/2j354jtddx.2`) e RAINFOR (após área).
+
+### 11.4 Global Canopy Atlas (2026-11-27)
+
+- **INV12**, LiDAR aerotransportado (CHM 1 m); 3.458 aquisições, 56.554 km².
+- Índice extraído sem baixar 2,6 GB: 1.240 aquisições no Brasil (9.181 km²).
+- Sobreposição: **4 UAs do target** e **6 UAs IFN**; insuficiente para calibrar.
+- Papel: validação estrutural/referência secundária; **nunca feature** (ADR-0022/0027).
+- Avaliação completa: `docs/64`; ferramenta: `tools/gca_index_overlap.py`.
+
+### 11.5 Piloto de features e E3 (2026-11-27)
+
+- `target-observations`: 60 UAs Tier B; **58 usáveis** (2 sem S2 em ±2 anos).
+- Features: S2 de uma data (6 bandas + 7 índices), terreno e histórico MapBiomas;
+  **26 colunas**, hash `d85879e…`; S1, clima, solo e textura ficam para a próxima rodada.
+- E3 (200 km/25 km): **R² 0,774, RMSE 42,6, viés −1,6** contra baseline
+  R² 0,323/RMSE 73,8; n teste 18; cobertura IC90 0,78 (nominal 0,90).
+- **Leitura:** o ganho é sobretudo entre biomas; R² within-bioma negativo. Sem a
+  categórica de bioma, R² 0,721 e as features espectrais (NBR/NDII/NDMI/EVI) assumem.
+- Limitações: S2 de uma data, suporte de 1 km, sem validação independente.
+- Detalhes: `docs/65`; figura `docs/figuras/e3_piloto_58.png`.
 

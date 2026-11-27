@@ -130,3 +130,26 @@ Solo (2), Terreno (2), Histórico (2).
 Calcular o cubo de features no mesmo suporte (30 m e ~1,1 km) para uma amostra de UAs,
 começando pelo conjunto prioridade 1 e pelo `feature_set_hash` registrado; em seguida,
 E3 (baseline por estrato vs RF) com blocos espaciais + buffer e curva de aprendizado.
+
+## 7. Ponte para observações e amostra piloto
+
+O target é convertido para o esquema canônico sem perder proveniência:
+
+```bash
+python -m biomass_model.cli target-observations \
+  --target-csv data/processed/target/target_uas_amazonia_cerrado.csv \
+  --out data/processed/features/sample_obs.csv \
+  --manifest data/processed/features/sample_obs_manifest.json \
+  --tier B --sample 60 --seed 42 --by bioma
+```
+
+- 60 UAs do Tier B (~1,1 km): **31 Amazônia / 29 Cerrado**;
+  **33 floresta / 27 savana**; semente 42;
+- incerteza de equação = metade da faixa min–max (`uncertainty_type=half_range_equations`);
+- precisão da coordenada: 55,66 m (3 casas) e 556,6 m (2 casas), conforme o enriquecimento;
+- data: 1º de janeiro do ano do inventário, com flag `reference_date_year_only`;
+- Tier A entra como `validation`; Tier B como `training`;
+- SHA-256 da amostra: `6c0274b72bad2ac20806fa8c805097b2c39611a695ca32a301d53d54ecfd6303`.
+
+A amostra é um **piloto de pipeline**, não uma amostra probabilística do domínio; a
+estratificação fina (bioma × fitofisionomia) fica para o desenho de validação.

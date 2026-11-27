@@ -23,7 +23,8 @@ Convenção de armazenamento:
 | INV08 | LBA-ECO LC-05 (ORNL) | 50 parcelas de 1 ha, biomassa e solo, BDFFP (Manaus) | 1997–2001 | aberto (NASA) | login Earthdata | não baixado |
 | INV09 | IFN — dados botânicos (SNIF) | Inventário árvore-a-árvore do IFN | 2018– | aberto (portal) | portal SNIF | **reclassificado: Darwin Core de espécies (não fornece DAP/AGB)** |
 | INV10 | Zenodo — EBA (Ometto et al.) | Mapa de AGB da Amazônia brasileira + incerteza (benchmark) | ~2018 | aberto | Zenodo (DOI) | não baixado |
-| INV11 | **JCarbon consolidado (UFPR)** | 1.984 formulários de inventário com biomassa total (t), tipologia em texto e projeto de origem | RADAM-BR (1970–80) e outros sem data | indefinida | plataforma colaborativa (jcarbon.ufpr.br) | **avaliado — não utilizável no estado atual** (ver §2.3) |
+| INV11 | **JCarbon consolidado (UFPR)** | 1.984 formulários de inventário com biomassa total (t), tipologia em texto e projeto de origem | RADAM-BR (1970-80) e outros sem data | indefinida | plataforma colaborativa (jcarbon.ufpr.br) | **avaliado - não utilizável no estado atual** (ver §2.3) |
+| INV12 | **Global Canopy Atlas (GCA)** | ALS aerotransportado: CHM/DTM/DSM de 1 m, 3.458 aquisições (56.554 km²) | 2006–2024 | aberto (87%; licença por aquisição) | MAAP/ESA + índice Zenodo | **índice extraído: 3.458 pegadas; 1.240 no Brasil** | validação estrutural/referência secundária; **nunca feature** | sobrepõe 4 UAs do target e 6 UAs IFN; sem AGB, não serve como target (docs/64) |
 
 ## 2. O que já foi baixado
 

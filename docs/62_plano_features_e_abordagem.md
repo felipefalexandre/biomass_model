@@ -163,10 +163,16 @@ operacional, cobertura wall-to-wall e ciclos de atualização.
 2. ~~Tornar o catálogo de features um contrato executável~~ **feito**: comando
    `features-catalog`, `feature_set_hash` da prioridade 1
    (`205c859…`), exclusão permanente de GEDI/LiDAR/ICESat-2/lon-lat.
-3. Calcular o cubo de features por grupo (S2, S1, terreno, clima, solo, histórico) no
-   mesmo suporte, com máscara do ano.
-4. Rodar E3/E4 com CV espacial e curva de aprendizado.
-5. Ingerir Maracá (quando o dataset de biomassa estiver em `data/raw`) e RAINFOR (após área).
+3. ~~Converter o target em observações canônicas e amostra~~ **feito**:
+   comando `target-observations`; amostra piloto de 60 UAs do Tier B
+   (31 Amazônia / 29 Cerrado; 33 floresta / 27 savana), semente 42.
+4. ~~Calcular o cubo de features por grupo (S2, terreno, histórico)~~ **piloto feito**
+   (`docs/65`): 58 UAs Tier B, 26 features, hash `d85879e…`; S1, clima e solo pendentes.
+5. ~~Rodar E3/E4 com CV espacial~~ **E3 feito; E4 parcial**: R² 0,774/RMSE 42,6 contra
+   baseline 0,323/73,8 (200 km/25 km), mas R² within-bioma negativo; sem bioma, R² 0,721
+   e S2 (NBR/NDII/NDMI) assume. Curva de aprendizado não conclusiva (CV muda com n).
+6. Adicionar S1 (VV/VH), textura, fenologia S2 e clima; repetir a ablação completa.
+7. Ingerir Maracá (quando o dataset de biomassa estiver em `data/raw`) e RAINFOR (após área).
 
 ### 9.1 Achado da execução que ajusta o plano
 
