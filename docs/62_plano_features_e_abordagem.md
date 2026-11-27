@@ -157,8 +157,20 @@ operacional, cobertura wall-to-wall e ciclos de atualização.
 
 ## 9. Próximos passos imediatos
 
-1. Consolidar o target por UA (1.184) e rasterizar no suporte das features.
-2. Calcular o cubo de features por grupo (S2, S1, terreno, clima, solo, histórico) no
+1. ~~Consolidar o target por UA (1.184)~~ **feito em 2026-11-27** (`docs/63`):
+   1.184 UAs no catálogo completo; 824 em Amazônia+Cerrado (36 Tier A, 788 Tier B);
+   comando `target-consolidate`, CSV/GeoPackage/manifesto com hash.
+2. ~~Tornar o catálogo de features um contrato executável~~ **feito**: comando
+   `features-catalog`, `feature_set_hash` da prioridade 1
+   (`205c859…`), exclusão permanente de GEDI/LiDAR/ICESat-2/lon-lat.
+3. Calcular o cubo de features por grupo (S2, S1, terreno, clima, solo, histórico) no
    mesmo suporte, com máscara do ano.
-3. Rodar E3/E4 com CV espacial e curva de aprendizado.
-4. Ingerir Maracá (quando o arquivo estiver em `data/raw`) e RAINFOR (após área).
+4. Rodar E3/E4 com CV espacial e curva de aprendizado.
+5. Ingerir Maracá (quando o dataset de biomassa estiver em `data/raw`) e RAINFOR (após área).
+
+### 9.1 Achado da execução que ajusta o plano
+
+O Tier A no escopo é **36 UAs**, não 96: 60 pixels confirmados estão em Caatinga/Mata
+Atlântica. O downscaling para 30 m deve, portanto, apoiar-se em validação independente e
+AOA, e não em pseudo-réplicas; o estágio 1 continua com as 824 UAs (788 em ~1,1 km).
+

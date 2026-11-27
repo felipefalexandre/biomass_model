@@ -256,7 +256,7 @@ Store: `E:\Mapbiomas\biomass\inventory_store\observations.csv` → **7.576 obser
 - Model registry: `E:\Mapbiomas\biomass\model_registry`; F0 block200 e LOO como
   **challengers**, nenhum champion.
 - `docs/57_setup_nova_maquina.md`: instalação, credenciais, dados, reconstrução e testes do zero.
-- Testes: `python -m pytest` → **60 passed**.
+- Testes: `python -m pytest` → **80 passed** (2026-11-27).
 - Nenhuma credencial ou dado bruto foi commitado.
 
 ### 10.5 Próximos passos
@@ -266,3 +266,43 @@ Store: `E:\Mapbiomas\biomass\inventory_store\observations.csv` → **7.576 obser
 3. Alinhar features Landsat/S2 antes de gerar mapa 30 m campo-first.
 4. Definir regra explícita de elegibilidade fitofisionômica.
 5. Completar validação temporal e portões G0–G7; nada é MRV ainda.
+
+---
+
+## 11. Target consolidado e catálogo de features (2026-11-27)
+
+**Decisão de arquitetura:** `ADR/0034` — evolução incremental, sem reestruturação integral
+(princípio já registrado em `docs/46` §8.1).
+
+### 11.1 Código novo
+
+- `src/biomass_model/targets.py`: consolida **1 linha por UA** (Tier A pixel 30 m tem
+  precedência sobre Tier B célula ~1,1 km), com `agb_min/agb_mg_ha/agb_max`,
+  `n_repeticoes`, suporte, flags e plausibilidade (≤500 Mg/ha). Exporta CSV, GeoPackage
+  e manifesto com SHA-256.
+- `src/biomass_model/feature_catalog.py`: valida `data/reference/features_biomassa.csv`,
+  seleciona por grupo/prioridade, exclui sempre GEDI/LiDAR/ICESat-2/lon-lat e calcula
+  `feature_set_hash` estável (ADR-0033).
+- CLI: `target-consolidate` e `features-catalog`.
+- Testes: `tests/test_targets.py`, `tests/test_feature_catalog.py` (12 novos).
+
+### 11.2 Execução real
+
+| Artefato | Conteúdo |
+|---|---|
+| `data/processed/target/target_uas.csv` | 1.184 UAs (96 A + 1.088 B), todos os biomas; SHA-256 `9bb951…` |
+| `data/processed/target/target_uas_amazonia_cerrado.csv` | 824 UAs (36 A + 788 B); SHA-256 `349279…` |
+| `data/processed/target/target_uas.gpkg` | pontos do target (EPSG:4326); SHA-256 `0ccec5…` |
+| `features-catalog --max-priority 1` | 27 features; hash `205c859…` |
+
+**Achado:** o Tier A no escopo é **36 UAs** (não 96); 60 pixels confirmados estão em
+Caatinga/Mata Atlântica. O downscaling para 30 m depende de validação independente e AOA,
+não de pseudo-réplicas. Detalhes e limitações: `docs/63`.
+
+### 11.3 Próximos passos
+
+1. Cubo de features no suporte do target (30 m e ~1,1 km), amostra de UAs, prioridade 1.
+2. E3 (baseline por estrato vs RF) com blocos espaciais + buffer e curva de aprendizado.
+3. E4 (ablação SAR/textura/fenologia) e E5 (dois estágios 1 km→30 m).
+4. Ingestão de Maracá (dataset de biomassa `10.17632/2j354jtddx.2`) e RAINFOR (após área).
+
